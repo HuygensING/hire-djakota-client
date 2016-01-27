@@ -2,8 +2,8 @@ import React from "react";
 import HeightFillIcon from "./icons/height-fill";
 import WidthFillIcon from "./icons/width-fill";
 import AutoFillIcon from "./icons/auto-fill";
-import { setFill } from "../api/actions";
-import store from "../api/store";
+import { setFill } from "../actions";
+import store from "../store";
 
 const SUPPORTED_SCALE_MODES = [
     "heightFill",

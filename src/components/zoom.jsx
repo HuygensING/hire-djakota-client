@@ -1,15 +1,16 @@
 import React from "react";
-import { setRealViewPort, sendMouseWheel } from "../api/actions";
-import store from "../api/store";
+import { setRealViewPort, sendMouseWheel } from "../actions";
+import store from "../store";
 
 const MOUSE_UP = 0;
 const MOUSE_DOWN = 1;
 
 class Zoom extends React.Component {
-
 	constructor(props) {
 		super(props);
+
 		this.state = store.getState();
+
 		this.mouseupListener = this.onMouseUp.bind(this);
 		this.mousemoveListener = this.onMouseMove.bind(this);
 		this.touchMoveListener = this.onTouchMove.bind(this);
@@ -20,6 +21,7 @@ class Zoom extends React.Component {
 		window.addEventListener("mousemove", this.mousemoveListener);
 		window.addEventListener("touchend", this.mouseupListener);
 		window.addEventListener("touchmove", this.touchMoveListener);
+
 		this.unsubscribe = store.subscribe(() =>
 			this.setState(store.getState())
 		);
@@ -31,12 +33,14 @@ class Zoom extends React.Component {
 		window.removeEventListener("mousemove", this.mousemoveListener);
 		window.removeEventListener("touchend", this.mouseupListener);
 		window.removeEventListener("touchmove", this.touchMoveListener);
+
 		this.unsubscribe();
 	}
 
 
 	dispatchRealScale(pageX) {
 		let rect = React.findDOMNode(this).children[0].getBoundingClientRect();
+
 		if(rect.width > 0 && !this.state.realViewPort.applyZoom) {
 			let zoom = ((pageX - rect.left) / rect.width) * 2;
 			if(zoom < 0.01) { zoom = 0.01; }
@@ -82,8 +86,10 @@ class Zoom extends React.Component {
 		store.dispatch(sendMouseWheel({deltaY: ev.deltaY}));
 		return ev.preventDefault();
 	}
+
 	render() {
 		let zoom = parseInt(this.state.realViewPort.zoom * 100);
+
 		return (
 			<span className="hire-zoom-bar" onWheel={this.onWheel.bind(this)}>
 				<svg

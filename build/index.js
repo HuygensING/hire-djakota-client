@@ -1382,55 +1382,757 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var initialState = {
-	realViewPort: { x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false },
-	mousewheel: null,
-	fillMode: null,
-	freeMovement: false
-};
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-exports["default"] = function (state, action) {
-	if (state === undefined) state = initialState;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	switch (action.type) {
-		case "SET_REAL_VIEWPORT":
-			return _extends({}, state, { realViewPort: _extends({}, state.realViewPort, action.realViewPort) });
-		case "SEND_MOUSEWHEEL":
-			return _extends({}, state, { mousewheel: action.mousewheel });
-		case "SET_FILL":
-			return _extends({}, state, { fillMode: action.mode });
-		case "SET_FREE_MOVEMENT":
-			return _extends({}, state, { freeMovement: action.mode });
-		default:
-			return state;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _store = _dereq_("../store");
+
+var _store2 = _interopRequireDefault(_store);
+
+var DjatokaClient = (function (_React$Component) {
+	_inherits(DjatokaClient, _React$Component);
+
+	function DjatokaClient() {
+		_classCallCheck(this, DjatokaClient);
+
+		_get(Object.getPrototypeOf(DjatokaClient.prototype), "constructor", this).apply(this, arguments);
 	}
-};
 
+	_createClass(DjatokaClient, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this = this;
+
+			this.unsubscribe = _store2["default"].subscribe(function () {
+				return _this.setState(_store2["default"].getState());
+			});
+
+			_store2["default"].dispatch({
+				type: "INITIAL",
+				initialState: {
+					config: this.props.config,
+					service: this.props.service,
+					scaleMode: this.props.scaleMode
+				}
+			});
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var _this2 = this;
+
+			var children = _react2["default"].Children.map(this.props.children, function (child) {
+				return _react2["default"].cloneElement(child, _this2.state);
+			});
+
+			return _react2["default"].createElement(
+				"div",
+				{ className: "facsimile" },
+				children
+			);
+		}
+	}]);
+
+	return DjatokaClient;
+})(_react2["default"].Component);
+
+DjatokaClient.propTypes = {};
+
+DjatokaClient.defaultProps = {};
+
+exports["default"] = DjatokaClient;
 module.exports = exports["default"];
 
-},{}],18:[function(_dereq_,module,exports){
+},{"../store":29,"react":"react"}],18:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _iconsHeightFill = _dereq_("./icons/height-fill");
+
+var _iconsHeightFill2 = _interopRequireDefault(_iconsHeightFill);
+
+var _iconsWidthFill = _dereq_("./icons/width-fill");
+
+var _iconsWidthFill2 = _interopRequireDefault(_iconsWidthFill);
+
+var _iconsAutoFill = _dereq_("./icons/auto-fill");
+
+var _iconsAutoFill2 = _interopRequireDefault(_iconsAutoFill);
+
+var _actions = _dereq_("../actions");
+
+var _store = _dereq_("../store");
+
+var _store2 = _interopRequireDefault(_store);
+
+var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
+
+var FillButton = (function (_React$Component) {
+    _inherits(FillButton, _React$Component);
+
+    function FillButton() {
+        _classCallCheck(this, FillButton);
+
+        _get(Object.getPrototypeOf(FillButton.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(FillButton, [{
+        key: "renderIcon",
+        value: function renderIcon() {
+            switch (this.props.scaleMode) {
+                case "fullZoom":
+                    return "100%";
+                case "autoFill":
+                    return _react2["default"].createElement(_iconsAutoFill2["default"], null);
+                case "heightFill":
+                    return _react2["default"].createElement(_iconsHeightFill2["default"], null);
+                case "widthFill":
+                default:
+                    return _react2["default"].createElement(_iconsWidthFill2["default"], null);
+            }
+        }
+    }, {
+        key: "onClick",
+        value: function onClick() {
+            _store2["default"].dispatch((0, _actions.setFill)(this.props.scaleMode));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2["default"].createElement(
+                "button",
+                { className: "hire-fill-button", onClick: this.onClick.bind(this) },
+                this.renderIcon()
+            );
+        }
+    }]);
+
+    return FillButton;
+})(_react2["default"].Component);
+
+FillButton.propTypes = {
+    scaleMode: function scaleMode(props, propName) {
+        if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
+            var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
+            props[propName] = "heightFill";
+            return new Error(msg);
+        }
+    }
+};
+
+FillButton.defaultProps = {
+    scaleMode: "heightFill"
+};
+
+exports["default"] = FillButton;
+module.exports = exports["default"];
+
+},{"../actions":15,"../store":29,"./icons/auto-fill":20,"./icons/height-fill":22,"./icons/width-fill":23,"react":"react"}],19:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _iconsFreeMovement = _dereq_("./icons/free-movement");
+
+var _iconsFreeMovement2 = _interopRequireDefault(_iconsFreeMovement);
+
+var _actions = _dereq_("../actions");
+
+var _store = _dereq_("../store");
+
+var _store2 = _interopRequireDefault(_store);
+
+var FreeMovementButton = (function (_React$Component) {
+    _inherits(FreeMovementButton, _React$Component);
+
+    function FreeMovementButton(props) {
+        _classCallCheck(this, FreeMovementButton);
+
+        _get(Object.getPrototypeOf(FreeMovementButton.prototype), "constructor", this).call(this, props);
+        this.state = _store2["default"].getState();
+    }
+
+    _createClass(FreeMovementButton, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this = this;
+
+            this.unsubscribe = _store2["default"].subscribe(function () {
+                return _this.setState(_store2["default"].getState());
+            });
+        }
+    }, {
+        key: "componentWillUnmount",
+        value: function componentWillUnmount() {
+            this.unsubscribe();
+        }
+    }, {
+        key: "onClick",
+        value: function onClick() {
+            _store2["default"].dispatch((0, _actions.setFreeMovement)(!this.state.freeMovement));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var c = "hire-free-movement-button";
+            if (!this.state.freeMovement) {
+                c += " active";
+            }
+            return _react2["default"].createElement(
+                "button",
+                { className: c, onClick: this.onClick.bind(this) },
+                _react2["default"].createElement(_iconsFreeMovement2["default"], null)
+            );
+        }
+    }]);
+
+    return FreeMovementButton;
+})(_react2["default"].Component);
+
+exports["default"] = FreeMovementButton;
+module.exports = exports["default"];
+
+},{"../actions":15,"../store":29,"./icons/free-movement":21,"react":"react"}],20:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _redux = _dereq_("redux");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _reducers = _dereq_("./reducers");
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _reducers2 = _interopRequireDefault(_reducers);
+var _react = _dereq_("react");
 
-var store = (0, _redux.createStore)(_reducers2["default"]);
+var _react2 = _interopRequireDefault(_react);
 
-exports["default"] = store;
+var AutoFill = (function (_React$Component) {
+  _inherits(AutoFill, _React$Component);
+
+  function AutoFill() {
+    _classCallCheck(this, AutoFill);
+
+    _get(Object.getPrototypeOf(AutoFill.prototype), "constructor", this).apply(this, arguments);
+  }
+
+  _createClass(AutoFill, [{
+    key: "render",
+    value: function render() {
+      return _react2["default"].createElement(
+        "svg",
+        { viewBox: "0 -2 16 20" },
+        _react2["default"].createElement("path", { d: "M 2.2510028,2.3999952 14.134355,13.976932", style: { strokeWidth: 2 } }),
+        _react2["default"].createElement("path", { d: "M 0.17726274,4.8389082 0.0558895,0.07290967 4.6198279,0.27222077", style: { strokeWidth: 0 } }),
+        _react2["default"].createElement("path", {
+          d: "m 15.925831,11.287935 0.121374,4.765999 -4.563938,-0.199312",
+          style: { strokeWidth: 0 }
+        }),
+        _react2["default"].createElement("path", {
+          d: "M 13.731112,2.2550713 2.1257829,14.110698",
+          style: { strokeWidth: 2 } }),
+        _react2["default"].createElement("path", {
+          d: "M 11.297166,0.17550349 16.063441,0.06553063 15.853214,4.6289791",
+          style: { strokeWidth: 0 }
+        }),
+        _react2["default"].createElement("path", {
+          d: "M 4.8104871,15.908601 0.0442114,16.018574 0.2544395,11.455126",
+          style: { strokeWidth: 0 }
+        })
+      );
+    }
+  }]);
+
+  return AutoFill;
+})(_react2["default"].Component);
+
+exports["default"] = AutoFill;
 module.exports = exports["default"];
 
-},{"./reducers":17,"redux":7}],19:[function(_dereq_,module,exports){
+},{"react":"react"}],21:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var FreeMovement = (function (_React$Component) {
+  _inherits(FreeMovement, _React$Component);
+
+  function FreeMovement() {
+    _classCallCheck(this, FreeMovement);
+
+    _get(Object.getPrototypeOf(FreeMovement.prototype), "constructor", this).apply(this, arguments);
+  }
+
+  _createClass(FreeMovement, [{
+    key: "render",
+    value: function render() {
+      return _react2["default"].createElement(
+        "svg",
+        { viewBox: "0 0 480 480" },
+        _react2["default"].createElement(
+          "g",
+          { id: "key" },
+          _react2["default"].createElement("path", { d: "M294.399,196.875l10.574,10.579c2.627-3.028,4.703-6.688,6.27-10.579H294.399z" }),
+          _react2["default"].createElement("path", { d: "M310.743,163.658c0,0-5.346-10.467-35.785-44.875c-30.422-34.392-50.438-52.094-50.438-52.094   c-11.734-10.376-30.857-10.299-42.514,0.173c0,0-41.014,36.967-61.703,55.609c-20.688,18.626-51.484,55.873-51.484,55.873   c-9.984,12.08-10.346,32.143-0.799,44.564c0,0,13.281,17.327,50.109,48.594c36.828,31.28,47.08,37.157,47.08,37.157   c13.297,7.559,32.859,5.091,44.094-5.363l-23.5-23.842c-14.592-14.842-14.516-38.891,0.232-53.625l41.781-41.781   c7.158-7.171,16.705-11.123,26.861-11.123c10.158,0,19.719,3.952,26.875,11.123l23.42,23.405   C314.801,196.081,317.506,176.955,310.743,163.658z M160.27,196.5c-20.982,0-37.998-17.012-37.998-38.015   c0-20.981,17.016-37.998,37.998-37.998c20.984,0,38.002,17.017,38.002,37.998C198.272,179.488,181.254,196.5,160.27,196.5z" }),
+          _react2["default"].createElement("path", { d: "M416.598,359.407L261.397,204.206c-3.689-3.689-9.734-3.689-13.422,0l-6.283,6.247l160.033,158.609v20.223h-17.002   L223.805,228.346l-17.629,17.642c-3.703,3.685-3.703,9.764-0.061,13.482l144.625,146.767c3.654,3.749,10.938,6.796,16.172,6.796   h32.656c5.221,0,10.752-4.107,12.266-9.108l8.721-28.734C422.069,370.206,420.303,363.078,416.598,359.407z" })
+        )
+      );
+    }
+  }]);
+
+  return FreeMovement;
+})(_react2["default"].Component);
+
+exports["default"] = FreeMovement;
+module.exports = exports["default"];
+
+},{"react":"react"}],22:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var HeightFill = (function (_React$Component) {
+    _inherits(HeightFill, _React$Component);
+
+    function HeightFill() {
+        _classCallCheck(this, HeightFill);
+
+        _get(Object.getPrototypeOf(HeightFill.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(HeightFill, [{
+        key: "render",
+        value: function render() {
+            return _react2["default"].createElement(
+                "svg",
+                { viewBox: "0 0 18 17" },
+                _react2["default"].createElement(
+                    "g",
+                    null,
+                    _react2["default"].createElement("path", { d: "m 7.8735657,3.2305929 0.088125,9.1793421", style: { strokeWidth: 2 } }),
+                    _react2["default"].createElement("path", { d: "M 4.6336281,3.641452 7.9449077,0.21145225 11.004625,3.6037073", style: { strokeWidth: 0 } }),
+                    _react2["default"].createElement("path", { d: "m 11.229771,12.149816 -3.3112819,3.43 -3.0597154,-3.392255", style: { strokeWidth: 0 } })
+                )
+            );
+        }
+    }]);
+
+    return HeightFill;
+})(_react2["default"].Component);
+
+exports["default"] = HeightFill;
+module.exports = exports["default"];
+
+},{"react":"react"}],23:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var WidthFill = (function (_React$Component) {
+    _inherits(WidthFill, _React$Component);
+
+    function WidthFill() {
+        _classCallCheck(this, WidthFill);
+
+        _get(Object.getPrototypeOf(WidthFill.prototype), "constructor", this).apply(this, arguments);
+    }
+
+    _createClass(WidthFill, [{
+        key: "render",
+        value: function render() {
+            return _react2["default"].createElement(
+                "svg",
+                { viewBox: "0 0 24 17" },
+                _react2["default"].createElement(
+                    "g",
+                    null,
+                    _react2["default"].createElement("path", { d: "m 3.2525423,8.5338983 16.5903457,0", style: { strokeWidth: 2 } }),
+                    _react2["default"].createElement("path", { d: "M 3.4690633,11.727926 0.0563563,8.3988265 3.4645013,5.3568195", style: { strokeWidth: 0 } }),
+                    _react2["default"].createElement("path", { d: "m 19.249675,5.3577067 3.412707,3.3291 -3.408145,3.0420063", style: { strokeWidth: 0 } })
+                )
+            );
+        }
+    }]);
+
+    return WidthFill;
+})(_react2["default"].Component);
+
+exports["default"] = WidthFill;
+module.exports = exports["default"];
+
+},{"react":"react"}],24:[function(_dereq_,module,exports){
+// import React from "react";
+
+// class Minimap extends React.Component {
+// 	render() {
+// 		return (
+// 			<div>MINI</div>
+// 		);
+// 	}
+// }
+
+// Minimap.propTypes = {};
+
+// Minimap.defaultProps = {};
+
+// export default Minimap;
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _actions = _dereq_("../actions");
+
+var _store = _dereq_("../store");
+
+var _store2 = _interopRequireDefault(_store);
+
+var _utilRequestAnimationFrame = _dereq_("../util/request-animation-frame");
+
+var RESIZE_DELAY = 5;
+
+var MOUSE_UP = 0;
+var MOUSE_DOWN = 1;
+
+var Minimap = (function (_React$Component) {
+	_inherits(Minimap, _React$Component);
+
+	function Minimap(props) {
+		_classCallCheck(this, Minimap);
+
+		_get(Object.getPrototypeOf(Minimap.prototype), "constructor", this).call(this, props);
+
+		this.state = {
+			width: null,
+			height: null
+		};
+		this.resizeListener = this.onResize.bind(this);
+		this.animationFrameListener = this.onAnimationFrame.bind(this);
+		this.abortAnimationFrame = false;
+		this.imageCtx = null;
+		this.interactionCtx = null;
+		this.resizeDelay = -1;
+		this.mouseState = MOUSE_UP;
+		this.mousemoveListener = this.onMouseMove.bind(this);
+		this.mouseupListener = this.onMouseUp.bind(this);
+		this.touchMoveListener = this.onTouchMove.bind(this);
+		this.frameBuffer = [];
+	}
+
+	_createClass(Minimap, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			this.abortAnimationFrame = false;
+			this.onResize();
+			this.imageCtx = _react2["default"].findDOMNode(this).children[0].getContext("2d");
+			this.interactionCtx = _react2["default"].findDOMNode(this).children[1].getContext("2d");
+			window.addEventListener("resize", this.resizeListener);
+			window.addEventListener("mousemove", this.mousemoveListener);
+			window.addEventListener("mouseup", this.mouseupListener);
+			window.addEventListener("touchend", this.mouseupListener);
+			window.addEventListener("touchmove", this.touchMoveListener);
+			(0, _utilRequestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
+		}
+
+		// componentWillReceiveProps(nextProps) {
+		// 	if(nextProps.config.identifier !== this.props.config.identifier) {
+		// 		console.log(nextProps.api)
+		// 		// this.props.api = new Api(this.props.service, nextProps.config);
+		// 		this.commitResize();
+		// 	}
+		// }
+
+	}, {
+		key: "shouldComponentUpdate",
+		value: function shouldComponentUpdate(nextProps, nextState) {
+			return this.state.width !== nextState.width || this.state.height !== nextState.height;
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			window.removeEventListener("resize", this.resizeListener);
+			window.removeEventListener("mousemove", this.mousemoveListener);
+			window.removeEventListener("mouseup", this.mouseupListener);
+			window.addEventListener("touchend", this.mouseupListener);
+			window.removeEventListener("touchmove", this.touchMoveListener);
+			this.abortAnimationFrame = true;
+			(0, _utilRequestAnimationFrame.cancelAnimationFrame)(this.animationFrameListener);
+			// this.unsubscribe();
+		}
+	}, {
+		key: "onAnimationFrame",
+		value: function onAnimationFrame() {
+			if (this.frameBuffer.length) {
+				this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
+				for (var i = 0; i < this.frameBuffer.length; i++) {
+					var tileIm = this.frameBuffer[i][0];
+					var tile = this.frameBuffer[i][1];
+					this.imageCtx.drawImage(tileIm, parseInt(Math.floor(tile.pos.x * this.scale)), parseInt(Math.floor(tile.pos.y * this.scale)), parseInt(Math.ceil(tileIm.width * this.scale)), parseInt(Math.ceil(tileIm.height * this.scale)));
+				}
+				if (this.frameBuffer.filter(function (x) {
+					return x[0].complete && x[0].height > 0 && x[0].width > 0;
+				}).length === this.frameBuffer.length) {
+					this.frameBuffer = [];
+				}
+			}
+
+			if (this.resizeDelay === 0) {
+				this.commitResize();
+				this.resizeDelay = -1;
+			} else if (this.resizeDelay > 0) {
+				this.resizeDelay -= 1;
+			}
+
+			this.interactionCtx.strokeStyle = this.props.rectStroke;
+			this.interactionCtx.fillStyle = this.props.rectFill;
+			this.interactionCtx.clearRect(0, 0, this.state.width, this.state.height);
+			this.interactionCtx.fillRect(Math.floor(this.props.realViewPort.x * this.state.width), Math.floor(this.props.realViewPort.y * this.state.height), Math.ceil(this.props.realViewPort.w * this.state.width), Math.ceil(this.props.realViewPort.h * this.state.height));
+
+			this.interactionCtx.beginPath();
+			this.interactionCtx.rect(Math.floor(this.props.realViewPort.x * this.state.width), Math.floor(this.props.realViewPort.y * this.state.height), Math.ceil(this.props.realViewPort.w * this.state.width), Math.ceil(this.props.realViewPort.h * this.state.height));
+			this.interactionCtx.stroke();
+
+			if (!this.abortAnimationFrame) {
+				(0, _utilRequestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
+			}
+		}
+	}, {
+		key: "onResize",
+		value: function onResize() {
+			this.resizeDelay = RESIZE_DELAY;
+		}
+	}, {
+		key: "commitResize",
+		value: function commitResize() {
+			this.resizeDelay = RESIZE_DELAY;
+			var node = _react2["default"].findDOMNode(this);
+			this.frameBuffer = this.props.api.loadImage({
+				viewport: { w: node.clientWidth, h: node.clientHeight },
+				onScale: this.setScale.bind(this),
+				scaleMode: "autoFill",
+				position: { x: 0, y: 0 }
+			});
+		}
+	}, {
+		key: "setScale",
+		value: function setScale(s, l) {
+			this.scale = s;
+			this.level = l;
+			var dims = this.props.api.getRealImagePos({ x: 0, y: 0 }, this.scale, this.level);
+			this.setState({ width: dims.w, height: dims.h });
+			if (this.props.onDimensions) {
+				this.props.onDimensions(dims.w, dims.h);
+			}
+		}
+	}, {
+		key: "dispatchReposition",
+		value: function dispatchReposition(ev) {
+			var doc = document.documentElement;
+			var scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+			var rect = _react2["default"].findDOMNode(this).getBoundingClientRect();
+			_store2["default"].dispatch((0, _actions.setRealViewPort)({
+				x: (ev.pageX - rect.left) / this.state.width - this.props.realViewPort.w / 2,
+				y: (ev.pageY - rect.top - scrollTop) / this.state.height - this.props.realViewPort.h / 2,
+				reposition: true,
+				applyZoom: false
+			}));
+		}
+	}, {
+		key: "onTouchStart",
+		value: function onTouchStart(ev) {
+			this.mouseState = MOUSE_DOWN;
+			this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
+			return ev.preventDefault();
+		}
+	}, {
+		key: "onMouseDown",
+		value: function onMouseDown(ev) {
+			this.mouseState = MOUSE_DOWN;
+			this.dispatchReposition(ev);
+		}
+	}, {
+		key: "onMouseMove",
+		value: function onMouseMove(ev) {
+			if (this.mouseState === MOUSE_DOWN) {
+				this.dispatchReposition(ev);
+				return ev.preventDefault();
+			}
+		}
+	}, {
+		key: "onTouchMove",
+		value: function onTouchMove(ev) {
+			if (this.mouseState === MOUSE_DOWN) {
+				this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
+				return ev.preventDefault();
+			}
+		}
+	}, {
+		key: "onMouseUp",
+		value: function onMouseUp() {
+			this.mouseState = MOUSE_UP;
+		}
+	}, {
+		key: "onWheel",
+		value: function onWheel(ev) {
+			_store2["default"].dispatch((0, _actions.sendMouseWheel)({ deltaY: ev.deltaY }));
+			return ev.preventDefault();
+		}
+	}, {
+		key: "onTouchEnd",
+		value: function onTouchEnd() {
+			this.mouseState = MOUSE_UP;
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return _react2["default"].createElement(
+				"div",
+				{ className: "hire-djatoka-minimap" },
+				_react2["default"].createElement("canvas", { className: "image", height: this.state.height, width: this.state.width }),
+				_react2["default"].createElement("canvas", { className: "interaction",
+					height: this.state.height,
+					onMouseDown: this.onMouseDown.bind(this),
+					onTouchStart: this.onTouchStart.bind(this),
+					onWheel: this.onWheel.bind(this),
+					width: this.state.width })
+			);
+		}
+	}]);
+
+	return Minimap;
+})(_react2["default"].Component);
+
+Minimap.propTypes = {
+	config: _react2["default"].PropTypes.object,
+	onDimensions: _react2["default"].PropTypes.func,
+	rectFill: _react2["default"].PropTypes.string,
+	rectStroke: _react2["default"].PropTypes.string,
+	service: _react2["default"].PropTypes.string
+};
+
+Minimap.defaultProps = {
+	rectFill: "rgba(128,128,255,0.1)",
+	rectStroke: "rgba(255,255,255,0.8)"
+};
+
+exports["default"] = Minimap;
+module.exports = exports["default"];
+
+},{"../actions":15,"../store":29,"../util/request-animation-frame":30,"react":"react"}],25:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1453,15 +2155,11 @@ var _react = _dereq_("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _apiApi = _dereq_("../api/api");
+var _actions = _dereq_("../actions");
 
-var _apiApi2 = _interopRequireDefault(_apiApi);
+var _store = _dereq_("../store");
 
-var _apiActions = _dereq_("../api/actions");
-
-var _apiStore = _dereq_("../api/store");
-
-var _apiStore2 = _interopRequireDefault(_apiStore);
+var _store2 = _interopRequireDefault(_store);
 
 var _utilRequestAnimationFrame = _dereq_("../util/request-animation-frame");
 
@@ -1476,14 +2174,13 @@ var RESIZE_DELAY = 5;
 
 var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
 
-var DjatokaClient = (function (_React$Component) {
-	_inherits(DjatokaClient, _React$Component);
+var Viewer = (function (_React$Component) {
+	_inherits(Viewer, _React$Component);
 
-	function DjatokaClient(props) {
-		_classCallCheck(this, DjatokaClient);
+	function Viewer(props) {
+		_classCallCheck(this, Viewer);
 
-		_get(Object.getPrototypeOf(DjatokaClient.prototype), "constructor", this).call(this, props);
-		this.api = new _apiApi2["default"](this.props.service, this.props.config);
+		_get(Object.getPrototypeOf(Viewer.prototype), "constructor", this).call(this, props);
 
 		this.state = {
 			width: null,
@@ -1513,11 +2210,9 @@ var DjatokaClient = (function (_React$Component) {
 		this.cancelAnimationFrame = _utilRequestAnimationFrame.cancelAnimationFrame;
 	}
 
-	_createClass(DjatokaClient, [{
+	_createClass(Viewer, [{
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			var _this = this;
-
 			this.abortAnimationFrame = false;
 			this.commitResize();
 			this.imageCtx = _react2["default"].findDOMNode(this).children[0].getContext("2d");
@@ -1525,19 +2220,23 @@ var DjatokaClient = (function (_React$Component) {
 			window.addEventListener("mousemove", this.mousemoveListener);
 			window.addEventListener("mouseup", this.mouseupListener);
 
-			this.unsubscribe = _apiStore2["default"].subscribe(function () {
-				return _this.setState(_apiStore2["default"].getState(), _this.receiveNewState.bind(_this));
-			});
+			// this.unsubscribe = store.subscribe(() =>
+			// 	this.setState(store.getState(), this.receiveNewState.bind(this))
+			// );
 			this.requestAnimationFrame(this.animationFrameListener);
+
+			document.addEventListener("click", function (ev) {
+				console.log(ev.target);
+			});
 		}
-	}, {
-		key: "componentWillReceiveProps",
-		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.config.identifier !== this.props.config.identifier) {
-				this.api = new _apiApi2["default"](this.props.service, nextProps.config);
-				this.commitResize();
-			}
-		}
+
+		// componentWillReceiveProps(nextProps) {
+		// 	if(nextProps.config.identifier !== this.props.config.identifier) {
+		// 		this.props.api = new Api(this.props.service, nextProps.config);
+		// 		this.commitResize();
+		// 	}
+		// }
+
 	}, {
 		key: "shouldComponentUpdate",
 		value: function shouldComponentUpdate(nextProps, nextState) {
@@ -1556,9 +2255,9 @@ var DjatokaClient = (function (_React$Component) {
 	}, {
 		key: "notifyRealImagePos",
 		value: function notifyRealImagePos() {
-			var zoom = this.api.getRealScale(this.scale, this.level);
-			var dims = this.api.getRealImagePos(this.imagePos, this.scale, this.level);
-			_apiStore2["default"].dispatch((0, _apiActions.setRealViewPort)({
+			var zoom = this.props.api.getRealScale(this.scale, this.level);
+			var dims = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
+			_store2["default"].dispatch((0, _actions.setRealViewPort)({
 				x: -dims.x / dims.w,
 				y: -dims.y / dims.h,
 				w: this.state.width / dims.w,
@@ -1572,10 +2271,10 @@ var DjatokaClient = (function (_React$Component) {
 		key: "receiveNewState",
 		value: function receiveNewState() {
 			if (this.state.realViewPort.reposition) {
-				var _api$getRealImagePos = this.api.getRealImagePos(this.imagePos, this.scale, this.level);
+				var _props$api$getRealImagePos = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
 
-				var w = _api$getRealImagePos.w;
-				var h = _api$getRealImagePos.h;
+				var w = _props$api$getRealImagePos.w;
+				var h = _props$api$getRealImagePos.h;
 
 				this.imagePos.x = -(w * this.state.realViewPort.x / this.scale);
 				this.imagePos.y = -(h * this.state.realViewPort.y / this.scale);
@@ -1585,17 +2284,17 @@ var DjatokaClient = (function (_React$Component) {
 
 			if (this.state.realViewPort.applyZoom) {
 				this.focalPoint = null;
-				this.api.zoomTo(this.state.realViewPort.zoom, this.zoom.bind(this));
+				this.props.api.zoomTo(this.state.realViewPort.zoom, this.zoom.bind(this));
 			}
 
 			if (this.state.mousewheel) {
 				this.focalPoint = null;
-				_apiStore2["default"].dispatch((0, _apiActions.sendMouseWheel)(false));
-				this.api.zoomBy(this.determineZoomFactor(this.state.mousewheel.deltaY), this.scale, this.level, this.zoom.bind(this));
+				_store2["default"].dispatch((0, _actions.sendMouseWheel)(false));
+				this.props.api.zoomBy(this.determineZoomFactor(this.state.mousewheel.deltaY), this.scale, this.level, this.zoom.bind(this));
 			}
 
 			if (this.state.fillMode) {
-				_apiStore2["default"].dispatch((0, _apiActions.setFill)(false));
+				_store2["default"].dispatch((0, _actions.setFill)(false));
 				this.imagePos.x = 0;
 				this.imagePos.y = 0;
 				this.loadImage({ scaleMode: this.state.fillMode });
@@ -1653,7 +2352,7 @@ var DjatokaClient = (function (_React$Component) {
 			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: this.props.scaleMode } : arguments[0];
 
 			this.notifyRealImagePos();
-			this.frameBuffer = this.api.loadImage(_extends({
+			this.frameBuffer = this.props.api.loadImage(_extends({
 				viewport: { w: this.state.width, h: this.state.height },
 				position: this.imagePos,
 				onScale: this.onDimensions.bind(this)
@@ -1674,6 +2373,7 @@ var DjatokaClient = (function (_React$Component) {
 	}, {
 		key: "onMouseDown",
 		value: function onMouseDown(ev) {
+			console.log("DONW");
 			this.mousePos.x = ev.clientX;
 			this.mousePos.y = ev.clientY;
 			this.movement = { x: 0, y: 0 };
@@ -1727,7 +2427,7 @@ var DjatokaClient = (function (_React$Component) {
 				this.touchmap.pinchDistance = parseInt(Math.sqrt((this.touchmap.positions[0].x - this.touchmap.positions[1].x) * (this.touchmap.positions[0].x - this.touchmap.positions[1].x) + (this.touchmap.positions[0].y - this.touchmap.positions[1].y) * (this.touchmap.positions[0].y - this.touchmap.positions[1].y)), 10);
 				this.touchmap.pinchDelta = oldD - this.touchmap.pinchDistance;
 				if (this.touchmap.pinchDelta < 60 && this.touchmap.pinchDelta > -60) {
-					this.api.zoomBy(this.determineZoomFactor(this.touchmap.pinchDelta), this.scale, this.level, this.zoom.bind(this));
+					this.props.api.zoomBy(this.determineZoomFactor(this.touchmap.pinchDelta), this.scale, this.level, this.zoom.bind(this));
 				}
 			} else if (this.touchState === TOUCH_START) {
 				this.movement.x = this.touchPos.x - ev.touches[0].pageX;
@@ -1843,7 +2543,7 @@ var DjatokaClient = (function (_React$Component) {
 		key: "determineZoomFactor",
 		value: function determineZoomFactor(delta) {
 			var rev = delta > 0 ? -1 : 1;
-			var rs = this.api.getRealScale(this.scale, this.level);
+			var rs = this.props.api.getRealScale(this.scale, this.level);
 			if (rs >= 0.6) {
 				return 0.04 * rev;
 			} else if (rs >= 0.3) {
@@ -1859,7 +2559,7 @@ var DjatokaClient = (function (_React$Component) {
 	}, {
 		key: "onWheel",
 		value: function onWheel(ev) {
-			this.api.zoomBy(this.determineZoomFactor(ev.nativeEvent.deltaY), this.scale, this.level, this.zoom.bind(this));
+			this.props.api.zoomBy(this.determineZoomFactor(ev.nativeEvent.deltaY), this.scale, this.level, this.zoom.bind(this));
 
 			return ev.preventDefault();
 		}
@@ -1888,11 +2588,11 @@ var DjatokaClient = (function (_React$Component) {
 		}
 	}]);
 
-	return DjatokaClient;
+	return Viewer;
 })(_react2["default"].Component);
 
-DjatokaClient.propTypes = {
-	config: _react2["default"].PropTypes.object.isRequired,
+Viewer.propTypes = {
+	config: _react2["default"].PropTypes.object,
 	scaleMode: function scaleMode(props, propName) {
 		if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
 			var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
@@ -1900,421 +2600,17 @@ DjatokaClient.propTypes = {
 			return new Error(msg);
 		}
 	},
-	service: _react2["default"].PropTypes.string.isRequired
+	service: _react2["default"].PropTypes.string
 };
 
-DjatokaClient.defaultProps = {
+Viewer.defaultProps = {
 	scaleMode: "autoFill"
 };
 
-exports["default"] = DjatokaClient;
+exports["default"] = Viewer;
 module.exports = exports["default"];
 
-},{"../api/actions":15,"../api/api":16,"../api/store":18,"../util/request-animation-frame":29,"react":"react"}],20:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _iconsHeightFill = _dereq_("./icons/height-fill");
-
-var _iconsHeightFill2 = _interopRequireDefault(_iconsHeightFill);
-
-var _iconsWidthFill = _dereq_("./icons/width-fill");
-
-var _iconsWidthFill2 = _interopRequireDefault(_iconsWidthFill);
-
-var _iconsAutoFill = _dereq_("./icons/auto-fill");
-
-var _iconsAutoFill2 = _interopRequireDefault(_iconsAutoFill);
-
-var _apiActions = _dereq_("../api/actions");
-
-var _apiStore = _dereq_("../api/store");
-
-var _apiStore2 = _interopRequireDefault(_apiStore);
-
-var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
-
-var FillButton = (function (_React$Component) {
-    _inherits(FillButton, _React$Component);
-
-    function FillButton() {
-        _classCallCheck(this, FillButton);
-
-        _get(Object.getPrototypeOf(FillButton.prototype), "constructor", this).apply(this, arguments);
-    }
-
-    _createClass(FillButton, [{
-        key: "renderIcon",
-        value: function renderIcon() {
-            switch (this.props.scaleMode) {
-                case "fullZoom":
-                    return "100%";
-                case "autoFill":
-                    return _react2["default"].createElement(_iconsAutoFill2["default"], null);
-                case "heightFill":
-                    return _react2["default"].createElement(_iconsHeightFill2["default"], null);
-                case "widthFill":
-                default:
-                    return _react2["default"].createElement(_iconsWidthFill2["default"], null);
-            }
-        }
-    }, {
-        key: "onClick",
-        value: function onClick() {
-            _apiStore2["default"].dispatch((0, _apiActions.setFill)(this.props.scaleMode));
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2["default"].createElement(
-                "button",
-                { className: "hire-fill-button", onClick: this.onClick.bind(this) },
-                this.renderIcon()
-            );
-        }
-    }]);
-
-    return FillButton;
-})(_react2["default"].Component);
-
-FillButton.propTypes = {
-    scaleMode: function scaleMode(props, propName) {
-        if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
-            var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
-            props[propName] = "heightFill";
-            return new Error(msg);
-        }
-    }
-};
-
-FillButton.defaultProps = {
-    scaleMode: "heightFill"
-};
-
-exports["default"] = FillButton;
-module.exports = exports["default"];
-
-},{"../api/actions":15,"../api/store":18,"./icons/auto-fill":22,"./icons/height-fill":24,"./icons/width-fill":25,"react":"react"}],21:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _iconsFreeMovement = _dereq_("./icons/free-movement");
-
-var _iconsFreeMovement2 = _interopRequireDefault(_iconsFreeMovement);
-
-var _apiActions = _dereq_("../api/actions");
-
-var _apiStore = _dereq_("../api/store");
-
-var _apiStore2 = _interopRequireDefault(_apiStore);
-
-var FreeMovementButton = (function (_React$Component) {
-    _inherits(FreeMovementButton, _React$Component);
-
-    function FreeMovementButton(props) {
-        _classCallCheck(this, FreeMovementButton);
-
-        _get(Object.getPrototypeOf(FreeMovementButton.prototype), "constructor", this).call(this, props);
-        this.state = _apiStore2["default"].getState();
-    }
-
-    _createClass(FreeMovementButton, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this = this;
-
-            this.unsubscribe = _apiStore2["default"].subscribe(function () {
-                return _this.setState(_apiStore2["default"].getState());
-            });
-        }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            this.unsubscribe();
-        }
-    }, {
-        key: "onClick",
-        value: function onClick() {
-            _apiStore2["default"].dispatch((0, _apiActions.setFreeMovement)(!this.state.freeMovement));
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var c = "hire-free-movement-button";
-            if (!this.state.freeMovement) {
-                c += " active";
-            }
-            return _react2["default"].createElement(
-                "button",
-                { className: c, onClick: this.onClick.bind(this) },
-                _react2["default"].createElement(_iconsFreeMovement2["default"], null)
-            );
-        }
-    }]);
-
-    return FreeMovementButton;
-})(_react2["default"].Component);
-
-exports["default"] = FreeMovementButton;
-module.exports = exports["default"];
-
-},{"../api/actions":15,"../api/store":18,"./icons/free-movement":23,"react":"react"}],22:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var AutoFill = (function (_React$Component) {
-  _inherits(AutoFill, _React$Component);
-
-  function AutoFill() {
-    _classCallCheck(this, AutoFill);
-
-    _get(Object.getPrototypeOf(AutoFill.prototype), "constructor", this).apply(this, arguments);
-  }
-
-  _createClass(AutoFill, [{
-    key: "render",
-    value: function render() {
-      return _react2["default"].createElement(
-        "svg",
-        { viewBox: "0 -2 16 20" },
-        _react2["default"].createElement("path", { d: "M 2.2510028,2.3999952 14.134355,13.976932", style: { strokeWidth: 2 } }),
-        _react2["default"].createElement("path", { d: "M 0.17726274,4.8389082 0.0558895,0.07290967 4.6198279,0.27222077", style: { strokeWidth: 0 } }),
-        _react2["default"].createElement("path", {
-          d: "m 15.925831,11.287935 0.121374,4.765999 -4.563938,-0.199312",
-          style: { strokeWidth: 0 }
-        }),
-        _react2["default"].createElement("path", {
-          d: "M 13.731112,2.2550713 2.1257829,14.110698",
-          style: { strokeWidth: 2 } }),
-        _react2["default"].createElement("path", {
-          d: "M 11.297166,0.17550349 16.063441,0.06553063 15.853214,4.6289791",
-          style: { strokeWidth: 0 }
-        }),
-        _react2["default"].createElement("path", {
-          d: "M 4.8104871,15.908601 0.0442114,16.018574 0.2544395,11.455126",
-          style: { strokeWidth: 0 }
-        })
-      );
-    }
-  }]);
-
-  return AutoFill;
-})(_react2["default"].Component);
-
-exports["default"] = AutoFill;
-module.exports = exports["default"];
-
-},{"react":"react"}],23:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var FreeMovement = (function (_React$Component) {
-  _inherits(FreeMovement, _React$Component);
-
-  function FreeMovement() {
-    _classCallCheck(this, FreeMovement);
-
-    _get(Object.getPrototypeOf(FreeMovement.prototype), "constructor", this).apply(this, arguments);
-  }
-
-  _createClass(FreeMovement, [{
-    key: "render",
-    value: function render() {
-      return _react2["default"].createElement(
-        "svg",
-        { viewBox: "0 0 480 480" },
-        _react2["default"].createElement(
-          "g",
-          { id: "key" },
-          _react2["default"].createElement("path", { d: "M294.399,196.875l10.574,10.579c2.627-3.028,4.703-6.688,6.27-10.579H294.399z" }),
-          _react2["default"].createElement("path", { d: "M310.743,163.658c0,0-5.346-10.467-35.785-44.875c-30.422-34.392-50.438-52.094-50.438-52.094   c-11.734-10.376-30.857-10.299-42.514,0.173c0,0-41.014,36.967-61.703,55.609c-20.688,18.626-51.484,55.873-51.484,55.873   c-9.984,12.08-10.346,32.143-0.799,44.564c0,0,13.281,17.327,50.109,48.594c36.828,31.28,47.08,37.157,47.08,37.157   c13.297,7.559,32.859,5.091,44.094-5.363l-23.5-23.842c-14.592-14.842-14.516-38.891,0.232-53.625l41.781-41.781   c7.158-7.171,16.705-11.123,26.861-11.123c10.158,0,19.719,3.952,26.875,11.123l23.42,23.405   C314.801,196.081,317.506,176.955,310.743,163.658z M160.27,196.5c-20.982,0-37.998-17.012-37.998-38.015   c0-20.981,17.016-37.998,37.998-37.998c20.984,0,38.002,17.017,38.002,37.998C198.272,179.488,181.254,196.5,160.27,196.5z" }),
-          _react2["default"].createElement("path", { d: "M416.598,359.407L261.397,204.206c-3.689-3.689-9.734-3.689-13.422,0l-6.283,6.247l160.033,158.609v20.223h-17.002   L223.805,228.346l-17.629,17.642c-3.703,3.685-3.703,9.764-0.061,13.482l144.625,146.767c3.654,3.749,10.938,6.796,16.172,6.796   h32.656c5.221,0,10.752-4.107,12.266-9.108l8.721-28.734C422.069,370.206,420.303,363.078,416.598,359.407z" })
-        )
-      );
-    }
-  }]);
-
-  return FreeMovement;
-})(_react2["default"].Component);
-
-exports["default"] = FreeMovement;
-module.exports = exports["default"];
-
-},{"react":"react"}],24:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var HeightFill = (function (_React$Component) {
-    _inherits(HeightFill, _React$Component);
-
-    function HeightFill() {
-        _classCallCheck(this, HeightFill);
-
-        _get(Object.getPrototypeOf(HeightFill.prototype), "constructor", this).apply(this, arguments);
-    }
-
-    _createClass(HeightFill, [{
-        key: "render",
-        value: function render() {
-            return _react2["default"].createElement(
-                "svg",
-                { viewBox: "0 0 18 17" },
-                _react2["default"].createElement(
-                    "g",
-                    null,
-                    _react2["default"].createElement("path", { d: "m 7.8735657,3.2305929 0.088125,9.1793421", style: { strokeWidth: 2 } }),
-                    _react2["default"].createElement("path", { d: "M 4.6336281,3.641452 7.9449077,0.21145225 11.004625,3.6037073", style: { strokeWidth: 0 } }),
-                    _react2["default"].createElement("path", { d: "m 11.229771,12.149816 -3.3112819,3.43 -3.0597154,-3.392255", style: { strokeWidth: 0 } })
-                )
-            );
-        }
-    }]);
-
-    return HeightFill;
-})(_react2["default"].Component);
-
-exports["default"] = HeightFill;
-module.exports = exports["default"];
-
-},{"react":"react"}],25:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var WidthFill = (function (_React$Component) {
-    _inherits(WidthFill, _React$Component);
-
-    function WidthFill() {
-        _classCallCheck(this, WidthFill);
-
-        _get(Object.getPrototypeOf(WidthFill.prototype), "constructor", this).apply(this, arguments);
-    }
-
-    _createClass(WidthFill, [{
-        key: "render",
-        value: function render() {
-            return _react2["default"].createElement(
-                "svg",
-                { viewBox: "0 0 24 17" },
-                _react2["default"].createElement(
-                    "g",
-                    null,
-                    _react2["default"].createElement("path", { d: "m 3.2525423,8.5338983 16.5903457,0", style: { strokeWidth: 2 } }),
-                    _react2["default"].createElement("path", { d: "M 3.4690633,11.727926 0.0563563,8.3988265 3.4645013,5.3568195", style: { strokeWidth: 0 } }),
-                    _react2["default"].createElement("path", { d: "m 19.249675,5.3577067 3.412707,3.3291 -3.408145,3.0420063", style: { strokeWidth: 0 } })
-                )
-            );
-        }
-    }]);
-
-    return WidthFill;
-})(_react2["default"].Component);
-
-exports["default"] = WidthFill;
-module.exports = exports["default"];
-
-},{"react":"react"}],26:[function(_dereq_,module,exports){
+},{"../actions":15,"../store":29,"../util/request-animation-frame":30,"react":"react"}],26:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2335,279 +2631,11 @@ var _react = _dereq_("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _apiApi = _dereq_("../api/api");
+var _actions = _dereq_("../actions");
 
-var _apiApi2 = _interopRequireDefault(_apiApi);
+var _store = _dereq_("../store");
 
-var _apiActions = _dereq_("../api/actions");
-
-var _apiStore = _dereq_("../api/store");
-
-var _apiStore2 = _interopRequireDefault(_apiStore);
-
-var _utilRequestAnimationFrame = _dereq_("../util/request-animation-frame");
-
-var RESIZE_DELAY = 5;
-
-var MOUSE_UP = 0;
-var MOUSE_DOWN = 1;
-
-var Minimap = (function (_React$Component) {
-	_inherits(Minimap, _React$Component);
-
-	function Minimap(props) {
-		_classCallCheck(this, Minimap);
-
-		_get(Object.getPrototypeOf(Minimap.prototype), "constructor", this).call(this, props);
-		this.api = new _apiApi2["default"](this.props.service, this.props.config);
-
-		this.state = {
-			width: null,
-			height: null
-		};
-		this.resizeListener = this.onResize.bind(this);
-		this.animationFrameListener = this.onAnimationFrame.bind(this);
-		this.abortAnimationFrame = false;
-		this.imageCtx = null;
-		this.interactionCtx = null;
-		this.resizeDelay = -1;
-		this.mouseState = MOUSE_UP;
-		this.mousemoveListener = this.onMouseMove.bind(this);
-		this.mouseupListener = this.onMouseUp.bind(this);
-		this.touchMoveListener = this.onTouchMove.bind(this);
-		this.frameBuffer = [];
-	}
-
-	_createClass(Minimap, [{
-		key: "componentDidMount",
-		value: function componentDidMount() {
-			var _this = this;
-
-			this.abortAnimationFrame = false;
-			this.onResize();
-			this.imageCtx = _react2["default"].findDOMNode(this).children[0].getContext("2d");
-			this.interactionCtx = _react2["default"].findDOMNode(this).children[1].getContext("2d");
-			window.addEventListener("resize", this.resizeListener);
-			window.addEventListener("mousemove", this.mousemoveListener);
-			window.addEventListener("mouseup", this.mouseupListener);
-			window.addEventListener("touchend", this.mouseupListener);
-			window.addEventListener("touchmove", this.touchMoveListener);
-			(0, _utilRequestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
-
-			this.unsubscribe = _apiStore2["default"].subscribe(function () {
-				return _this.setState(_apiStore2["default"].getState());
-			});
-		}
-	}, {
-		key: "componentWillReceiveProps",
-		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.config.identifier !== this.props.config.identifier) {
-				this.api = new _apiApi2["default"](this.props.service, nextProps.config);
-				this.commitResize();
-			}
-		}
-	}, {
-		key: "shouldComponentUpdate",
-		value: function shouldComponentUpdate(nextProps, nextState) {
-			return this.state.width !== nextState.width || this.state.height !== nextState.height || this.props.config.identifier !== nextProps.config.identifier;
-		}
-	}, {
-		key: "componentWillUnmount",
-		value: function componentWillUnmount() {
-			window.removeEventListener("resize", this.resizeListener);
-			window.removeEventListener("mousemove", this.mousemoveListener);
-			window.removeEventListener("mouseup", this.mouseupListener);
-			window.addEventListener("touchend", this.mouseupListener);
-			window.removeEventListener("touchmove", this.touchMoveListener);
-			this.abortAnimationFrame = true;
-			(0, _utilRequestAnimationFrame.cancelAnimationFrame)(this.animationFrameListener);
-			this.unsubscribe();
-		}
-	}, {
-		key: "onAnimationFrame",
-		value: function onAnimationFrame() {
-			if (this.frameBuffer.length) {
-				this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
-				for (var i = 0; i < this.frameBuffer.length; i++) {
-					var tileIm = this.frameBuffer[i][0];
-					var tile = this.frameBuffer[i][1];
-					this.imageCtx.drawImage(tileIm, parseInt(Math.floor(tile.pos.x * this.scale)), parseInt(Math.floor(tile.pos.y * this.scale)), parseInt(Math.ceil(tileIm.width * this.scale)), parseInt(Math.ceil(tileIm.height * this.scale)));
-				}
-				if (this.frameBuffer.filter(function (x) {
-					return x[0].complete && x[0].height > 0 && x[0].width > 0;
-				}).length === this.frameBuffer.length) {
-					this.frameBuffer = [];
-				}
-			}
-
-			if (this.resizeDelay === 0) {
-				this.commitResize();
-				this.resizeDelay = -1;
-			} else if (this.resizeDelay > 0) {
-				this.resizeDelay -= 1;
-			}
-
-			this.interactionCtx.strokeStyle = this.props.rectStroke;
-			this.interactionCtx.fillStyle = this.props.rectFill;
-			this.interactionCtx.clearRect(0, 0, this.state.width, this.state.height);
-			this.interactionCtx.fillRect(Math.floor(this.state.realViewPort.x * this.state.width), Math.floor(this.state.realViewPort.y * this.state.height), Math.ceil(this.state.realViewPort.w * this.state.width), Math.ceil(this.state.realViewPort.h * this.state.height));
-
-			this.interactionCtx.beginPath();
-			this.interactionCtx.rect(Math.floor(this.state.realViewPort.x * this.state.width), Math.floor(this.state.realViewPort.y * this.state.height), Math.ceil(this.state.realViewPort.w * this.state.width), Math.ceil(this.state.realViewPort.h * this.state.height));
-			this.interactionCtx.stroke();
-
-			if (!this.abortAnimationFrame) {
-				(0, _utilRequestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
-			}
-		}
-	}, {
-		key: "onResize",
-		value: function onResize() {
-			this.resizeDelay = RESIZE_DELAY;
-		}
-	}, {
-		key: "commitResize",
-		value: function commitResize() {
-			this.resizeDelay = RESIZE_DELAY;
-			var node = _react2["default"].findDOMNode(this);
-			this.frameBuffer = this.api.loadImage({
-				viewport: { w: node.clientWidth, h: node.clientHeight },
-				onScale: this.setScale.bind(this),
-				scaleMode: "autoFill",
-				position: { x: 0, y: 0 }
-			});
-		}
-	}, {
-		key: "setScale",
-		value: function setScale(s, l) {
-			this.scale = s;
-			this.level = l;
-			var dims = this.api.getRealImagePos({ x: 0, y: 0 }, this.scale, this.level);
-			this.setState({ width: dims.w, height: dims.h });
-			if (this.props.onDimensions) {
-				this.props.onDimensions(dims.w, dims.h);
-			}
-		}
-	}, {
-		key: "dispatchReposition",
-		value: function dispatchReposition(ev) {
-			var doc = document.documentElement;
-			var scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-			var rect = _react2["default"].findDOMNode(this).getBoundingClientRect();
-			_apiStore2["default"].dispatch((0, _apiActions.setRealViewPort)({
-				x: (ev.pageX - rect.left) / this.state.width - this.state.realViewPort.w / 2,
-				y: (ev.pageY - rect.top - scrollTop) / this.state.height - this.state.realViewPort.h / 2,
-				reposition: true,
-				applyZoom: false
-			}));
-		}
-	}, {
-		key: "onTouchStart",
-		value: function onTouchStart(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
-			return ev.preventDefault();
-		}
-	}, {
-		key: "onMouseDown",
-		value: function onMouseDown(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchReposition(ev);
-		}
-	}, {
-		key: "onMouseMove",
-		value: function onMouseMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchReposition(ev);
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onTouchMove",
-		value: function onTouchMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onMouseUp",
-		value: function onMouseUp() {
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "onWheel",
-		value: function onWheel(ev) {
-			_apiStore2["default"].dispatch((0, _apiActions.sendMouseWheel)({ deltaY: ev.deltaY }));
-			return ev.preventDefault();
-		}
-	}, {
-		key: "onTouchEnd",
-		value: function onTouchEnd() {
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "render",
-		value: function render() {
-			return _react2["default"].createElement(
-				"div",
-				{ className: "hire-djatoka-minimap" },
-				_react2["default"].createElement("canvas", { className: "image", height: this.state.height, width: this.state.width }),
-				_react2["default"].createElement("canvas", { className: "interaction",
-					height: this.state.height,
-					onMouseDown: this.onMouseDown.bind(this),
-					onTouchStart: this.onTouchStart.bind(this),
-					onWheel: this.onWheel.bind(this),
-					width: this.state.width })
-			);
-		}
-	}]);
-
-	return Minimap;
-})(_react2["default"].Component);
-
-Minimap.propTypes = {
-	config: _react2["default"].PropTypes.object.isRequired,
-	onDimensions: _react2["default"].PropTypes.func,
-	rectFill: _react2["default"].PropTypes.string,
-	rectStroke: _react2["default"].PropTypes.string,
-	service: _react2["default"].PropTypes.string.isRequired
-};
-
-Minimap.defaultProps = {
-	rectFill: "rgba(128,128,255,0.1)",
-	rectStroke: "rgba(255,255,255,0.8)"
-};
-
-exports["default"] = Minimap;
-module.exports = exports["default"];
-
-},{"../api/actions":15,"../api/api":16,"../api/store":18,"../util/request-animation-frame":29,"react":"react"}],27:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _apiActions = _dereq_("../api/actions");
-
-var _apiStore = _dereq_("../api/store");
-
-var _apiStore2 = _interopRequireDefault(_apiStore);
+var _store2 = _interopRequireDefault(_store);
 
 var MOUSE_UP = 0;
 var MOUSE_DOWN = 1;
@@ -2619,7 +2647,9 @@ var Zoom = (function (_React$Component) {
 		_classCallCheck(this, Zoom);
 
 		_get(Object.getPrototypeOf(Zoom.prototype), "constructor", this).call(this, props);
-		this.state = _apiStore2["default"].getState();
+
+		this.state = _store2["default"].getState();
+
 		this.mouseupListener = this.onMouseUp.bind(this);
 		this.mousemoveListener = this.onMouseMove.bind(this);
 		this.touchMoveListener = this.onTouchMove.bind(this);
@@ -2634,8 +2664,9 @@ var Zoom = (function (_React$Component) {
 			window.addEventListener("mousemove", this.mousemoveListener);
 			window.addEventListener("touchend", this.mouseupListener);
 			window.addEventListener("touchmove", this.touchMoveListener);
-			this.unsubscribe = _apiStore2["default"].subscribe(function () {
-				return _this.setState(_apiStore2["default"].getState());
+
+			this.unsubscribe = _store2["default"].subscribe(function () {
+				return _this.setState(_store2["default"].getState());
 			});
 		}
 	}, {
@@ -2645,12 +2676,14 @@ var Zoom = (function (_React$Component) {
 			window.removeEventListener("mousemove", this.mousemoveListener);
 			window.removeEventListener("touchend", this.mouseupListener);
 			window.removeEventListener("touchmove", this.touchMoveListener);
+
 			this.unsubscribe();
 		}
 	}, {
 		key: "dispatchRealScale",
 		value: function dispatchRealScale(pageX) {
 			var rect = _react2["default"].findDOMNode(this).children[0].getBoundingClientRect();
+
 			if (rect.width > 0 && !this.state.realViewPort.applyZoom) {
 				var zoom = (pageX - rect.left) / rect.width * 2;
 				if (zoom < 0.01) {
@@ -2658,7 +2691,7 @@ var Zoom = (function (_React$Component) {
 				} else if (zoom > 2.0) {
 					zoom = 2.0;
 				}
-				_apiStore2["default"].dispatch((0, _apiActions.setRealViewPort)({
+				_store2["default"].dispatch((0, _actions.setRealViewPort)({
 					zoom: zoom,
 					applyZoom: true
 				}));
@@ -2701,13 +2734,14 @@ var Zoom = (function (_React$Component) {
 	}, {
 		key: "onWheel",
 		value: function onWheel(ev) {
-			_apiStore2["default"].dispatch((0, _apiActions.sendMouseWheel)({ deltaY: ev.deltaY }));
+			_store2["default"].dispatch((0, _actions.sendMouseWheel)({ deltaY: ev.deltaY }));
 			return ev.preventDefault();
 		}
 	}, {
 		key: "render",
 		value: function render() {
 			var zoom = parseInt(this.state.realViewPort.zoom * 100);
+
 			return _react2["default"].createElement(
 				"span",
 				{ className: "hire-zoom-bar", onWheel: this.onWheel.bind(this) },
@@ -2746,11 +2780,11 @@ Zoom.defaultProps = {
 exports["default"] = Zoom;
 module.exports = exports["default"];
 
-},{"../api/actions":15,"../api/store":18,"react":"react"}],28:[function(_dereq_,module,exports){
+},{"../actions":15,"../store":29,"react":"react"}],27:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -2766,6 +2800,10 @@ var _react2 = _interopRequireDefault(_react);
 var _componentsDjatokaClient = _dereq_("./components/djatoka-client");
 
 var _componentsDjatokaClient2 = _interopRequireDefault(_componentsDjatokaClient);
+
+var _componentsViewer = _dereq_("./components/viewer");
+
+var _componentsViewer2 = _interopRequireDefault(_componentsViewer);
 
 var _componentsMinimap = _dereq_("./components/minimap");
 
@@ -2789,14 +2827,82 @@ var css = Buffer("LmhpcmUtZGphdG9rYS1jbGllbnQsCi5oaXJlLWRqYXRva2EtbWluaW1hcCwKI2
 (0, _insertCss2["default"])(css, { prepend: true });
 
 _react2["default"].initializeTouchEvents(true);
+
 exports.DjatokaClient = _componentsDjatokaClient2["default"];
+exports.Viewer = _componentsViewer2["default"];
 exports.Minimap = _componentsMinimap2["default"];
 exports.Zoom = _componentsZoom2["default"];
 exports.FillButton = _componentsFillButton2["default"];
 exports.FreeMovementButton = _componentsFreeMovementButton2["default"];
 exports["default"] = _componentsDjatokaClient2["default"];
 
-},{"./components/djatoka-client":19,"./components/fill-button":20,"./components/free-movement-button":21,"./components/minimap":26,"./components/zoom":27,"insert-css":1,"react":"react"}],29:[function(_dereq_,module,exports){
+},{"./components/djatoka-client":17,"./components/fill-button":18,"./components/free-movement-button":19,"./components/minimap":24,"./components/viewer":25,"./components/zoom":26,"insert-css":1,"react":"react"}],28:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _api = _dereq_("../api");
+
+var _api2 = _interopRequireDefault(_api);
+
+var initialState = {
+	realViewPort: { x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false },
+	mousewheel: null,
+	fillMode: null,
+	freeMovement: false
+};
+
+exports["default"] = function (state, action) {
+	if (state === undefined) state = initialState;
+
+	switch (action.type) {
+		case "INITIAL":
+			state = _extends({}, state, action.initialState, {
+				api: new _api2["default"](action.initialState.service, action.initialState.config)
+			});
+		case "SET_REAL_VIEWPORT":
+			state = _extends({}, state, { realViewPort: _extends({}, state.realViewPort, action.realViewPort) });
+		case "SEND_MOUSEWHEEL":
+			state = _extends({}, state, { mousewheel: action.mousewheel });
+		case "SET_FILL":
+			state = _extends({}, state, { fillMode: action.mode });
+		case "SET_FREE_MOVEMENT":
+			state = _extends({}, state, { freeMovement: action.mode });
+	}
+
+	return state;
+};
+
+;
+module.exports = exports["default"];
+
+},{"../api":16}],29:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _redux = _dereq_("redux");
+
+var _reducers = _dereq_("../reducers");
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+var store = (0, _redux.createStore)(_reducers2["default"]);
+
+exports["default"] = store;
+module.exports = exports["default"];
+
+},{"../reducers":28,"redux":7}],30:[function(_dereq_,module,exports){
 /*
 The MIT License (MIT)
 
@@ -2851,5 +2957,5 @@ var cancelAnimationFrame = 'function' === typeof global.cancelAnimationFrame ? f
 };
 exports.cancelAnimationFrame = cancelAnimationFrame;
 
-},{}]},{},[28])(28)
+},{}]},{},[27])(27)
 });

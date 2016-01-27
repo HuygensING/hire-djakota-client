@@ -1,7 +1,7 @@
 import React from "react";
 import FreeMovementIcon from "./icons/free-movement";
-import { setFreeMovement } from "../api/actions";
-import store from "../api/store";
+import { setFreeMovement } from "../actions";
+import store from "../store";
 
 
 class FreeMovementButton extends React.Component {

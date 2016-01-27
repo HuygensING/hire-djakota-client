@@ -1,7 +1,7 @@
 import React from "react";
 import {DjatokaClient, Minimap, Zoom, FillButton, FreeMovementButton} from "./index";
-import Api from "./api/api";
-import store from "./api/store";
+import Api from "./api";
+import store from "./store";
 
 class App extends React.Component {
 

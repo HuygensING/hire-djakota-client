@@ -1,7 +1,23 @@
+// import React from "react";
+
+// class Minimap extends React.Component {
+// 	render() {
+// 		return (
+// 			<div>MINI</div>
+// 		);
+// 	}
+// }
+
+// Minimap.propTypes = {};
+
+// Minimap.defaultProps = {};
+
+// export default Minimap;
+
 import React from "react";
-import Api from "../api/api";
-import { setRealViewPort, sendMouseWheel } from "../api/actions";
-import store from "../api/store";
+
+import { setRealViewPort, sendMouseWheel } from "../actions";
+import store from "../store";
 import { requestAnimationFrame, cancelAnimationFrame } from "../util/request-animation-frame";
 
 const RESIZE_DELAY = 5;
@@ -13,7 +29,6 @@ const MOUSE_DOWN = 1;
 class Minimap extends React.Component {
 	constructor(props) {
 		super(props);
-		this.api = new Api(this.props.service, this.props.config);
 
 		this.state = {
 			width: null,
@@ -33,7 +48,7 @@ class Minimap extends React.Component {
 	}
 
 	componentDidMount() {
-		this.abortAnimationFrame = false;		
+		this.abortAnimationFrame = false;
 		this.onResize();
 		this.imageCtx = React.findDOMNode(this).children[0].getContext("2d");
 		this.interactionCtx = React.findDOMNode(this).children[1].getContext("2d");
@@ -43,23 +58,19 @@ class Minimap extends React.Component {
 		window.addEventListener("touchend", this.mouseupListener);
 		window.addEventListener("touchmove", this.touchMoveListener);
 		requestAnimationFrame(this.animationFrameListener);
-
-		this.unsubscribe = store.subscribe(() =>
-			this.setState(store.getState())
-		);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if(nextProps.config.identifier !== this.props.config.identifier) {
-			this.api = new Api(this.props.service, nextProps.config);
-			this.commitResize();
-		}
-	}
+	// componentWillReceiveProps(nextProps) {
+	// 	if(nextProps.config.identifier !== this.props.config.identifier) {
+	// 		console.log(nextProps.api)
+	// 		// this.props.api = new Api(this.props.service, nextProps.config);
+	// 		this.commitResize();
+	// 	}
+	// }
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return this.state.width !== nextState.width ||
-			this.state.height !== nextState.height ||
-			this.props.config.identifier !== nextProps.config.identifier;
+			this.state.height !== nextState.height;
 	}
 
 
@@ -71,7 +82,7 @@ class Minimap extends React.Component {
 		window.removeEventListener("touchmove", this.touchMoveListener);
 		this.abortAnimationFrame = true;
 		cancelAnimationFrame(this.animationFrameListener);
-		this.unsubscribe();
+		// this.unsubscribe();
 	}
 
 
@@ -105,18 +116,18 @@ class Minimap extends React.Component {
 		this.interactionCtx.fillStyle = this.props.rectFill;
 		this.interactionCtx.clearRect(0, 0, this.state.width, this.state.height);
 		this.interactionCtx.fillRect(
-			Math.floor(this.state.realViewPort.x * this.state.width),
-			Math.floor(this.state.realViewPort.y * this.state.height),
-			Math.ceil(this.state.realViewPort.w * this.state.width),
-			Math.ceil(this.state.realViewPort.h * this.state.height)
+			Math.floor(this.props.realViewPort.x * this.state.width),
+			Math.floor(this.props.realViewPort.y * this.state.height),
+			Math.ceil(this.props.realViewPort.w * this.state.width),
+			Math.ceil(this.props.realViewPort.h * this.state.height)
 		);
 
 		this.interactionCtx.beginPath();
 		this.interactionCtx.rect(
-			Math.floor(this.state.realViewPort.x * this.state.width),
-			Math.floor(this.state.realViewPort.y * this.state.height),
-			Math.ceil(this.state.realViewPort.w * this.state.width),
-			Math.ceil(this.state.realViewPort.h * this.state.height)
+			Math.floor(this.props.realViewPort.x * this.state.width),
+			Math.floor(this.props.realViewPort.y * this.state.height),
+			Math.ceil(this.props.realViewPort.w * this.state.width),
+			Math.ceil(this.props.realViewPort.h * this.state.height)
 		);
 		this.interactionCtx.stroke();
 
@@ -130,7 +141,7 @@ class Minimap extends React.Component {
 	commitResize() {
 		this.resizeDelay = RESIZE_DELAY;
 		let node = React.findDOMNode(this);
-		this.frameBuffer = this.api.loadImage({
+		this.frameBuffer = this.props.api.loadImage({
 			viewport: {w: node.clientWidth, h: node.clientHeight},
 			onScale: this.setScale.bind(this),
 			scaleMode: "autoFill",
@@ -141,7 +152,7 @@ class Minimap extends React.Component {
 	setScale(s, l) {
 		this.scale = s;
 		this.level = l;
-		let dims = this.api.getRealImagePos({x: 0, y: 0}, this.scale, this.level);
+		let dims = this.props.api.getRealImagePos({x: 0, y: 0}, this.scale, this.level);
 		this.setState({width: dims.w, height: dims.h});
 		if(this.props.onDimensions) { this.props.onDimensions(dims.w, dims.h); }
 	}
@@ -153,8 +164,8 @@ class Minimap extends React.Component {
 		let scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 		let rect = React.findDOMNode(this).getBoundingClientRect();
 		store.dispatch(setRealViewPort({
-			x: (ev.pageX - rect.left) / this.state.width - (this.state.realViewPort.w / 2),
-			y: (ev.pageY - rect.top - scrollTop) / this.state.height - (this.state.realViewPort.h / 2),
+			x: (ev.pageX - rect.left) / this.state.width - (this.props.realViewPort.w / 2),
+			y: (ev.pageY - rect.top - scrollTop) / this.state.height - (this.props.realViewPort.h / 2),
 			reposition: true,
 			applyZoom: false
 		}));
@@ -215,11 +226,11 @@ class Minimap extends React.Component {
 }
 
 Minimap.propTypes = {
-	config: React.PropTypes.object.isRequired,
+	config: React.PropTypes.object,
 	onDimensions: React.PropTypes.func,
 	rectFill: React.PropTypes.string,
 	rectStroke: React.PropTypes.string,
-	service: React.PropTypes.string.isRequired
+	service: React.PropTypes.string
 };
 
 Minimap.defaultProps = {
