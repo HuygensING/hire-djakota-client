@@ -66,9 +66,9 @@ class Viewer extends React.Component {
 		// );
 		this.requestAnimationFrame(this.animationFrameListener);
 
-		document.addEventListener("click", (ev) => {
-			console.log(ev.target)
-		})
+		// document.addEventListener("click", (ev) => {
+		// 	console.log(ev.target)
+		// })
 	}
 
 
@@ -205,7 +205,6 @@ class Viewer extends React.Component {
 
 
 	onMouseDown(ev) {
-		console.log("DONW")
 		this.mousePos.x = ev.clientX;
 		this.mousePos.y = ev.clientY;
 		this.movement = {x: 0, y: 0};

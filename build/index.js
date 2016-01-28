@@ -2225,9 +2225,9 @@ var Viewer = (function (_React$Component) {
 			// );
 			this.requestAnimationFrame(this.animationFrameListener);
 
-			document.addEventListener("click", function (ev) {
-				console.log(ev.target);
-			});
+			// document.addEventListener("click", (ev) => {
+			// 	console.log(ev.target)
+			// })
 		}
 
 		// componentWillReceiveProps(nextProps) {
@@ -2373,7 +2373,6 @@ var Viewer = (function (_React$Component) {
 	}, {
 		key: "onMouseDown",
 		value: function onMouseDown(ev) {
-			console.log("DONW");
 			this.mousePos.x = ev.clientX;
 			this.mousePos.y = ev.clientY;
 			this.movement = { x: 0, y: 0 };
