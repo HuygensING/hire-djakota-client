@@ -1428,6 +1428,11 @@ var DjatokaClient = (function (_React$Component) {
 			});
 		}
 	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			this.unsubscribe();
+		}
+	}, {
 		key: "render",
 		value: function render() {
 			var _this2 = this;
@@ -1447,7 +1452,12 @@ var DjatokaClient = (function (_React$Component) {
 	return DjatokaClient;
 })(_react2["default"].Component);
 
-DjatokaClient.propTypes = {};
+DjatokaClient.propTypes = {
+	children: _react2["default"].PropTypes.array,
+	config: _react2["default"].PropTypes.object,
+	scaleMode: _react2["default"].PropTypes.string,
+	service: _react2["default"].PropTypes.string
+};
 
 DjatokaClient.defaultProps = {};
 
