@@ -89,7 +89,7 @@ class Viewer extends React.Component {
 		window.removeEventListener("resize", this.resizeListener);
 		window.removeEventListener("mousemove", this.mousemoveListener);
 		window.removeEventListener("mouseup", this.mouseupListener);
-		this.unsubscribe();
+		// this.unsubscribe();
 		this.abortAnimationFrame = true;
 		this.cancelAnimationFrame(this.animationFrameListener);
 	}
