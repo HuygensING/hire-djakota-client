@@ -78,11 +78,11 @@ class Viewer extends React.Component {
 	// 		this.commitResize();
 	// 	}
 	// }
-
+	//
 	shouldComponentUpdate(nextProps, nextState) {
 		return this.state.width !== nextState.width ||
 			this.state.height !== nextState.height ||
-			this.props.config.identifier !== nextProps.config.identifier;
+			this.props.api.config.identifier !== nextProps.api.config.identifier;
 	}
 
 	componentWillUnmount() {

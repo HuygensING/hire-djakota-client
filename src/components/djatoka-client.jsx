@@ -1,7 +1,13 @@
 import React from "react";
 import store from "../store";
+import {createNextApi} from "../actions";
 
 class DjatokaClient extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = store.getState();
+	}
 	componentDidMount() {
 		this.unsubscribe = store.subscribe(() =>
 			this.setState(store.getState())
@@ -9,12 +15,16 @@ class DjatokaClient extends React.Component {
 
 		store.dispatch({
 			type: "INITIAL",
-			initialState: {
-				config: this.props.config,
-				service: this.props.service,
-				scaleMode: this.props.scaleMode
-			}
+			config: this.props.config,
+			service: this.props.service,
+			scaleMode: this.props.scaleMode
 		});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.config.identifier !== this.state.api.config.identifier)	{
+			store.dispatch(createNextApi(nextProps.config));
+		}
 	}
 
 	componentWillUnmount() {

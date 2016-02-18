@@ -1084,6 +1084,7 @@ exports.setRealViewPort = setRealViewPort;
 exports.sendMouseWheel = sendMouseWheel;
 exports.setFill = setFill;
 exports.setFreeMovement = setFreeMovement;
+exports.createNextApi = createNextApi;
 
 function setRealViewPort(realViewPort) {
 	return {
@@ -1110,6 +1111,13 @@ function setFreeMovement(mode) {
 	return {
 		type: "SET_FREE_MOVEMENT",
 		mode: mode
+	};
+}
+
+function createNextApi(config) {
+	return {
+		type: "CREATE_NEXT_API",
+		config: config
 	};
 }
 
@@ -1400,13 +1408,17 @@ var _store = _dereq_("../store");
 
 var _store2 = _interopRequireDefault(_store);
 
+var _actions = _dereq_("../actions");
+
 var DjatokaClient = (function (_React$Component) {
 	_inherits(DjatokaClient, _React$Component);
 
-	function DjatokaClient() {
+	function DjatokaClient(props) {
 		_classCallCheck(this, DjatokaClient);
 
-		_get(Object.getPrototypeOf(DjatokaClient.prototype), "constructor", this).apply(this, arguments);
+		_get(Object.getPrototypeOf(DjatokaClient.prototype), "constructor", this).call(this, props);
+
+		this.state = _store2["default"].getState();
 	}
 
 	_createClass(DjatokaClient, [{
@@ -1420,12 +1432,17 @@ var DjatokaClient = (function (_React$Component) {
 
 			_store2["default"].dispatch({
 				type: "INITIAL",
-				initialState: {
-					config: this.props.config,
-					service: this.props.service,
-					scaleMode: this.props.scaleMode
-				}
+				config: this.props.config,
+				service: this.props.service,
+				scaleMode: this.props.scaleMode
 			});
+		}
+	}, {
+		key: "componentWillReceiveProps",
+		value: function componentWillReceiveProps(nextProps) {
+			if (nextProps.config.identifier !== this.state.api.config.identifier) {
+				_store2["default"].dispatch((0, _actions.createNextApi)(nextProps.config));
+			}
 		}
 	}, {
 		key: "componentWillUnmount",
@@ -1464,7 +1481,7 @@ DjatokaClient.defaultProps = {};
 exports["default"] = DjatokaClient;
 module.exports = exports["default"];
 
-},{"../store":29,"react":"react"}],18:[function(_dereq_,module,exports){
+},{"../actions":15,"../store":29,"react":"react"}],18:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2246,11 +2263,11 @@ var Viewer = (function (_React$Component) {
 		// 		this.commitResize();
 		// 	}
 		// }
-
+		//
 	}, {
 		key: "shouldComponentUpdate",
 		value: function shouldComponentUpdate(nextProps, nextState) {
-			return this.state.width !== nextState.width || this.state.height !== nextState.height || this.props.config.identifier !== nextProps.config.identifier;
+			return this.state.width !== nextState.width || this.state.height !== nextState.height || this.props.api.config.identifier !== nextProps.api.config.identifier;
 		}
 	}, {
 		key: "componentWillUnmount",
@@ -2861,10 +2878,13 @@ var _api = _dereq_("../api");
 var _api2 = _interopRequireDefault(_api);
 
 var initialState = {
-	realViewPort: { x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false },
-	mousewheel: null,
+	api: {
+		config: {}
+	},
 	fillMode: null,
-	freeMovement: false
+	freeMovement: false,
+	mousewheel: null,
+	realViewPort: { x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false }
 };
 
 exports["default"] = function (state, action) {
@@ -2872,23 +2892,36 @@ exports["default"] = function (state, action) {
 
 	switch (action.type) {
 		case "INITIAL":
-			state = _extends({}, state, action.initialState, {
-				api: new _api2["default"](action.initialState.service, action.initialState.config)
+			state = _extends({}, state, {
+				api: new _api2["default"](action.service, action.config),
+				scaleMode: action.scaleMode
 			});
+			break;
+
+		case "CREATE_NEXT_API":
+			state = _extends({}, state, { api: new _api2["default"](state.service, action.config) });
+			break;
+
 		case "SET_REAL_VIEWPORT":
 			state = _extends({}, state, { realViewPort: _extends({}, state.realViewPort, action.realViewPort) });
+			break;
+
 		case "SEND_MOUSEWHEEL":
 			state = _extends({}, state, { mousewheel: action.mousewheel });
+			break;
+
 		case "SET_FILL":
 			state = _extends({}, state, { fillMode: action.mode });
+			break;
+
 		case "SET_FREE_MOVEMENT":
 			state = _extends({}, state, { freeMovement: action.mode });
+			break;
 	}
 
 	return state;
 };
 
-;
 module.exports = exports["default"];
 
 },{"../api":16}],29:[function(_dereq_,module,exports){

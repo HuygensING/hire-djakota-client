@@ -26,4 +26,9 @@ export function setFreeMovement(mode) {
 	};
 }
 
-
+export function createNextApi(config) {
+	return {
+		type: "CREATE_NEXT_API",
+		config: config
+	};
+}
