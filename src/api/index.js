@@ -24,7 +24,6 @@ class Api {
 		this.resolutions = [];
 		this.initializeResolutions(this.levels - 1, this.fullWidth, this.fullHeight);
 		this.tileMap = {};
-
 	}
 
 	initializeResolutions(level = this.levels - 1, w = this.fullWidth, h = this.fullHeight) {

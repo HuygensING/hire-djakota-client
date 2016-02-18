@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
 			break;
 
 		case "CREATE_NEXT_API":
-			state = {...state, api: new Api(state.service, action.config)};
+			state = {...state, api: new Api(state.api.service, action.config)};
 			break;
 
 		case "SET_REAL_VIEWPORT":

@@ -2256,14 +2256,14 @@ var Viewer = (function (_React$Component) {
 			// 	console.log(ev.target)
 			// })
 		}
-
-		// componentWillReceiveProps(nextProps) {
-		// 	if(nextProps.config.identifier !== this.props.config.identifier) {
-		// 		this.props.api = new Api(this.props.service, nextProps.config);
-		// 		this.commitResize();
-		// 	}
-		// }
-		//
+	}, {
+		key: "componentWillReceiveProps",
+		value: function componentWillReceiveProps(nextProps) {
+			if (nextProps.api.config.identifier !== this.props.api.config.identifier) {
+				// this.props.api = new Api(this.props.service, nextProps.config);
+				this.commitResize();
+			}
+		}
 	}, {
 		key: "shouldComponentUpdate",
 		value: function shouldComponentUpdate(nextProps, nextState) {
@@ -2899,7 +2899,7 @@ exports["default"] = function (state, action) {
 			break;
 
 		case "CREATE_NEXT_API":
-			state = _extends({}, state, { api: new _api2["default"](state.service, action.config) });
+			state = _extends({}, state, { api: new _api2["default"](state.api.service, action.config) });
 			break;
 
 		case "SET_REAL_VIEWPORT":

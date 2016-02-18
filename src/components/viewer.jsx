@@ -72,13 +72,13 @@ class Viewer extends React.Component {
 	}
 
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if(nextProps.config.identifier !== this.props.config.identifier) {
-	// 		this.props.api = new Api(this.props.service, nextProps.config);
-	// 		this.commitResize();
-	// 	}
-	// }
-	//
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.api.config.identifier !== this.props.api.config.identifier) {
+			// this.props.api = new Api(this.props.service, nextProps.config);
+			this.commitResize();
+		}
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		return this.state.width !== nextState.width ||
 			this.state.height !== nextState.height ||
