@@ -1,3 +1,19 @@
+### v1.13.0	(2016/4/21 9:32)
+* Update view when config changes
+* Create new API when receiving next props
+* Unscribe when client unmounts
+* Remove call to undefined function
+* Remove console.log
+* Modernize structure
+* added 2 tests for receiveNewState
+* introduced shrinkwrap
+* added (pending) unit tests for viewer component
+* added unit test for DjatokaClient, added pending integration tests for viewer
+* added test for touchmove on viewer
+* added tests for widthFill and heightFill
+* tests for viewer mousewheel handler
+* new standalone release 1.12.0
+
 ### v1.12.0	(2015/10/1 12:51)
 * fixed superfluous calls to onAnimationFrame when component is unmounted by aborting new calls of requestAnimationFrame
 * added canvas rendering spy to viewer test
