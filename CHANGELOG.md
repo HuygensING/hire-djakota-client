@@ -1,3 +1,7 @@
+### v2.0.0	(2016/6/2 10:54)
+* Bump packages
+* Fix errors caused by bumping React to 15.0.1
+
 ### v1.13.0	(2016/4/21 9:32)
 * Update view when config changes
 * Create new API when receiving next props
