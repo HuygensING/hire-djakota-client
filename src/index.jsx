@@ -6,19 +6,20 @@ insertCss(css, {prepend: true});
 // import React from "react";
 // React.initializeTouchEvents(true);
 
-import DjatokaClient from "./components/djatoka-client";
-import Viewer from "./components/viewer";
-import Minimap from "./components/minimap";
-import Zoom from "./components/zoom";
-import FillButton from "./components/fill-button";
-import FreeMovementButton from "./components/free-movement-button";
+export DjatokaClient from './components/djatoka-client';
+export Viewer from './components/viewer';
+export Minimap from './components/minimap';
+export Zoom from './components/zoom';
+export FillButton from './components/fill-button';
+export FreeMovementButton from './components/free-movement-button';
 
-export {
-	DjatokaClient,
-	Viewer,
-	Minimap,
-	Zoom,
-	FillButton,
-	FreeMovementButton
-};
-export default DjatokaClient;
+// export {
+// 	DjatokaClient,
+// 	Viewer,
+// 	Minimap,
+// 	Zoom,
+// 	FillButton,
+// 	FreeMovementButton
+// };
+//
+// export default DjatokaClient;
