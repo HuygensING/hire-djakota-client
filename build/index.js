@@ -1965,8 +1965,8 @@ var Minimap = (function (_React$Component) {
 		value: function componentDidMount() {
 			this.abortAnimationFrame = false;
 			this.onResize();
-			this.imageCtx = _react2["default"].findDOMNode(this).children[0].getContext("2d");
-			this.interactionCtx = _react2["default"].findDOMNode(this).children[1].getContext("2d");
+			this.imageCtx = this.refs.minimap.children[0].getContext("2d");
+			this.interactionCtx = this.refs.minimap.children[1].getContext("2d");
 			window.addEventListener("resize", this.resizeListener);
 			window.addEventListener("mousemove", this.mousemoveListener);
 			window.addEventListener("mouseup", this.mouseupListener);
@@ -2046,9 +2046,12 @@ var Minimap = (function (_React$Component) {
 		key: "commitResize",
 		value: function commitResize() {
 			this.resizeDelay = RESIZE_DELAY;
-			var node = _react2["default"].findDOMNode(this);
+			var _refs$minimap = this.refs.minimap;
+			var clientWidth = _refs$minimap.clientWidth;
+			var clientHeight = _refs$minimap.clientHeight;
+
 			this.frameBuffer = this.props.api.loadImage({
-				viewport: { w: node.clientWidth, h: node.clientHeight },
+				viewport: { w: clientWidth, h: clientHeight },
 				onScale: this.setScale.bind(this),
 				scaleMode: "autoFill",
 				position: { x: 0, y: 0 }
@@ -2070,7 +2073,7 @@ var Minimap = (function (_React$Component) {
 		value: function dispatchReposition(ev) {
 			var doc = document.documentElement;
 			var scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-			var rect = _react2["default"].findDOMNode(this).getBoundingClientRect();
+			var rect = this.refs.minimap.getBoundingClientRect();
 			_store2["default"].dispatch((0, _actions.setRealViewPort)({
 				x: (ev.pageX - rect.left) / this.state.width - this.props.realViewPort.w / 2,
 				y: (ev.pageY - rect.top - scrollTop) / this.state.height - this.props.realViewPort.h / 2,
@@ -2128,7 +2131,10 @@ var Minimap = (function (_React$Component) {
 		value: function render() {
 			return _react2["default"].createElement(
 				"div",
-				{ className: "hire-djatoka-minimap" },
+				{
+					className: "hire-djatoka-minimap",
+					ref: "minimap"
+				},
 				_react2["default"].createElement("canvas", { className: "image", height: this.state.height, width: this.state.width }),
 				_react2["default"].createElement("canvas", { className: "interaction",
 					height: this.state.height,
@@ -2242,7 +2248,7 @@ var Viewer = (function (_React$Component) {
 		value: function componentDidMount() {
 			this.abortAnimationFrame = false;
 			this.commitResize();
-			this.imageCtx = _react2["default"].findDOMNode(this).children[0].getContext("2d");
+			this.imageCtx = this.refs.viewer.children[0].getContext("2d");
 			window.addEventListener("resize", this.resizeListener);
 			window.addEventListener("mousemove", this.mousemoveListener);
 			window.addEventListener("mouseup", this.mouseupListener);
@@ -2367,7 +2373,7 @@ var Viewer = (function (_React$Component) {
 			this.imagePos.y = 0;
 			this.width = null;
 			this.height = null;
-			var node = _react2["default"].findDOMNode(this);
+			var node = this.refs.viewer;
 			this.setState({
 				width: node.clientWidth,
 				height: node.clientHeight
@@ -2432,7 +2438,7 @@ var Viewer = (function (_React$Component) {
 					this.loadImage({ scale: this.scale, level: this.level });
 					return ev.preventDefault();
 				case MOUSE_UP:
-					var rect = _react2["default"].findDOMNode(this).getBoundingClientRect();
+					var rect = this.refs.viewer.getBoundingClientRect();
 					this.focalPoint = {
 						x: ev.clientX - rect.left,
 						y: ev.clientY - rect.top
@@ -2594,7 +2600,10 @@ var Viewer = (function (_React$Component) {
 		value: function render() {
 			return _react2["default"].createElement(
 				"div",
-				{ className: "hire-djatoka-client" },
+				{
+					className: "hire-djatoka-client",
+					ref: "viewer"
+				},
 				_react2["default"].createElement("canvas", {
 					className: "image",
 					height: this.state.height,
@@ -2819,9 +2828,8 @@ var _insertCss = _dereq_("insert-css");
 
 var _insertCss2 = _interopRequireDefault(_insertCss);
 
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
+// import React from "react";
+// React.initializeTouchEvents(true);
 
 var _componentsDjatokaClient = _dereq_("./components/djatoka-client");
 
@@ -2850,11 +2858,7 @@ var _componentsFreeMovementButton2 = _interopRequireDefault(_componentsFreeMovem
 
 
 var css = Buffer("LmhpcmUtZGphdG9rYS1jbGllbnQsCi5oaXJlLWRqYXRva2EtbWluaW1hcCwKI2hpcmUtZGphdG9rYS1jbGllbnQtYXBwIHsKCXdpZHRoOiAxMDAlOwoJaGVpZ2h0OiAxMDAlOwp9CgouaGlyZS1kamF0b2thLWNsaWVudCA+IC5pbnRlcmFjdGlvbiwKLmhpcmUtZGphdG9rYS1jbGllbnQgPiAuaW1hZ2UsCi5oaXJlLWRqYXRva2EtbWluaW1hcCA+IC5pbnRlcmFjdGlvbiwKLmhpcmUtZGphdG9rYS1taW5pbWFwID4gLmltYWdlIHsKCXBvc2l0aW9uOiBhYnNvbHV0ZTsKfQoKLmhpcmUtZGphdG9rYS1jbGllbnQgPiAuaW50ZXJhY3Rpb24sCi5oaXJlLWRqYXRva2EtbWluaW1hcCA+IC5pbnRlcmFjdGlvbiB7Cgl6LWluZGV4OiAxOwp9CgouaGlyZS16b29tLWJhciAqIHsKICAgIC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtd2Via2l0LXVzZXItc2VsZWN0OiBub25lOwogICAgLW1zLXVzZXItc2VsZWN0OiBub25lOyAKICAgIHVzZXItc2VsZWN0OiBub25lOyAKICAgIC13ZWJraXQtdXNlci1kcmFnOiBub25lOwogICAgdXNlci1kcmFnOiBub25lOwp9Ci5oaXJlLXpvb20tYmFyIHsKCWRpc3BsYXk6IGlubGluZS1ibG9jazsKCW1pbi13aWR0aDogNDAwcHg7CgltaW4taGVpZ2h0OiA0NHB4Owp9CgouaGlyZS16b29tLWJhciBsYWJlbCB7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTUlOwoJaGVpZ2h0OiAxMDAlOwoJdmVydGljYWwtYWxpZ246IHRvcDsKfQouaGlyZS16b29tLWJhciBsYWJlbCA+ICogewoJZGlzcGxheTogaW5saW5lLWJsb2NrOwoJaGVpZ2h0OiAxMDAlOwoJbGluZS1oZWlnaHQ6IDM0cHgKfQouaGlyZS16b29tLWJhciBzdmcgewoJY3Vyc29yOiBwb2ludGVyOwoJZmlsbDogI0JEQTQ3RTsKCXN0cm9rZTogI0YxRUJFNjsKCXdpZHRoOiA4NSU7Cn0KCi5oaXJlLXpvb20tYmFyIHN2ZyBwYXRoIHsKCXN0cm9rZS13aWR0aDogNnB4Owp9CgouaGlyZS16b29tLWJhciBzdmcgY2lyY2xlIHsKCXN0cm9rZS13aWR0aDogMDsKfQoKLmhpcmUtZmlsbC1idXR0b24sCi5oaXJlLWZyZWUtbW92ZW1lbnQtYnV0dG9uIHsKCW1hcmdpbjogMDsKCXBhZGRpbmc6IDA7Cglib3JkZXI6IDA7CgliYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsKCWZvbnQtZmFtaWx5OiBpbmhlcml0OwoJY3Vyc29yOiBwb2ludGVyOwoJb3V0bGluZTogMDsKCXdpZHRoOiA1MHB4OwoJaGVpZ2h0OiAyNHB4OwoJcGFkZGluZzogMCA2cHg7CgliYWNrZ3JvdW5kLWNvbG9yOiAjQkRBNDdFOwoJbWFyZ2luLXJpZ2h0OiA2cHg7Cglib3JkZXItcmFkaXVzOiAzcHg7Cgljb2xvcjogI0YxRUJFNjsKCXZlcnRpY2FsLWFsaWduOiB0b3A7Cgp9CgoKLmhpcmUtZmlsbC1idXR0b246Oi1tb3otZm9jdXMtaW5uZXIsCi5oaXJlLWZyZWUtbW92ZW1lbnQtYnV0dG9uOjotbW96LWZvY3VzLWlubmVyIHsKCXBhZGRpbmc6IDA7Cglib3JkZXI6IDA7Cn0KCi5oaXJlLWZpbGwtYnV0dG9uIHN2ZywKLmhpcmUtZnJlZS1tb3ZlbWVudC1idXR0b24gc3ZnIHsKCXN0cm9rZTogI0YxRUJFNjsKCXN0cm9rZS13aWR0aDogMXB4OwoJZmlsbDogI0YxRUJFNjsKCglzdHJva2Utb3BhY2l0eTogMTsKCWhlaWdodDogMTAwJQp9CgouaGlyZS1mcmVlLW1vdmVtZW50LWJ1dHRvbi5hY3RpdmUgc3ZnIHsKCWZpbGw6ICNhZmE7Cn0=","base64");
-(0, _insertCss2["default"])(css, { prepend: true });
-
-_react2["default"].initializeTouchEvents(true);
-
-exports.DjatokaClient = _componentsDjatokaClient2["default"];
+(0, _insertCss2["default"])(css, { prepend: true });exports.DjatokaClient = _componentsDjatokaClient2["default"];
 exports.Viewer = _componentsViewer2["default"];
 exports.Minimap = _componentsMinimap2["default"];
 exports.Zoom = _componentsZoom2["default"];
@@ -2862,7 +2866,7 @@ exports.FillButton = _componentsFillButton2["default"];
 exports.FreeMovementButton = _componentsFreeMovementButton2["default"];
 exports["default"] = _componentsDjatokaClient2["default"];
 
-},{"./components/djatoka-client":17,"./components/fill-button":18,"./components/free-movement-button":19,"./components/minimap":24,"./components/viewer":25,"./components/zoom":26,"insert-css":1,"react":"react"}],28:[function(_dereq_,module,exports){
+},{"./components/djatoka-client":17,"./components/fill-button":18,"./components/free-movement-button":19,"./components/minimap":24,"./components/viewer":25,"./components/zoom":26,"insert-css":1}],28:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

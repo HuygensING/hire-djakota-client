@@ -50,8 +50,8 @@ class Minimap extends React.Component {
 	componentDidMount() {
 		this.abortAnimationFrame = false;
 		this.onResize();
-		this.imageCtx = React.findDOMNode(this).children[0].getContext("2d");
-		this.interactionCtx = React.findDOMNode(this).children[1].getContext("2d");
+		this.imageCtx = this.refs.minimap.children[0].getContext("2d");
+		this.interactionCtx = this.refs.minimap.children[1].getContext("2d");
 		window.addEventListener("resize", this.resizeListener);
 		window.addEventListener("mousemove", this.mousemoveListener);
 		window.addEventListener("mouseup", this.mouseupListener);
@@ -140,9 +140,9 @@ class Minimap extends React.Component {
 
 	commitResize() {
 		this.resizeDelay = RESIZE_DELAY;
-		let node = React.findDOMNode(this);
+		const { clientWidth, clientHeight } = this.refs.minimap;
 		this.frameBuffer = this.props.api.loadImage({
-			viewport: {w: node.clientWidth, h: node.clientHeight},
+			viewport: {w: clientWidth, h: clientHeight},
 			onScale: this.setScale.bind(this),
 			scaleMode: "autoFill",
 			position: {x: 0, y: 0}
@@ -162,7 +162,7 @@ class Minimap extends React.Component {
 	dispatchReposition(ev) {
 		let doc = document.documentElement;
 		let scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-		let rect = React.findDOMNode(this).getBoundingClientRect();
+		let rect = this.refs.minimap.getBoundingClientRect();
 		store.dispatch(setRealViewPort({
 			x: (ev.pageX - rect.left) / this.state.width - (this.props.realViewPort.w / 2),
 			y: (ev.pageY - rect.top - scrollTop) / this.state.height - (this.props.realViewPort.h / 2),
@@ -212,7 +212,10 @@ class Minimap extends React.Component {
 
 	render() {
 		return (
-			<div className="hire-djatoka-minimap">
+			<div
+				className="hire-djatoka-minimap"
+				ref="minimap"
+			>
 				<canvas className="image" height={this.state.height} width={this.state.width} />
 				<canvas className="interaction"
 					height={this.state.height}

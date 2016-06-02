@@ -56,7 +56,7 @@ class Viewer extends React.Component {
 	componentDidMount() {
 		this.abortAnimationFrame = false;
 		this.commitResize();
-		this.imageCtx = React.findDOMNode(this).children[0].getContext("2d");
+		this.imageCtx = this.refs.viewer.children[0].getContext("2d");
 		window.addEventListener("resize", this.resizeListener);
 		window.addEventListener("mousemove", this.mousemoveListener);
 		window.addEventListener("mouseup", this.mouseupListener);
@@ -176,7 +176,7 @@ class Viewer extends React.Component {
 		this.imagePos.y = 0;
 		this.width = null;
 		this.height = null;
-		let node = React.findDOMNode(this);
+		let node = this.refs.viewer;
 		this.setState({
 			width: node.clientWidth,
 			height: node.clientHeight
@@ -235,7 +235,7 @@ class Viewer extends React.Component {
 				this.loadImage({scale: this.scale, level: this.level});
 				return ev.preventDefault();
 			case MOUSE_UP:
-				let rect = React.findDOMNode(this).getBoundingClientRect();
+				let rect = this.refs.viewer.getBoundingClientRect();
 				this.focalPoint = {
 					x: ev.clientX - rect.left,
 					y: ev.clientY - rect.top
@@ -371,7 +371,10 @@ class Viewer extends React.Component {
 
 	render() {
 		return (
-			<div className="hire-djatoka-client">
+			<div
+				className="hire-djatoka-client"
+				ref="viewer"
+			>
 				<canvas
 					className="image"
 					height={this.state.height}
