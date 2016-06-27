@@ -327,6 +327,7 @@ class Viewer extends React.Component {
 	onDimensions(s, l, w, h) {
 		this.setDimensions(w, h);
 		this.setScale(s, l);
+		console.log(w,h)
 		this.center(w, h);
 		this.notifyRealImagePos();
 	}

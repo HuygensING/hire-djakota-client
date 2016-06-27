@@ -175,6 +175,7 @@ class Api {
 	}
 
 	loadImage(opts) {
+		console.log(opts)
 		if(opts.scaleMode) {
 			return this[opts.scaleMode](opts);
 		} else {

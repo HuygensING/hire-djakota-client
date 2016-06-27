@@ -1558,6 +1558,7 @@ var Api = function () {
 	}, {
 		key: "loadImage",
 		value: function loadImage(opts) {
+			console.log(opts);
 			if (opts.scaleMode) {
 				return this[opts.scaleMode](opts);
 			} else {
@@ -2728,6 +2729,7 @@ var Viewer = function (_React$Component) {
 		value: function onDimensions(s, l, w, h) {
 			this.setDimensions(w, h);
 			this.setScale(s, l);
+			console.log(w, h);
 			this.center(w, h);
 			this.notifyRealImagePos();
 		}
