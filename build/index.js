@@ -1361,11 +1361,13 @@ var IDX_WIDTH = 1;
 var IDX_HEIGHT = 0;
 var TILE_SIZE = 512;
 
-var downScale = function downScale(val, times) {
-	return times > 0 ? downScale(val / 2, --times) : val;
-};
+// const downScale = function(val, times) { return times > 0 ? downScale(val / 2, --times) : val; };
+// const upScale = function(val, times) { return times > 0 ? upScale(val * 2, --times) : val; };
 var upScale = function upScale(val, times) {
-	return times > 0 ? upScale(val * 2, --times) : val;
+	return Math.pow(2, times) * val;
+};
+var downScale = function downScale(val, times) {
+	return Math.pow(2, -times) * val;
 };
 
 var Api = function () {
@@ -1522,14 +1524,17 @@ var Api = function () {
 			return this.makeTiles(opts, level, scale);
 		}
 	}, {
-		key: "fullZoom",
-		value: function fullZoom(opts) {
-			var level = this.levels;
-			var scale = 1;
+		key: "widthFillTop",
+		value: function widthFillTop(opts) {
+			var level = this.findLevel(opts.viewport.w, IDX_WIDTH);
+			var scale = opts.viewport.w / this.resolutions[level - 1][IDX_WIDTH];
+			var upscaleFactor = this.resolutions.length - level;
+			var viewportScale = downScale(scale, upscaleFactor);
 
 			if (opts.onScale) {
-				opts.onScale(scale, level, this.fullWidth, this.fullHeight);
+				opts.onScale(scale, level, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
 			}
+			console.log(opts, level, scale);
 			return this.makeTiles(opts, level, scale);
 		}
 	}, {
@@ -1556,9 +1561,19 @@ var Api = function () {
 			}
 		}
 	}, {
+		key: "fullZoom",
+		value: function fullZoom(opts) {
+			var level = this.levels;
+			var scale = 1;
+
+			if (opts.onScale) {
+				opts.onScale(scale, level, this.fullWidth, this.fullHeight);
+			}
+			return this.makeTiles(opts, level, scale);
+		}
+	}, {
 		key: "loadImage",
 		value: function loadImage(opts) {
-			console.log(opts);
 			if (opts.scaleMode) {
 				return this[opts.scaleMode](opts);
 			} else {
