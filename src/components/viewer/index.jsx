@@ -4,8 +4,6 @@ import { setRealViewPort } from '../../actions';
 import store from '../../store';
 import { requestAnimationFrame, cancelAnimationFrame } from '../../util/request-animation-frame';
 
-const RESIZE_DELAY = 5;
-
 const SUPPORTED_SCALE_MODES = [
 	'heightFill',
 	'widthFill',
@@ -19,19 +17,17 @@ class Viewer extends React.Component {
 		super(props);
 
 		this.state = {
-			width: null,
-			height: null,
+			viewportWidth: null,
+			vierwPortHeight: null,
 		};
 
 		this.imagePos = { x: 0, y: 0 };
 		this.imageCtx = null;
-		this.resizeDelay = 0;
 		this.scale = 1.0;
 		this.level = null;
 		this.width = null;
 		this.height = null;
 		this.abortAnimationFrame = false;
-		this.resizeListener = this.onResize.bind(this);
 		this.animationFrameListener = this.onAnimationFrame.bind(this);
 		this.frameBuffer = [];
 		this.touchmap = {
@@ -48,54 +44,45 @@ class Viewer extends React.Component {
 
 	componentDidMount() {
 		this.abortAnimationFrame = false;
-		this.commitResize();
+		this.reset();
 		this.imageCtx = this.refs.viewer.children[0].getContext('2d');
-		window.addEventListener('resize', this.resizeListener);
 		this.requestAnimationFrame(this.animationFrameListener);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.api.config.identifier !== this.props.api.config.identifier) {
-			this.commitResize();
+			this.reset();
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return this.state.width !== nextState.width ||
-	// 		this.state.height !== nextState.height ||
-	// 		this.props.api.config.identifier !== nextProps.api.config.identifier;
-	// }
-
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.resizeListener);
 		this.abortAnimationFrame = true;
 		this.cancelAnimationFrame(this.animationFrameListener);
 	}
 
 	onAnimationFrame() {
 		if (this.frameBuffer.length) {
-			this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
+			this.imageCtx.clearRect(0, 0, this.state.viewportWidth, this.state.viewportHeight);
 			for (let i = 0; i < this.frameBuffer.length; i++) {
 				const tileIm = this.frameBuffer[i][0];
 				const tile = this.frameBuffer[i][1];
+
 				this.imageCtx.drawImage(
 					tileIm,
-					parseInt(Math.floor((tile.pos.x + this.imagePos.x) * this.scale)),
-					parseInt(Math.floor((tile.pos.y + this.imagePos.y) * this.scale)),
-					parseInt(Math.ceil(tileIm.width * this.scale)),
-					parseInt(Math.ceil(tileIm.height * this.scale))
+					parseInt(Math.floor((tile.pos.x + this.imagePos.x) * this.scale), 10),
+					parseInt(Math.floor((tile.pos.y + this.imagePos.y) * this.scale), 10),
+					parseInt(Math.ceil(tileIm.width * this.scale), 10),
+					parseInt(Math.ceil(tileIm.height * this.scale), 10)
 				);
 			}
-			if (this.frameBuffer.filter((x) => x[0].complete && x[0].height > 0 && x[0].width > 0).length === this.frameBuffer.length) {
+			if (
+				this.frameBuffer.filter((x) =>
+					x[0].complete &&
+					x[0].height > 0 &&
+					x[0].width > 0
+				).length === this.frameBuffer.length) {
 				this.frameBuffer = [];
 			}
-		}
-
-		if (this.resizeDelay === 0) {
-			this.commitResize();
-			this.resizeDelay = -1;
-		} else if (this.resizeDelay > 0) {
-			this.resizeDelay -= 1;
 		}
 
 		if (!this.abortAnimationFrame) {
@@ -103,20 +90,15 @@ class Viewer extends React.Component {
 		}
 	}
 
-	onResize() {
-		this.resizeDelay = RESIZE_DELAY;
-	}
-
-	commitResize() {
-		this.resizeDelay = RESIZE_DELAY;
+	reset() {
 		this.imagePos.x = 0;
 		this.imagePos.y = 0;
 		this.width = null;
 		this.height = null;
 		const node = this.refs.viewer;
 		this.setState({
-			width: node.clientWidth,
-			height: node.clientHeight,
+			viewportWidth: node.clientWidth,
+			viewportHeight: node.clientHeight,
 		}, this.loadImage.bind(this));
 	}
 
@@ -127,8 +109,8 @@ class Viewer extends React.Component {
 		store.dispatch(setRealViewPort({
 			x: -dims.x / dims.w,
 			y: -dims.y / dims.h,
-			w: this.state.width / dims.w,
-			h: this.state.height / dims.h,
+			w: this.state.viewportWidth / dims.w,
+			h: this.state.viewportHeight / dims.h,
 			zoom,
 			reposition: false,
 			applyZoom: false,
@@ -139,8 +121,8 @@ class Viewer extends React.Component {
 		this.notifyRealImagePos();
 		this.frameBuffer = this.props.api.loadImage({
 			viewport: {
-				w: this.state.width,
-				h: this.state.height,
+				w: this.state.viewportWidth,
+				h: this.state.viewportHeight,
 			},
 			position: this.imagePos,
 			onScale: (scale, level, width, height) => {
@@ -163,28 +145,16 @@ class Viewer extends React.Component {
 		this.height = height;
 	}
 
-	// centerImage = (w, h) => {
-	// 	if (w > this.state.width) {
-	// 		this.imagePos.x = -parseInt((w - this.state.width) / 2) / this.scale;
-	// 	} else if (w < this.state.width) {
-	// 		this.imagePos.x = parseInt((this.state.width - w) / 2) / this.scale;
-	// 	}
-	//
-	// 	if (h > this.state.height) {
-	// 		this.imagePos.y = -parseInt((h - this.state.height) / 2) / this.scale;
-	// 	} else if (h < this.state.width) {
-	// 		this.imagePos.y = parseInt((this.state.height - h) / 2) / this.scale;
-	// 	}
-	// }
-	//
 	centerImage = (w, h) => {
-		const x = (w > this.state.width) ?
-			-((w - this.state.width) / 2) / this.scale :
-			((this.state.width - w) / 2) / this.scale;
+		const x = (w > this.state.viewportWidth) ?
+			-((w - this.state.viewportWidth) / 2) / this.scale :
+			((this.state.viewportWidth - w) / 2) / this.scale;
 
-		const y = (h > this.state.height) ?
-			-((h - this.state.height) / 2) / this.scale :
-			((this.state.height - h) / 2) / this.scale;
+		let y = (h > this.state.viewportHeight) ?
+			-((h - this.state.viewportHeight) / 2) / this.scale :
+			((this.state.viewportHeight - h) / 2) / this.scale;
+
+		if (this.props.scaleMode === 'widthFillTop') y = 0;
 
 		this.setImagePosition(x, y);
 	}
@@ -195,27 +165,27 @@ class Viewer extends React.Component {
 		let correctedX = x;
 		let correctedY = y;
 
-		if (this.width <= this.state.width) {
+		if (this.width <= this.state.viewportWidth) {
 			if (x < 0) { correctedX = 0; }
-			if (x * this.scale + this.width > this.state.width) {
-				correctedX = (this.state.width - this.width) / this.scale;
+			if (x * this.scale + this.width > this.state.viewportWidth) {
+				correctedX = (this.state.viewportWidth - this.width) / this.scale;
 			}
-		} else if (this.width > this.state.width) {
+		} else if (this.width > this.state.viewportWidth) {
 			if (x > 0) { correctedX = 0; }
-			if (x * this.scale + this.width < this.state.width) {
-				correctedX = (this.state.width - this.width) / this.scale;
+			if (x * this.scale + this.width < this.state.viewportWidth) {
+				correctedX = (this.state.viewportWidth - this.width) / this.scale;
 			}
 		}
 
-		if (this.height <= this.state.height) {
+		if (this.height <= this.state.viewportHeight) {
 			if (y < 0) { correctedY = 0; }
-			if (y * this.scale + this.height > this.state.height) {
-				correctedY = (this.state.height - this.height) / this.scale;
+			if (y * this.scale + this.height > this.state.viewportHeight) {
+				correctedY = (this.state.viewportHeight - this.height) / this.scale;
 			}
-		} else if (this.height > this.state.height) {
+		} else if (this.height > this.state.viewportHeight) {
 			if (y > 0) { correctedY = 0; }
-			if (y * this.scale + this.height < this.state.height) {
-				correctedY = (this.state.height - this.height) / this.scale;
+			if (y * this.scale + this.height < this.state.viewportHeight) {
+				correctedY = (this.state.viewportHeight - this.height) / this.scale;
 			}
 		}
 
@@ -227,27 +197,29 @@ class Viewer extends React.Component {
 	}
 
 	zoom = (scale, level, width, height, focalPoint) => {
-		this.setDimensions(width, height);
-		this.setScale(scale, level);
-
-		focalPoint = focalPoint || {
-			x: this.state.width / 2,
-			y: this.state.height / 2,
-		};
-
-		const dX = (focalPoint.x - (this.imagePos.x * scale)) / this.width;
-		const dY = (focalPoint.y - (this.imagePos.y * scale)) / this.height;
-		console.log(dX)
-
 		if (this.width == null || this.height == null) {
 			this.centerImage(width, height);
 		} else {
-			const x = (focalPoint.x - (dX * this.width)) / scale;
-			const y = (focalPoint.y - (dY * this.height)) / scale;
+			focalPoint = focalPoint || {
+				x: this.state.viewportWidth / 2,
+				y: this.state.viewportHeight / 2,
+			};
+
+			// Calc Δx and Δy with previous scale, width and height
+			const dX = (focalPoint.x - (this.imagePos.x * this.scale)) / this.width;
+			const dY = (focalPoint.y - (this.imagePos.y * this.scale)) / this.height;
+
+			const x = (focalPoint.x - (dX * width)) / scale;
+			const y = (focalPoint.y - (dY * height)) / scale;
+
 			this.setImagePosition(x, y);
 		}
 
 		this.loadImage({ scale, level });
+
+		// Set the next scale, level, width and height
+		this.setScale(scale, level);
+		this.setDimensions(width, height);
 	}
 
 	handleZoom = (delta, focalPoint) => {
@@ -268,24 +240,19 @@ class Viewer extends React.Component {
 			>
 				<canvas
 					className="image"
-					height={this.state.height}
-					width={this.state.width}
+					height={this.state.viewportHeight}
+					width={this.state.viewportWidth}
 				/>
 				<InteractionCanvas
 					{...this.props}
+					{...this.state}
 					height={this.height}
 					imagePos={this.imagePos}
 					level={this.level}
-					onCenterImage={this.centerImage}
 					onLoadImage={this.loadImage}
-					onSetDimensions={this.setDimensions}
-					onSetScale={this.setScale}
 					onSetImagePosition={this.setImagePosition}
 					onZoom={this.handleZoom}
 					scale={this.scale}
-					width={this.width}
-					viewerHeight={this.state.height}
-					viewerWidth={this.state.width}
 				/>
 			</div>
 		);

@@ -1,44 +1,73 @@
-import Api from "../api";
+import Api from '../api';
 
 const initialState = {
 	api: {
-		config: {}
+		config: {},
 	},
 	fillMode: null,
 	freeMovement: false,
 	mousewheel: null,
-	realViewPort: {x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false}
+	realViewPort: {
+		x: 0,
+		y: 0,
+		w: 0,
+		h: 0,
+		zoom: 0,
+		reposition: false,
+	},
 };
 
-export default function(state = initialState, action) {
-	switch(action.type) {
-		case "INITIAL":
-			state = {...state,
+export default function (state = initialState, action) {
+	let nextState = state;
+
+	switch (action.type) {
+		case 'INITIAL':
+			nextState = { ...nextState,
 				api: new Api(action.service, action.config),
-				scaleMode: action.scaleMode
+				scaleMode: action.scaleMode,
 			};
 			break;
 
-		case "CREATE_NEXT_API":
-			state = {...state, api: new Api(state.api.service, action.config)};
+		case 'CREATE_NEXT_API':
+			nextState = {
+				...nextState,
+				api: new Api(nextState.api.service, action.config),
+			};
 			break;
 
-		case "SET_REAL_VIEWPORT":
-			state = {...state, realViewPort: {...state.realViewPort, ...action.realViewPort}};
+		case 'SET_REAL_VIEWPORT':
+			nextState = {
+				...nextState,
+				realViewPort: {
+					...nextState.realViewPort,
+					...action.realViewPort,
+				},
+			};
 			break;
 
-		case "SEND_MOUSEWHEEL":
-			state = {...state, mousewheel: action.mousewheel};
+		case 'SEND_MOUSEWHEEL':
+			nextState = {
+				...nextState,
+				mousewheel: action.mousewheel,
+			};
 			break;
 
-		case "SET_FILL":
-			state = {...state, fillMode: action.mode};
+		case 'SET_FILL':
+			nextState = {
+				...nextState,
+				fillMode: action.mode,
+			};
 			break;
 
-		case "SET_FREE_MOVEMENT":
-			state = {...state, freeMovement: action.mode};
+		case 'SET_FREE_MOVEMENT':
+			nextState = {
+				...nextState,
+				freeMovement: action.mode,
+			};
 			break;
+
+		default:
 	}
 
-	return state;
+	return nextState;
 }

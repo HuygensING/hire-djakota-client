@@ -1685,686 +1685,8 @@ DjatokaClient.defaultProps = {};
 
 exports.default = DjatokaClient;
 
-},{"../actions":19,"../store":33,"react":"react"}],22:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _heightFill = _dereq_("./icons/height-fill");
-
-var _heightFill2 = _interopRequireDefault(_heightFill);
-
-var _widthFill = _dereq_("./icons/width-fill");
-
-var _widthFill2 = _interopRequireDefault(_widthFill);
-
-var _autoFill = _dereq_("./icons/auto-fill");
-
-var _autoFill2 = _interopRequireDefault(_autoFill);
-
-var _actions = _dereq_("../actions");
-
-var _store = _dereq_("../store");
-
-var _store2 = _interopRequireDefault(_store);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
-
-var FillButton = function (_React$Component) {
-    _inherits(FillButton, _React$Component);
-
-    function FillButton() {
-        _classCallCheck(this, FillButton);
-
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(FillButton).apply(this, arguments));
-    }
-
-    _createClass(FillButton, [{
-        key: "renderIcon",
-        value: function renderIcon() {
-            switch (this.props.scaleMode) {
-                case "fullZoom":
-                    return "100%";
-                case "autoFill":
-                    return _react2.default.createElement(_autoFill2.default, null);
-                case "heightFill":
-                    return _react2.default.createElement(_heightFill2.default, null);
-                case "widthFill":
-                default:
-                    return _react2.default.createElement(_widthFill2.default, null);
-            }
-        }
-    }, {
-        key: "onClick",
-        value: function onClick() {
-            _store2.default.dispatch((0, _actions.setFill)(this.props.scaleMode));
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "button",
-                { className: "hire-fill-button", onClick: this.onClick.bind(this) },
-                this.renderIcon()
-            );
-        }
-    }]);
-
-    return FillButton;
-}(_react2.default.Component);
-
-FillButton.propTypes = {
-    scaleMode: function scaleMode(props, propName) {
-        if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
-            var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
-            props[propName] = "heightFill";
-            return new Error(msg);
-        }
-    }
-};
-
-FillButton.defaultProps = {
-    scaleMode: "heightFill"
-};
-
-exports.default = FillButton;
-
-},{"../actions":19,"../store":33,"./icons/auto-fill":24,"./icons/height-fill":26,"./icons/width-fill":27,"react":"react"}],23:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _freeMovement = _dereq_("./icons/free-movement");
-
-var _freeMovement2 = _interopRequireDefault(_freeMovement);
-
-var _actions = _dereq_("../actions");
-
-var _store = _dereq_("../store");
-
-var _store2 = _interopRequireDefault(_store);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FreeMovementButton = function (_React$Component) {
-    _inherits(FreeMovementButton, _React$Component);
-
-    function FreeMovementButton(props) {
-        _classCallCheck(this, FreeMovementButton);
-
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FreeMovementButton).call(this, props));
-
-        _this.state = _store2.default.getState();
-        return _this;
-    }
-
-    _createClass(FreeMovementButton, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.unsubscribe = _store2.default.subscribe(function () {
-                return _this2.setState(_store2.default.getState());
-            });
-        }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            this.unsubscribe();
-        }
-    }, {
-        key: "onClick",
-        value: function onClick() {
-            _store2.default.dispatch((0, _actions.setFreeMovement)(!this.state.freeMovement));
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var c = "hire-free-movement-button";
-            if (!this.state.freeMovement) {
-                c += " active";
-            }
-            return _react2.default.createElement(
-                "button",
-                { className: c, onClick: this.onClick.bind(this) },
-                _react2.default.createElement(_freeMovement2.default, null)
-            );
-        }
-    }]);
-
-    return FreeMovementButton;
-}(_react2.default.Component);
-
-exports.default = FreeMovementButton;
-
-},{"../actions":19,"../store":33,"./icons/free-movement":25,"react":"react"}],24:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AutoFill = function (_React$Component) {
-  _inherits(AutoFill, _React$Component);
-
-  function AutoFill() {
-    _classCallCheck(this, AutoFill);
-
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(AutoFill).apply(this, arguments));
-  }
-
-  _createClass(AutoFill, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "svg",
-        { viewBox: "0 -2 16 20" },
-        _react2.default.createElement("path", { d: "M 2.2510028,2.3999952 14.134355,13.976932", style: { strokeWidth: 2 } }),
-        _react2.default.createElement("path", { d: "M 0.17726274,4.8389082 0.0558895,0.07290967 4.6198279,0.27222077", style: { strokeWidth: 0 } }),
-        _react2.default.createElement("path", {
-          d: "m 15.925831,11.287935 0.121374,4.765999 -4.563938,-0.199312",
-          style: { strokeWidth: 0 }
-        }),
-        _react2.default.createElement("path", {
-          d: "M 13.731112,2.2550713 2.1257829,14.110698",
-          style: { strokeWidth: 2 } }),
-        _react2.default.createElement("path", {
-          d: "M 11.297166,0.17550349 16.063441,0.06553063 15.853214,4.6289791",
-          style: { strokeWidth: 0 }
-        }),
-        _react2.default.createElement("path", {
-          d: "M 4.8104871,15.908601 0.0442114,16.018574 0.2544395,11.455126",
-          style: { strokeWidth: 0 }
-        })
-      );
-    }
-  }]);
-
-  return AutoFill;
-}(_react2.default.Component);
-
-exports.default = AutoFill;
-
-},{"react":"react"}],25:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FreeMovement = function (_React$Component) {
-  _inherits(FreeMovement, _React$Component);
-
-  function FreeMovement() {
-    _classCallCheck(this, FreeMovement);
-
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(FreeMovement).apply(this, arguments));
-  }
-
-  _createClass(FreeMovement, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "svg",
-        { viewBox: "0 0 480 480" },
-        _react2.default.createElement(
-          "g",
-          { id: "key" },
-          _react2.default.createElement("path", { d: "M294.399,196.875l10.574,10.579c2.627-3.028,4.703-6.688,6.27-10.579H294.399z" }),
-          _react2.default.createElement("path", { d: "M310.743,163.658c0,0-5.346-10.467-35.785-44.875c-30.422-34.392-50.438-52.094-50.438-52.094   c-11.734-10.376-30.857-10.299-42.514,0.173c0,0-41.014,36.967-61.703,55.609c-20.688,18.626-51.484,55.873-51.484,55.873   c-9.984,12.08-10.346,32.143-0.799,44.564c0,0,13.281,17.327,50.109,48.594c36.828,31.28,47.08,37.157,47.08,37.157   c13.297,7.559,32.859,5.091,44.094-5.363l-23.5-23.842c-14.592-14.842-14.516-38.891,0.232-53.625l41.781-41.781   c7.158-7.171,16.705-11.123,26.861-11.123c10.158,0,19.719,3.952,26.875,11.123l23.42,23.405   C314.801,196.081,317.506,176.955,310.743,163.658z M160.27,196.5c-20.982,0-37.998-17.012-37.998-38.015   c0-20.981,17.016-37.998,37.998-37.998c20.984,0,38.002,17.017,38.002,37.998C198.272,179.488,181.254,196.5,160.27,196.5z" }),
-          _react2.default.createElement("path", { d: "M416.598,359.407L261.397,204.206c-3.689-3.689-9.734-3.689-13.422,0l-6.283,6.247l160.033,158.609v20.223h-17.002   L223.805,228.346l-17.629,17.642c-3.703,3.685-3.703,9.764-0.061,13.482l144.625,146.767c3.654,3.749,10.938,6.796,16.172,6.796   h32.656c5.221,0,10.752-4.107,12.266-9.108l8.721-28.734C422.069,370.206,420.303,363.078,416.598,359.407z" })
-        )
-      );
-    }
-  }]);
-
-  return FreeMovement;
-}(_react2.default.Component);
-
-exports.default = FreeMovement;
-
-},{"react":"react"}],26:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var HeightFill = function (_React$Component) {
-    _inherits(HeightFill, _React$Component);
-
-    function HeightFill() {
-        _classCallCheck(this, HeightFill);
-
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(HeightFill).apply(this, arguments));
-    }
-
-    _createClass(HeightFill, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "svg",
-                { viewBox: "0 0 18 17" },
-                _react2.default.createElement(
-                    "g",
-                    null,
-                    _react2.default.createElement("path", { d: "m 7.8735657,3.2305929 0.088125,9.1793421", style: { strokeWidth: 2 } }),
-                    _react2.default.createElement("path", { d: "M 4.6336281,3.641452 7.9449077,0.21145225 11.004625,3.6037073", style: { strokeWidth: 0 } }),
-                    _react2.default.createElement("path", { d: "m 11.229771,12.149816 -3.3112819,3.43 -3.0597154,-3.392255", style: { strokeWidth: 0 } })
-                )
-            );
-        }
-    }]);
-
-    return HeightFill;
-}(_react2.default.Component);
-
-exports.default = HeightFill;
-
-},{"react":"react"}],27:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var WidthFill = function (_React$Component) {
-    _inherits(WidthFill, _React$Component);
-
-    function WidthFill() {
-        _classCallCheck(this, WidthFill);
-
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(WidthFill).apply(this, arguments));
-    }
-
-    _createClass(WidthFill, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "svg",
-                { viewBox: "0 0 24 17" },
-                _react2.default.createElement(
-                    "g",
-                    null,
-                    _react2.default.createElement("path", { d: "m 3.2525423,8.5338983 16.5903457,0", style: { strokeWidth: 2 } }),
-                    _react2.default.createElement("path", { d: "M 3.4690633,11.727926 0.0563563,8.3988265 3.4645013,5.3568195", style: { strokeWidth: 0 } }),
-                    _react2.default.createElement("path", { d: "m 19.249675,5.3577067 3.412707,3.3291 -3.408145,3.0420063", style: { strokeWidth: 0 } })
-                )
-            );
-        }
-    }]);
-
-    return WidthFill;
-}(_react2.default.Component);
-
-exports.default = WidthFill;
-
-},{"react":"react"}],28:[function(_dereq_,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = _dereq_("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _actions = _dereq_("../actions");
-
-var _store = _dereq_("../store");
-
-var _store2 = _interopRequireDefault(_store);
-
-var _requestAnimationFrame = _dereq_("../util/request-animation-frame");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // import React from "react";
-
-// class Minimap extends React.Component {
-// 	render() {
-// 		return (
-// 			<div>MINI</div>
-// 		);
-// 	}
-// }
-
-// Minimap.propTypes = {};
-
-// Minimap.defaultProps = {};
-
-// export default Minimap;
-
-var RESIZE_DELAY = 5;
-
-var MOUSE_UP = 0;
-var MOUSE_DOWN = 1;
-
-var Minimap = function (_React$Component) {
-	_inherits(Minimap, _React$Component);
-
-	function Minimap(props) {
-		_classCallCheck(this, Minimap);
-
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Minimap).call(this, props));
-
-		_this.state = {
-			width: null,
-			height: null
-		};
-		_this.resizeListener = _this.onResize.bind(_this);
-		_this.animationFrameListener = _this.onAnimationFrame.bind(_this);
-		_this.abortAnimationFrame = false;
-		_this.imageCtx = null;
-		_this.interactionCtx = null;
-		_this.resizeDelay = -1;
-		_this.mouseState = MOUSE_UP;
-		_this.mousemoveListener = _this.onMouseMove.bind(_this);
-		_this.mouseupListener = _this.onMouseUp.bind(_this);
-		_this.touchMoveListener = _this.onTouchMove.bind(_this);
-		_this.frameBuffer = [];
-		return _this;
-	}
-
-	_createClass(Minimap, [{
-		key: "componentDidMount",
-		value: function componentDidMount() {
-			this.abortAnimationFrame = false;
-			this.onResize();
-			this.imageCtx = this.refs.minimap.children[0].getContext("2d");
-			this.interactionCtx = this.refs.minimap.children[1].getContext("2d");
-			window.addEventListener("resize", this.resizeListener);
-			window.addEventListener("mousemove", this.mousemoveListener);
-			window.addEventListener("mouseup", this.mouseupListener);
-			window.addEventListener("touchend", this.mouseupListener);
-			window.addEventListener("touchmove", this.touchMoveListener);
-			(0, _requestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
-		}
-
-		// componentWillReceiveProps(nextProps) {
-		// 	if(nextProps.config.identifier !== this.props.config.identifier) {
-		// 		console.log(nextProps.api)
-		// 		// this.props.api = new Api(this.props.service, nextProps.config);
-		// 		this.commitResize();
-		// 	}
-		// }
-
-	}, {
-		key: "shouldComponentUpdate",
-		value: function shouldComponentUpdate(nextProps, nextState) {
-			return this.state.width !== nextState.width || this.state.height !== nextState.height;
-		}
-	}, {
-		key: "componentWillUnmount",
-		value: function componentWillUnmount() {
-			window.removeEventListener("resize", this.resizeListener);
-			window.removeEventListener("mousemove", this.mousemoveListener);
-			window.removeEventListener("mouseup", this.mouseupListener);
-			window.addEventListener("touchend", this.mouseupListener);
-			window.removeEventListener("touchmove", this.touchMoveListener);
-			this.abortAnimationFrame = true;
-			(0, _requestAnimationFrame.cancelAnimationFrame)(this.animationFrameListener);
-			// this.unsubscribe();
-		}
-	}, {
-		key: "onAnimationFrame",
-		value: function onAnimationFrame() {
-			if (this.frameBuffer.length) {
-				this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
-				for (var i = 0; i < this.frameBuffer.length; i++) {
-					var tileIm = this.frameBuffer[i][0];
-					var tile = this.frameBuffer[i][1];
-					this.imageCtx.drawImage(tileIm, parseInt(Math.floor(tile.pos.x * this.scale)), parseInt(Math.floor(tile.pos.y * this.scale)), parseInt(Math.ceil(tileIm.width * this.scale)), parseInt(Math.ceil(tileIm.height * this.scale)));
-				}
-				if (this.frameBuffer.filter(function (x) {
-					return x[0].complete && x[0].height > 0 && x[0].width > 0;
-				}).length === this.frameBuffer.length) {
-					this.frameBuffer = [];
-				}
-			}
-
-			if (this.resizeDelay === 0) {
-				this.commitResize();
-				this.resizeDelay = -1;
-			} else if (this.resizeDelay > 0) {
-				this.resizeDelay -= 1;
-			}
-
-			this.interactionCtx.strokeStyle = this.props.rectStroke;
-			this.interactionCtx.fillStyle = this.props.rectFill;
-			this.interactionCtx.clearRect(0, 0, this.state.width, this.state.height);
-			this.interactionCtx.fillRect(Math.floor(this.props.realViewPort.x * this.state.width), Math.floor(this.props.realViewPort.y * this.state.height), Math.ceil(this.props.realViewPort.w * this.state.width), Math.ceil(this.props.realViewPort.h * this.state.height));
-
-			this.interactionCtx.beginPath();
-			this.interactionCtx.rect(Math.floor(this.props.realViewPort.x * this.state.width), Math.floor(this.props.realViewPort.y * this.state.height), Math.ceil(this.props.realViewPort.w * this.state.width), Math.ceil(this.props.realViewPort.h * this.state.height));
-			this.interactionCtx.stroke();
-
-			if (!this.abortAnimationFrame) {
-				(0, _requestAnimationFrame.requestAnimationFrame)(this.animationFrameListener);
-			}
-		}
-	}, {
-		key: "onResize",
-		value: function onResize() {
-			this.resizeDelay = RESIZE_DELAY;
-		}
-	}, {
-		key: "commitResize",
-		value: function commitResize() {
-			this.resizeDelay = RESIZE_DELAY;
-			var _refs$minimap = this.refs.minimap;
-			var clientWidth = _refs$minimap.clientWidth;
-			var clientHeight = _refs$minimap.clientHeight;
-
-			this.frameBuffer = this.props.api.loadImage({
-				viewport: { w: clientWidth, h: clientHeight },
-				onScale: this.setScale.bind(this),
-				scaleMode: "autoFill",
-				position: { x: 0, y: 0 }
-			});
-		}
-	}, {
-		key: "setScale",
-		value: function setScale(s, l) {
-			this.scale = s;
-			this.level = l;
-			var dims = this.props.api.getRealImagePos({ x: 0, y: 0 }, this.scale, this.level);
-			this.setState({ width: dims.w, height: dims.h });
-			if (this.props.onDimensions) {
-				this.props.onDimensions(dims.w, dims.h);
-			}
-		}
-	}, {
-		key: "dispatchReposition",
-		value: function dispatchReposition(ev) {
-			var doc = document.documentElement;
-			var scrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-			var rect = this.refs.minimap.getBoundingClientRect();
-			_store2.default.dispatch((0, _actions.setRealViewPort)({
-				x: (ev.pageX - rect.left) / this.state.width - this.props.realViewPort.w / 2,
-				y: (ev.pageY - rect.top - scrollTop) / this.state.height - this.props.realViewPort.h / 2,
-				reposition: true,
-				applyZoom: false
-			}));
-		}
-	}, {
-		key: "onTouchStart",
-		value: function onTouchStart(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
-			return ev.preventDefault();
-		}
-	}, {
-		key: "onMouseDown",
-		value: function onMouseDown(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchReposition(ev);
-		}
-	}, {
-		key: "onMouseMove",
-		value: function onMouseMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchReposition(ev);
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onTouchMove",
-		value: function onTouchMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchReposition({ pageX: ev.touches[0].pageX, pageY: ev.touches[0].pageY });
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onMouseUp",
-		value: function onMouseUp() {
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "onWheel",
-		value: function onWheel(ev) {
-			_store2.default.dispatch((0, _actions.sendMouseWheel)({ deltaY: ev.deltaY }));
-			return ev.preventDefault();
-		}
-	}, {
-		key: "onTouchEnd",
-		value: function onTouchEnd() {
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "render",
-		value: function render() {
-			return _react2.default.createElement(
-				"div",
-				{
-					className: "hire-djatoka-minimap",
-					ref: "minimap"
-				},
-				_react2.default.createElement("canvas", { className: "image", height: this.state.height, width: this.state.width }),
-				_react2.default.createElement("canvas", { className: "interaction",
-					height: this.state.height,
-					onMouseDown: this.onMouseDown.bind(this),
-					onTouchStart: this.onTouchStart.bind(this),
-					onWheel: this.onWheel.bind(this),
-					width: this.state.width })
-			);
-		}
-	}]);
-
-	return Minimap;
-}(_react2.default.Component);
-
-Minimap.propTypes = {
-	config: _react2.default.PropTypes.object,
-	onDimensions: _react2.default.PropTypes.func,
-	rectFill: _react2.default.PropTypes.string,
-	rectStroke: _react2.default.PropTypes.string,
-	service: _react2.default.PropTypes.string
-};
-
-Minimap.defaultProps = {
-	rectFill: "rgba(128,128,255,0.1)",
-	rectStroke: "rgba(255,255,255,0.8)"
-};
-
-exports.default = Minimap;
-
-},{"../actions":19,"../store":33,"../util/request-animation-frame":34,"react":"react"}],29:[function(_dereq_,module,exports){
-"use strict";
+},{"../actions":19,"../store":26,"react":"react"}],22:[function(_dereq_,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -2374,17 +1696,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = _dereq_("react");
+var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _actions = _dereq_("../actions");
+var _interactionCanvas = _dereq_('./interaction-canvas');
 
-var _store = _dereq_("../store");
+var _interactionCanvas2 = _interopRequireDefault(_interactionCanvas);
+
+var _actions = _dereq_('../../actions');
+
+var _store = _dereq_('../../store');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _requestAnimationFrame = _dereq_("../util/request-animation-frame");
+var _requestAnimationFrame = _dereq_('../../util/request-animation-frame');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2394,16 +1720,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MOUSE_UP = 0;
-var MOUSE_DOWN = 1;
-
-var TOUCH_END = 0;
-var TOUCH_START = 1;
-var TOUCH_PINCH = 2;
-
 var RESIZE_DELAY = 5;
 
-var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
+var SUPPORTED_SCALE_MODES = ['heightFill', 'widthFill', 'widthFillTop', 'autoFill', 'fullZoom'];
 
 var Viewer = function (_React$Component) {
 	_inherits(Viewer, _React$Component);
@@ -2413,127 +1732,108 @@ var Viewer = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).call(this, props));
 
+		_this.loadImage = function () {
+			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: _this.props.scaleMode } : arguments[0];
+
+			_this.notifyRealImagePos();
+			_this.frameBuffer = _this.props.api.loadImage(_extends({
+				viewport: {
+					w: _this.state.width,
+					h: _this.state.height
+				},
+				position: _this.imagePos,
+				onScale: function onScale(scale, level, width, height) {
+					_this.setDimensions(width, height);
+					_this.setScale(scale, level);
+					_this.center(width, height);
+					_this.notifyRealImagePos();
+				}
+			}, opts));
+		};
+
+		_this.setScale = function (s, l) {
+			_this.scale = s;
+			_this.level = l;
+		};
+
+		_this.setDimensions = function (w, h) {
+			_this.width = w;
+			_this.height = h;
+		};
+
+		_this.center = function (w, h) {
+			var x = w > _this.state.width ? -((w - _this.state.width) / 2) / _this.scale : (_this.state.width - w) / 2 / _this.scale;
+
+			var y = h > _this.state.height ? -((h - _this.state.height) / 2) / _this.scale : (_this.state.height - h) / 2 / _this.scale;
+
+			_this.setImagePosition(x, y);
+		};
+
+		_this.setImagePosition = function (x, y) {
+			_this.imagePos = { x: x, y: y };
+		};
+
 		_this.state = {
 			width: null,
 			height: null
 		};
 
-		_this.movement = { x: 0, y: 0 };
-		_this.touchPos = { x: 0, y: 0 };
-		_this.mousePos = { x: 0, y: 0 };
 		_this.imagePos = { x: 0, y: 0 };
-		_this.mouseState = MOUSE_UP;
 		_this.imageCtx = null;
 		_this.resizeDelay = 0;
 		_this.scale = 1.0;
 		_this.level = null;
 		_this.width = null;
 		_this.height = null;
-		_this.focalPoint = null;
 		_this.abortAnimationFrame = false;
 		_this.resizeListener = _this.onResize.bind(_this);
 		_this.animationFrameListener = _this.onAnimationFrame.bind(_this);
-		_this.mousemoveListener = _this.onMouseMove.bind(_this);
-		_this.mouseupListener = _this.onMouseUp.bind(_this);
 		_this.frameBuffer = [];
-		_this.touchmap = { startPos: false, positions: [], tapStart: 0, lastTap: 0, pinchDelta: 0, pinchDistance: 0 };
+		_this.touchmap = {
+			startPos: false,
+			positions: [],
+			tapStart: 0,
+			lastTap: 0,
+			pinchDelta: 0,
+			pinchDistance: 0
+		};
 		_this.requestAnimationFrame = _requestAnimationFrame.requestAnimationFrame;
 		_this.cancelAnimationFrame = _requestAnimationFrame.cancelAnimationFrame;
 		return _this;
 	}
 
 	_createClass(Viewer, [{
-		key: "componentDidMount",
+		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.abortAnimationFrame = false;
 			this.commitResize();
-			this.imageCtx = this.refs.viewer.children[0].getContext("2d");
-			window.addEventListener("resize", this.resizeListener);
-			window.addEventListener("mousemove", this.mousemoveListener);
-			window.addEventListener("mouseup", this.mouseupListener);
-
-			// this.unsubscribe = store.subscribe(() =>
-			// 	this.setState(store.getState(), this.receiveNewState.bind(this))
-			// );
+			this.imageCtx = this.refs.viewer.children[0].getContext('2d');
+			window.addEventListener('resize', this.resizeListener);
 			this.requestAnimationFrame(this.animationFrameListener);
-
-			// document.addEventListener("click", (ev) => {
-			// 	console.log(ev.target)
-			// })
 		}
 	}, {
-		key: "componentWillReceiveProps",
+		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (nextProps.api.config.identifier !== this.props.api.config.identifier) {
-				// this.props.api = new Api(this.props.service, nextProps.config);
 				this.commitResize();
 			}
 		}
+
+		// shouldComponentUpdate(nextProps, nextState) {
+		// 	return this.state.width !== nextState.width ||
+		// 		this.state.height !== nextState.height ||
+		// 		this.props.api.config.identifier !== nextProps.api.config.identifier;
+		// }
+
 	}, {
-		key: "shouldComponentUpdate",
-		value: function shouldComponentUpdate(nextProps, nextState) {
-			return this.state.width !== nextState.width || this.state.height !== nextState.height || this.props.api.config.identifier !== nextProps.api.config.identifier;
-		}
-	}, {
-		key: "componentWillUnmount",
+		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
-			window.removeEventListener("resize", this.resizeListener);
-			window.removeEventListener("mousemove", this.mousemoveListener);
-			window.removeEventListener("mouseup", this.mouseupListener);
-			// this.unsubscribe();
+			window.removeEventListener('resize', this.resizeListener);
 			this.abortAnimationFrame = true;
 			this.cancelAnimationFrame(this.animationFrameListener);
 		}
 	}, {
-		key: "notifyRealImagePos",
-		value: function notifyRealImagePos() {
-			var zoom = this.props.api.getRealScale(this.scale, this.level);
-			var dims = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
-			_store2.default.dispatch((0, _actions.setRealViewPort)({
-				x: -dims.x / dims.w,
-				y: -dims.y / dims.h,
-				w: this.state.width / dims.w,
-				h: this.state.height / dims.h,
-				zoom: zoom,
-				reposition: false,
-				applyZoom: false
-			}));
-		}
-	}, {
-		key: "receiveNewState",
-		value: function receiveNewState() {
-			if (this.state.realViewPort.reposition) {
-				var _props$api$getRealIma = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
-
-				var w = _props$api$getRealIma.w;
-				var h = _props$api$getRealIma.h;
-
-				this.imagePos.x = -(w * this.state.realViewPort.x / this.scale);
-				this.imagePos.y = -(h * this.state.realViewPort.y / this.scale);
-				this.correctBounds();
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-
-			if (this.state.realViewPort.applyZoom) {
-				this.focalPoint = null;
-				this.props.api.zoomTo(this.state.realViewPort.zoom, this.zoom.bind(this));
-			}
-
-			if (this.state.mousewheel) {
-				this.focalPoint = null;
-				_store2.default.dispatch((0, _actions.sendMouseWheel)(false));
-				this.props.api.zoomBy(this.determineZoomFactor(this.state.mousewheel.deltaY), this.scale, this.level, this.zoom.bind(this));
-			}
-
-			if (this.state.fillMode) {
-				_store2.default.dispatch((0, _actions.setFill)(false));
-				this.imagePos.x = 0;
-				this.imagePos.y = 0;
-				this.loadImage({ scaleMode: this.state.fillMode });
-			}
-		}
-	}, {
-		key: "onAnimationFrame",
+		key: 'onAnimationFrame',
 		value: function onAnimationFrame() {
 			if (this.frameBuffer.length) {
 				this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
@@ -2555,17 +1855,18 @@ var Viewer = function (_React$Component) {
 			} else if (this.resizeDelay > 0) {
 				this.resizeDelay -= 1;
 			}
+
 			if (!this.abortAnimationFrame) {
 				this.requestAnimationFrame(this.animationFrameListener);
 			}
 		}
 	}, {
-		key: "onResize",
+		key: 'onResize',
 		value: function onResize() {
 			this.resizeDelay = RESIZE_DELAY;
 		}
 	}, {
-		key: "commitResize",
+		key: 'commitResize',
 		value: function commitResize() {
 			this.resizeDelay = RESIZE_DELAY;
 			this.imagePos.x = 0;
@@ -2579,246 +1880,65 @@ var Viewer = function (_React$Component) {
 			}, this.loadImage.bind(this));
 		}
 	}, {
-		key: "loadImage",
-		value: function loadImage() {
-			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: this.props.scaleMode } : arguments[0];
+		key: 'notifyRealImagePos',
+		value: function notifyRealImagePos() {
+			var zoom = this.props.api.getRealScale(this.scale, this.level);
+			var dims = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
 
-			this.notifyRealImagePos();
-			this.frameBuffer = this.props.api.loadImage(_extends({
-				viewport: { w: this.state.width, h: this.state.height },
-				position: this.imagePos,
-				onScale: this.onDimensions.bind(this)
-			}, opts));
+			_store2.default.dispatch((0, _actions.setRealViewPort)({
+				x: -dims.x / dims.w,
+				y: -dims.y / dims.h,
+				w: this.state.width / dims.w,
+				h: this.state.height / dims.h,
+				zoom: zoom,
+				reposition: false,
+				applyZoom: false
+			}));
 		}
-	}, {
-		key: "setScale",
-		value: function setScale(s, l) {
-			this.scale = s;
-			this.level = l;
-		}
-	}, {
-		key: "setDimensions",
-		value: function setDimensions(w, h) {
-			this.width = w;
-			this.height = h;
-		}
-	}, {
-		key: "onMouseDown",
-		value: function onMouseDown(ev) {
-			this.mousePos.x = ev.clientX;
-			this.mousePos.y = ev.clientY;
-			this.movement = { x: 0, y: 0 };
-			this.mouseState = MOUSE_DOWN;
-		}
-	}, {
-		key: "onTouchStart",
-		value: function onTouchStart(ev) {
-			if (ev.touches.length > 1) {
-				this.touchState = TOUCH_PINCH;
-			} else {
-				this.touchPos.x = ev.touches[0].pageX;
-				this.touchPos.y = ev.touches[0].pageY;
-				this.movement = { x: 0, y: 0 };
-				this.touchState = TOUCH_START;
-			}
-		}
-	}, {
-		key: "onMouseMove",
-		value: function onMouseMove(ev) {
-			switch (this.mouseState) {
-				case MOUSE_DOWN:
-					this.movement.x = this.mousePos.x - ev.clientX;
-					this.movement.y = this.mousePos.y - ev.clientY;
-					this.imagePos.x -= this.movement.x / this.scale;
-					this.imagePos.y -= this.movement.y / this.scale;
-					this.mousePos.x = ev.clientX;
-					this.mousePos.y = ev.clientY;
-					this.correctBounds();
-					this.loadImage({ scale: this.scale, level: this.level });
-					return ev.preventDefault();
-				case MOUSE_UP:
-					var rect = this.refs.viewer.getBoundingClientRect();
-					this.focalPoint = {
-						x: ev.clientX - rect.left,
-						y: ev.clientY - rect.top
-					};
-					break;
-				default:
-			}
-		}
-	}, {
-		key: "onTouchMove",
-		value: function onTouchMove(ev) {
-			for (var i = 0; i < ev.touches.length; i++) {
-				var cur = { x: ev.touches[i].pageX, y: ev.touches[i].pageY };
-				this.touchmap.positions[i] = cur;
-			}
-			if (ev.touches.length === 2 && this.touchState === TOUCH_PINCH) {
-				var oldD = this.touchmap.pinchDistance;
-				this.touchmap.pinchDistance = parseInt(Math.sqrt((this.touchmap.positions[0].x - this.touchmap.positions[1].x) * (this.touchmap.positions[0].x - this.touchmap.positions[1].x) + (this.touchmap.positions[0].y - this.touchmap.positions[1].y) * (this.touchmap.positions[0].y - this.touchmap.positions[1].y)), 10);
-				this.touchmap.pinchDelta = oldD - this.touchmap.pinchDistance;
-				if (this.touchmap.pinchDelta < 60 && this.touchmap.pinchDelta > -60) {
-					this.props.api.zoomBy(this.determineZoomFactor(this.touchmap.pinchDelta), this.scale, this.level, this.zoom.bind(this));
-				}
-			} else if (this.touchState === TOUCH_START) {
-				this.movement.x = this.touchPos.x - ev.touches[0].pageX;
-				this.movement.y = this.touchPos.y - ev.touches[0].pageY;
-				this.imagePos.x -= this.movement.x / this.scale;
-				this.imagePos.y -= this.movement.y / this.scale;
-				this.touchPos.x = ev.touches[0].pageX;
-				this.touchPos.y = ev.touches[0].pageY;
-				this.correctBounds();
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-			ev.preventDefault();
-			ev.stopPropagation();
-		}
-	}, {
-		key: "onTouchEnd",
-		value: function onTouchEnd() {
-			this.touchState = TOUCH_END;
-		}
-	}, {
-		key: "onMouseUp",
-		value: function onMouseUp() {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "center",
-		value: function center(w, h) {
-			if (w > this.state.width) {
-				this.imagePos.x = -parseInt((w - this.state.width) / 2) / this.scale;
-			} else if (w < this.state.width) {
-				this.imagePos.x = parseInt((this.state.width - w) / 2) / this.scale;
-			}
 
-			if (h > this.state.height) {
-				this.imagePos.y = -parseInt((h - this.state.height) / 2) / this.scale;
-			} else if (h < this.state.width) {
-				this.imagePos.y = parseInt((this.state.height - h) / 2) / this.scale;
-			}
-		}
-	}, {
-		key: "correctBounds",
-		value: function correctBounds() {
-			if (this.state.freeMovement) {
-				return;
-			}
-			if (this.width <= this.state.width) {
-				if (this.imagePos.x < 0) {
-					this.imagePos.x = 0;
-				}
-				if (this.imagePos.x * this.scale + this.width > this.state.width) {
-					this.imagePos.x = (this.state.width - this.width) / this.scale;
-				}
-			} else if (this.width > this.state.width) {
-				if (this.imagePos.x > 0) {
-					this.imagePos.x = 0;
-				}
-				if (this.imagePos.x * this.scale + this.width < this.state.width) {
-					this.imagePos.x = (this.state.width - this.width) / this.scale;
-				}
-			}
+		// center = (w, h) => {
+		// 	if (w > this.state.width) {
+		// 		this.imagePos.x = -parseInt((w - this.state.width) / 2) / this.scale;
+		// 	} else if (w < this.state.width) {
+		// 		this.imagePos.x = parseInt((this.state.width - w) / 2) / this.scale;
+		// 	}
+		//
+		// 	if (h > this.state.height) {
+		// 		this.imagePos.y = -parseInt((h - this.state.height) / 2) / this.scale;
+		// 	} else if (h < this.state.width) {
+		// 		this.imagePos.y = parseInt((this.state.height - h) / 2) / this.scale;
+		// 	}
+		// }
+		//
 
-			if (this.height <= this.state.height) {
-				if (this.imagePos.y < 0) {
-					this.imagePos.y = 0;
-				}
-				if (this.imagePos.y * this.scale + this.height > this.state.height) {
-					this.imagePos.y = (this.state.height - this.height) / this.scale;
-				}
-			} else if (this.height > this.state.height) {
-				if (this.imagePos.y > 0) {
-					this.imagePos.y = 0;
-				}
-				if (this.imagePos.y * this.scale + this.height < this.state.height) {
-					this.imagePos.y = (this.state.height - this.height) / this.scale;
-				}
-			}
-		}
 	}, {
-		key: "onDimensions",
-		value: function onDimensions(s, l, w, h) {
-			this.setDimensions(w, h);
-			this.setScale(s, l);
-			console.log(w, h);
-			this.center(w, h);
-			this.notifyRealImagePos();
-		}
-	}, {
-		key: "zoom",
-		value: function zoom(s, l, w, h) {
-			var focalPoint = this.focalPoint || {
-				x: this.state.width / 2,
-				y: this.state.height / 2
-			};
-
-			var dX = (focalPoint.x - this.imagePos.x * this.scale) / this.width;
-			var dY = (focalPoint.y - this.imagePos.y * this.scale) / this.height;
-
-			this.setDimensions(w, h);
-			this.setScale(s, l);
-
-			if (this.width === null || this.height === null) {
-				this.center(w, h);
-			} else {
-				this.imagePos.x = (focalPoint.x - dX * this.width) / this.scale;
-				this.imagePos.y = (focalPoint.y - dY * this.height) / this.scale;
-				this.correctBounds();
-			}
-			this.loadImage({ scale: this.scale, level: this.level });
-		}
-	}, {
-		key: "determineZoomFactor",
-		value: function determineZoomFactor(delta) {
-			var rev = delta > 0 ? -1 : 1;
-			var rs = this.props.api.getRealScale(this.scale, this.level);
-			if (rs >= 0.6) {
-				return 0.04 * rev;
-			} else if (rs >= 0.3) {
-				return 0.02 * rev;
-			} else if (rs >= 0.1) {
-				return 0.01 * rev;
-			} else if (rs >= 0.05) {
-				return 0.005 * rev;
-			} else {
-				return 0.0025 * rev;
-			}
-		}
-	}, {
-		key: "onWheel",
-		value: function onWheel(ev) {
-			this.props.api.zoomBy(this.determineZoomFactor(ev.nativeEvent.deltaY), this.scale, this.level, this.zoom.bind(this));
-
-			return ev.preventDefault();
-		}
-	}, {
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				"div",
+				'div',
 				{
-					className: "hire-djatoka-client",
-					ref: "viewer"
+					className: 'hire-djatoka-client',
+					ref: 'viewer'
 				},
-				_react2.default.createElement("canvas", {
-					className: "image",
+				_react2.default.createElement('canvas', {
+					className: 'image',
 					height: this.state.height,
 					width: this.state.width
 				}),
-				_react2.default.createElement("canvas", {
-					className: "interaction",
-					height: this.state.height,
-					onMouseDown: this.onMouseDown.bind(this),
-					onTouchEnd: this.onTouchEnd.bind(this),
-					onTouchMove: this.onTouchMove.bind(this),
-					onTouchStart: this.onTouchStart.bind(this),
-					onWheel: this.onWheel.bind(this),
-					width: this.state.width
-				})
+				_react2.default.createElement(_interactionCanvas2.default, _extends({}, this.props, {
+					height: this.height,
+					imagePos: this.imagePos,
+					level: this.level,
+					onCenter: this.center,
+					onLoadImage: this.loadImage,
+					onSetDimensions: this.setDimensions,
+					onSetScale: this.setScale,
+					onSetImagePosition: this.setImagePosition,
+					scale: this.scale,
+					width: this.width,
+					viewerHeight: this.state.height,
+					viewerWidth: this.state.width
+				}))
 			);
 		}
 	}]);
@@ -2827,11 +1947,12 @@ var Viewer = function (_React$Component) {
 }(_react2.default.Component);
 
 Viewer.propTypes = {
+	api: _react2.default.PropTypes.object,
 	config: _react2.default.PropTypes.object,
 	scaleMode: function scaleMode(props, propName) {
 		if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
 			var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
-			props[propName] = "heightFill";
+			props[propName] = 'heightFill';
 			return new Error(msg);
 		}
 	},
@@ -2839,13 +1960,13 @@ Viewer.propTypes = {
 };
 
 Viewer.defaultProps = {
-	scaleMode: "autoFill"
+	scaleMode: 'autoFill'
 };
 
 exports.default = Viewer;
 
-},{"../actions":19,"../store":33,"../util/request-animation-frame":34,"react":"react"}],30:[function(_dereq_,module,exports){
-"use strict";
+},{"../../actions":19,"../../store":26,"../../util/request-animation-frame":27,"./interaction-canvas":23,"react":"react"}],23:[function(_dereq_,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -2853,15 +1974,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = _dereq_("react");
+var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _actions = _dereq_("../actions");
-
-var _store = _dereq_("../store");
-
-var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2873,213 +1988,219 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var MOUSE_UP = 0;
 var MOUSE_DOWN = 1;
+var TOUCH_END = 0;
+var TOUCH_START = 1;
+var TOUCH_PINCH = 2;
 
-var Zoom = function (_React$Component) {
-	_inherits(Zoom, _React$Component);
+var InteractionCanvas = function (_Component) {
+	_inherits(InteractionCanvas, _Component);
 
-	function Zoom(props) {
-		_classCallCheck(this, Zoom);
+	function InteractionCanvas(props) {
+		_classCallCheck(this, InteractionCanvas);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Zoom).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InteractionCanvas).call(this, props));
 
-		_this.state = _store2.default.getState();
+		_this.onMouseDown = function (ev) {
+			_this.mousePos.x = ev.clientX;
+			_this.mousePos.y = ev.clientY;
+			_this.movement = { x: 0, y: 0 };
+			_this.mouseState = MOUSE_DOWN;
+		};
 
-		_this.mouseupListener = _this.onMouseUp.bind(_this);
+		_this.onMouseMove = function (ev) {
+			switch (_this.mouseState) {
+				case MOUSE_DOWN:
+					_this.movement.x = _this.mousePos.x - ev.clientX;
+					_this.movement.y = _this.mousePos.y - ev.clientY;
+
+					var imgPosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
+					var imgPosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
+					_this.props.onSetImagePosition(imgPosX, imgPosY);
+
+					_this.mousePos.x = ev.clientX;
+					_this.mousePos.y = ev.clientY;
+					_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+					ev.preventDefault();
+					break;
+				case MOUSE_UP:
+					{
+						var rect = _this.refs.interactionCanvas.getBoundingClientRect();
+						_this.focalPoint = {
+							x: ev.clientX - rect.left,
+							y: ev.clientY - rect.top
+						};
+						break;
+					}
+				default:
+			}
+		};
+
+		_this.onMouseUp = function () {
+			if (_this.mouseState === MOUSE_DOWN) {
+				_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+			}
+			_this.mouseState = MOUSE_UP;
+		};
+
+		_this.onTouchStart = function (ev) {
+			if (ev.touches.length > 1) {
+				_this.touchState = TOUCH_PINCH;
+			} else {
+				_this.touchPos.x = ev.touches[0].pageX;
+				_this.touchPos.y = ev.touches[0].pageY;
+				_this.movement = { x: 0, y: 0 };
+				_this.touchState = TOUCH_START;
+			}
+		};
+
+		_this.onTouchMove = function (ev) {
+			for (var i = 0; i < ev.touches.length; i++) {
+				var cur = {
+					x: ev.touches[i].pageX,
+					y: ev.touches[i].pageY
+				};
+				_this.touchmap.positions[i] = cur;
+			}
+			if (ev.touches.length === 2 && _this.touchState === TOUCH_PINCH) {
+				var oldD = _this.touchmap.pinchDistance;
+				_this.touchmap.pinchDistance = parseInt(Math.sqrt((_this.touchmap.positions[0].x - _this.touchmap.positions[1].x) * (_this.touchmap.positions[0].x - _this.touchmap.positions[1].x) + (_this.touchmap.positions[0].y - _this.touchmap.positions[1].y) * (_this.touchmap.positions[0].y - _this.touchmap.positions[1].y)), 10);
+				_this.touchmap.pinchDelta = oldD - _this.touchmap.pinchDistance;
+				if (_this.touchmap.pinchDelta < 60 && _this.touchmap.pinchDelta > -60) {
+					var delta = _this.touchmap.pinchDelta;
+					_this.props.onZoom(delta, _this.focalPoint);
+					// this.props.api.zoomBy(delta, this.props.scale, this.props.level, this.zoom.bind(this));
+				}
+			} else if (_this.touchState === TOUCH_START) {
+					_this.movement.x = _this.touchPos.x - ev.touches[0].pageX;
+					_this.movement.y = _this.touchPos.y - ev.touches[0].pageY;
+
+					var imagePosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
+					var imagePosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
+					_this.props.onSetImagePosition(imagePosX, imagePosY);
+
+					_this.touchPos.x = ev.touches[0].pageX;
+					_this.touchPos.y = ev.touches[0].pageY;
+
+					_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+				}
+			ev.preventDefault();
+			ev.stopPropagation();
+		};
+
+		_this.onTouchEnd = function () {
+			_this.touchState = TOUCH_END;
+		};
+
+		_this.onWheel = function (ev) {
+			var delta = ev.nativeEvent.deltaY;
+			_this.props.onZoom(delta, _this.focalPoint);
+
+			return ev.preventDefault();
+		};
+
+		_this.movement = { x: 0, y: 0 };
+		_this.touchPos = { x: 0, y: 0 };
+		_this.mousePos = { x: 0, y: 0 };
+		_this.mouseState = MOUSE_UP;
+		_this.focalPoint = null;
 		_this.mousemoveListener = _this.onMouseMove.bind(_this);
-		_this.touchMoveListener = _this.onTouchMove.bind(_this);
+		_this.mouseupListener = _this.onMouseUp.bind(_this);
+		_this.touchmap = {
+			startPos: false,
+			positions: [],
+			tapStart: 0,
+			lastTap: 0,
+			pinchDelta: 0,
+			pinchDistance: 0
+		};
 		return _this;
 	}
 
-	_createClass(Zoom, [{
-		key: "componentDidMount",
+	_createClass(InteractionCanvas, [{
+		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var _this2 = this;
-
-			window.addEventListener("mouseup", this.mouseupListener);
-			window.addEventListener("mousemove", this.mousemoveListener);
-			window.addEventListener("touchend", this.mouseupListener);
-			window.addEventListener("touchmove", this.touchMoveListener);
-
-			this.unsubscribe = _store2.default.subscribe(function () {
-				return _this2.setState(_store2.default.getState());
-			});
+			window.addEventListener('mousemove', this.mousemoveListener);
+			window.addEventListener('mouseup', this.mouseupListener);
 		}
 	}, {
-		key: "componentWillUnmount",
+		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
-			window.removeEventListener("mouseup", this.mouseupListener);
-			window.removeEventListener("mousemove", this.mousemoveListener);
-			window.removeEventListener("touchend", this.mouseupListener);
-			window.removeEventListener("touchmove", this.touchMoveListener);
-
-			this.unsubscribe();
+			window.removeEventListener('mousemove', this.mousemoveListener);
+			window.removeEventListener('mouseup', this.mouseupListener);
 		}
 	}, {
-		key: "dispatchRealScale",
-		value: function dispatchRealScale(pageX) {
-			var rect = _react2.default.findDOMNode(this).children[0].getBoundingClientRect();
-
-			if (rect.width > 0 && !this.state.realViewPort.applyZoom) {
-				var zoom = (pageX - rect.left) / rect.width * 2;
-				if (zoom < 0.01) {
-					zoom = 0.01;
-				} else if (zoom > 2.0) {
-					zoom = 2.0;
-				}
-				_store2.default.dispatch((0, _actions.setRealViewPort)({
-					zoom: zoom,
-					applyZoom: true
-				}));
-			}
-		}
-	}, {
-		key: "onMouseDown",
-		value: function onMouseDown(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchRealScale(ev.pageX);
-		}
-	}, {
-		key: "onTouchStart",
-		value: function onTouchStart(ev) {
-			this.mouseState = MOUSE_DOWN;
-			this.dispatchRealScale(ev.touches[0].pageX);
-			return ev.preventDefault();
-		}
-	}, {
-		key: "onMouseMove",
-		value: function onMouseMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchRealScale(ev.pageX);
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onTouchMove",
-		value: function onTouchMove(ev) {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.dispatchRealScale(ev.touches[0].pageX);
-				return ev.preventDefault();
-			}
-		}
-	}, {
-		key: "onMouseUp",
-		value: function onMouseUp() {
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "onWheel",
-		value: function onWheel(ev) {
-			_store2.default.dispatch((0, _actions.sendMouseWheel)({ deltaY: ev.deltaY }));
-			return ev.preventDefault();
-		}
-	}, {
-		key: "render",
+		key: 'render',
 		value: function render() {
-			var zoom = parseInt(this.state.realViewPort.zoom * 100);
-
-			return _react2.default.createElement(
-				"span",
-				{ className: "hire-zoom-bar", onWheel: this.onWheel.bind(this) },
-				_react2.default.createElement(
-					"svg",
-					{
-						onMouseDown: this.onMouseDown.bind(this),
-						onTouchStart: this.onTouchStart.bind(this),
-						viewBox: "-12 0 224 24" },
-					_react2.default.createElement("path", { d: "M0 12 L 200 12 Z" }),
-					_react2.default.createElement("circle", { cx: zoom > 200 ? 200 : zoom, cy: "12", r: "12" })
-				),
-				_react2.default.createElement(
-					"label",
-					null,
-					zoom,
-					"%"
-				)
-			);
+			return _react2.default.createElement('canvas', {
+				className: 'interaction',
+				height: this.props.viewportHeight,
+				onMouseDown: this.onMouseDown,
+				onTouchEnd: this.onTouchEnd,
+				onTouchMove: this.onTouchMove,
+				onTouchStart: this.onTouchStart,
+				onWheel: this.onWheel,
+				ref: 'interactionCanvas',
+				width: this.props.viewportWidth
+			});
 		}
 	}]);
 
-	return Zoom;
-}(_react2.default.Component);
+	return InteractionCanvas;
+}(_react.Component);
 
-Zoom.propTypes = {
-	fill: _react2.default.PropTypes.string,
-	stroke: _react2.default.PropTypes.string
+InteractionCanvas.propTypes = {
+	api: _react.PropTypes.object,
+	imagePos: _react.PropTypes.object,
+	onLoadImage: _react.PropTypes.func,
+	onSetImagePosition: _react.PropTypes.func,
+	onZoom: _react.PropTypes.func,
+	level: _react.PropTypes.number,
+	scale: _react.PropTypes.number,
+	viewportHeight: _react.PropTypes.number,
+	viewportWidth: _react.PropTypes.number
 };
 
-Zoom.defaultProps = {
-	fill: "rgba(0,0,0, 0.7)",
-	stroke: "rgba(0,0,0, 1)"
-};
+InteractionCanvas.defaultProps = {};
 
-exports.default = Zoom;
+exports.default = InteractionCanvas;
 
-},{"../actions":19,"../store":33,"react":"react"}],31:[function(_dereq_,module,exports){
-"use strict";
+},{"react":"react"}],24:[function(_dereq_,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FreeMovementButton = exports.FillButton = exports.Zoom = exports.Minimap = exports.Viewer = exports.DjatokaClient = undefined;
+exports.Viewer = exports.DjatokaClient = undefined;
 
-var _insertCss = _dereq_("insert-css");
+var _insertCss = _dereq_('insert-css');
 
 var _insertCss2 = _interopRequireDefault(_insertCss);
 
-var _djatokaClient = _dereq_("./components/djatoka-client");
+var _djatokaClient = _dereq_('./components/djatoka-client');
 
 var _djatokaClient2 = _interopRequireDefault(_djatokaClient);
 
-var _viewer = _dereq_("./components/viewer");
+var _viewer = _dereq_('./components/viewer');
 
 var _viewer2 = _interopRequireDefault(_viewer);
 
-var _minimap = _dereq_("./components/minimap");
-
-var _minimap2 = _interopRequireDefault(_minimap);
-
-var _zoom = _dereq_("./components/zoom");
-
-var _zoom2 = _interopRequireDefault(_zoom);
-
-var _fillButton = _dereq_("./components/fill-button");
-
-var _fillButton2 = _interopRequireDefault(_fillButton);
-
-var _freeMovementButton = _dereq_("./components/free-movement-button");
-
-var _freeMovementButton2 = _interopRequireDefault(_freeMovementButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Use require() because brfs cannot handle import
 
 
 var css = Buffer("LmhpcmUtZGphdG9rYS1jbGllbnQsCi5oaXJlLWRqYXRva2EtbWluaW1hcCwKI2hpcmUtZGphdG9rYS1jbGllbnQtYXBwIHsKCXdpZHRoOiAxMDAlOwoJaGVpZ2h0OiAxMDAlOwp9CgouaGlyZS1kamF0b2thLWNsaWVudCA+IC5pbnRlcmFjdGlvbiwKLmhpcmUtZGphdG9rYS1jbGllbnQgPiAuaW1hZ2UsCi5oaXJlLWRqYXRva2EtbWluaW1hcCA+IC5pbnRlcmFjdGlvbiwKLmhpcmUtZGphdG9rYS1taW5pbWFwID4gLmltYWdlIHsKCXBvc2l0aW9uOiBhYnNvbHV0ZTsKfQoKLmhpcmUtZGphdG9rYS1jbGllbnQgPiAuaW50ZXJhY3Rpb24sCi5oaXJlLWRqYXRva2EtbWluaW1hcCA+IC5pbnRlcmFjdGlvbiB7Cgl6LWluZGV4OiAxOwp9CgouaGlyZS16b29tLWJhciAqIHsKICAgIC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtd2Via2l0LXVzZXItc2VsZWN0OiBub25lOwogICAgLW1zLXVzZXItc2VsZWN0OiBub25lOyAKICAgIHVzZXItc2VsZWN0OiBub25lOyAKICAgIC13ZWJraXQtdXNlci1kcmFnOiBub25lOwogICAgdXNlci1kcmFnOiBub25lOwp9Ci5oaXJlLXpvb20tYmFyIHsKCWRpc3BsYXk6IGlubGluZS1ibG9jazsKCW1pbi13aWR0aDogNDAwcHg7CgltaW4taGVpZ2h0OiA0NHB4Owp9CgouaGlyZS16b29tLWJhciBsYWJlbCB7CglkaXNwbGF5OiBpbmxpbmUtYmxvY2s7Cgl3aWR0aDogMTUlOwoJaGVpZ2h0OiAxMDAlOwoJdmVydGljYWwtYWxpZ246IHRvcDsKfQouaGlyZS16b29tLWJhciBsYWJlbCA+ICogewoJZGlzcGxheTogaW5saW5lLWJsb2NrOwoJaGVpZ2h0OiAxMDAlOwoJbGluZS1oZWlnaHQ6IDM0cHgKfQouaGlyZS16b29tLWJhciBzdmcgewoJY3Vyc29yOiBwb2ludGVyOwoJZmlsbDogI0JEQTQ3RTsKCXN0cm9rZTogI0YxRUJFNjsKCXdpZHRoOiA4NSU7Cn0KCi5oaXJlLXpvb20tYmFyIHN2ZyBwYXRoIHsKCXN0cm9rZS13aWR0aDogNnB4Owp9CgouaGlyZS16b29tLWJhciBzdmcgY2lyY2xlIHsKCXN0cm9rZS13aWR0aDogMDsKfQoKLmhpcmUtZmlsbC1idXR0b24sCi5oaXJlLWZyZWUtbW92ZW1lbnQtYnV0dG9uIHsKCW1hcmdpbjogMDsKCXBhZGRpbmc6IDA7Cglib3JkZXI6IDA7CgliYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsKCWZvbnQtZmFtaWx5OiBpbmhlcml0OwoJY3Vyc29yOiBwb2ludGVyOwoJb3V0bGluZTogMDsKCXdpZHRoOiA1MHB4OwoJaGVpZ2h0OiAyNHB4OwoJcGFkZGluZzogMCA2cHg7CgliYWNrZ3JvdW5kLWNvbG9yOiAjQkRBNDdFOwoJbWFyZ2luLXJpZ2h0OiA2cHg7Cglib3JkZXItcmFkaXVzOiAzcHg7Cgljb2xvcjogI0YxRUJFNjsKCXZlcnRpY2FsLWFsaWduOiB0b3A7Cgp9CgoKLmhpcmUtZmlsbC1idXR0b246Oi1tb3otZm9jdXMtaW5uZXIsCi5oaXJlLWZyZWUtbW92ZW1lbnQtYnV0dG9uOjotbW96LWZvY3VzLWlubmVyIHsKCXBhZGRpbmc6IDA7Cglib3JkZXI6IDA7Cn0KCi5oaXJlLWZpbGwtYnV0dG9uIHN2ZywKLmhpcmUtZnJlZS1tb3ZlbWVudC1idXR0b24gc3ZnIHsKCXN0cm9rZTogI0YxRUJFNjsKCXN0cm9rZS13aWR0aDogMXB4OwoJZmlsbDogI0YxRUJFNjsKCglzdHJva2Utb3BhY2l0eTogMTsKCWhlaWdodDogMTAwJQp9CgouaGlyZS1mcmVlLW1vdmVtZW50LWJ1dHRvbi5hY3RpdmUgc3ZnIHsKCWZpbGw6ICNhZmE7Cn0=","base64");
 (0, _insertCss2.default)(css, { prepend: true });
 
-// import React from "react";
-// React.initializeTouchEvents(true);
-
 exports.DjatokaClient = _djatokaClient2.default;
 exports.Viewer = _viewer2.default;
-exports.Minimap = _minimap2.default;
-exports.Zoom = _zoom2.default;
-exports.FillButton = _fillButton2.default;
-exports.FreeMovementButton = _freeMovementButton2.default;
+// export Minimap from './components/minimap';
+// export Zoom from './components/zoom';
+// export FillButton from './components/fill-button';
+// export FreeMovementButton from './components/free-movement-button';
 
-// export {
-// 	DjatokaClient,
-// 	Viewer,
-// 	Minimap,
-// 	Zoom,
-// 	FillButton,
-// 	FreeMovementButton
-// };
-//
-// export default DjatokaClient;
-
-},{"./components/djatoka-client":21,"./components/fill-button":22,"./components/free-movement-button":23,"./components/minimap":28,"./components/viewer":29,"./components/zoom":30,"insert-css":1}],32:[function(_dereq_,module,exports){
-"use strict";
+},{"./components/djatoka-client":21,"./components/viewer":22,"insert-css":1}],25:[function(_dereq_,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -3091,39 +2212,53 @@ exports.default = function () {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	var action = arguments[1];
 
+	var nextState = state;
+
 	switch (action.type) {
-		case "INITIAL":
-			state = _extends({}, state, {
+		case 'INITIAL':
+			nextState = _extends({}, nextState, {
 				api: new _api2.default(action.service, action.config),
 				scaleMode: action.scaleMode
 			});
 			break;
 
-		case "CREATE_NEXT_API":
-			state = _extends({}, state, { api: new _api2.default(state.api.service, action.config) });
+		case 'CREATE_NEXT_API':
+			nextState = _extends({}, nextState, {
+				api: new _api2.default(nextState.api.service, action.config)
+			});
 			break;
 
-		case "SET_REAL_VIEWPORT":
-			state = _extends({}, state, { realViewPort: _extends({}, state.realViewPort, action.realViewPort) });
+		case 'SET_REAL_VIEWPORT':
+			nextState = _extends({}, nextState, {
+				realViewPort: _extends({}, nextState.realViewPort, action.realViewPort)
+			});
 			break;
 
-		case "SEND_MOUSEWHEEL":
-			state = _extends({}, state, { mousewheel: action.mousewheel });
+		case 'SEND_MOUSEWHEEL':
+			nextState = _extends({}, nextState, {
+				mousewheel: action.mousewheel
+			});
 			break;
 
-		case "SET_FILL":
-			state = _extends({}, state, { fillMode: action.mode });
+		case 'SET_FILL':
+			nextState = _extends({}, nextState, {
+				fillMode: action.mode
+			});
 			break;
 
-		case "SET_FREE_MOVEMENT":
-			state = _extends({}, state, { freeMovement: action.mode });
+		case 'SET_FREE_MOVEMENT':
+			nextState = _extends({}, nextState, {
+				freeMovement: action.mode
+			});
 			break;
+
+		default:
 	}
 
-	return state;
+	return nextState;
 };
 
-var _api = _dereq_("../api");
+var _api = _dereq_('../api');
 
 var _api2 = _interopRequireDefault(_api);
 
@@ -3136,10 +2271,17 @@ var initialState = {
 	fillMode: null,
 	freeMovement: false,
 	mousewheel: null,
-	realViewPort: { x: 0, y: 0, w: 0, h: 0, zoom: 0, reposition: false }
+	realViewPort: {
+		x: 0,
+		y: 0,
+		w: 0,
+		h: 0,
+		zoom: 0,
+		reposition: false
+	}
 };
 
-},{"../api":20}],33:[function(_dereq_,module,exports){
+},{"../api":20}],26:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3158,7 +2300,7 @@ var store = (0, _redux.createStore)(_reducers2.default);
 
 exports.default = store;
 
-},{"../reducers":32,"redux":15}],34:[function(_dereq_,module,exports){
+},{"../reducers":25,"redux":15}],27:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3211,5 +2353,5 @@ var cancelAnimationFrame = exports.cancelAnimationFrame = 'function' === typeof 
     return;
 };
 
-},{}]},{},[31])(31)
+},{}]},{},[24])(24)
 });
