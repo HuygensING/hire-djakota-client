@@ -1,3 +1,9 @@
+### v2.1.0	(2016/6/28 12:59)
+* Refactor Djatoka client
+* New build
+* Add viewer dir
+* WiP
+
 ### v2.0.0	(2016/6/2 10:54)
 * Bump packages
 * Fix errors caused by bumping React to 15.0.1
