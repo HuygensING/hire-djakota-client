@@ -1,3 +1,7 @@
+### v2.1.1	(2016/8/1 7:40)
+* New build
+* New build
+
 ### v2.1.0	(2016/6/28 12:59)
 * Refactor Djatoka client
 * New build
