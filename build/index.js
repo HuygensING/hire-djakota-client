@@ -1339,7 +1339,7 @@ function createNextApi(config) {
 }
 
 },{}],20:[function(_dereq_,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -1349,7 +1349,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _qs = _dereq_("qs");
+var _qs = _dereq_('qs');
 
 var _qs2 = _interopRequireDefault(_qs);
 
@@ -1377,21 +1377,21 @@ var Api = function () {
 		this.service = service;
 		this.config = config;
 		this.params = {
-			"rft_id": this.config.identifier,
-			"url_ver": "Z39.88-2004",
-			"svc_val_fmt": "info:ofi/fmt:kev:mtx:jpeg2000",
-			"svc.format": "image/jpeg"
+			rft_id: this.config.identifier,
+			url_ver: 'Z39.88-2004',
+			svc_val_fmt: 'info:ofi/fmt:kev:mtx:jpeg2000',
+			'svc.format': 'image/jpeg'
 		};
-		this.levels = parseInt(this.config.levels);
-		this.fullWidth = parseInt(this.config.width);
-		this.fullHeight = parseInt(this.config.height);
+		this.levels = parseInt(this.config.levels, 10);
+		this.fullWidth = parseInt(this.config.width, 10);
+		this.fullHeight = parseInt(this.config.height, 10);
 		this.resolutions = [];
 		this.initializeResolutions(this.levels - 1, this.fullWidth, this.fullHeight);
 		this.tileMap = {};
 	}
 
 	_createClass(Api, [{
-		key: "initializeResolutions",
+		key: 'initializeResolutions',
 		value: function initializeResolutions() {
 			var level = arguments.length <= 0 || arguments[0] === undefined ? this.levels - 1 : arguments[0];
 			var w = arguments.length <= 1 || arguments[1] === undefined ? this.fullWidth : arguments[1];
@@ -1399,11 +1399,11 @@ var Api = function () {
 
 			this.resolutions.unshift([h, w]);
 			if (level > 0) {
-				this.initializeResolutions(--level, parseInt(Math.floor(w / 2)), parseInt(Math.floor(h / 2)));
+				this.initializeResolutions(--level, parseInt(Math.floor(w / 2), 10), parseInt(Math.floor(h / 2), 10));
 			}
 		}
 	}, {
-		key: "findLevel",
+		key: 'findLevel',
 		value: function findLevel(dim, idx) {
 			var i = void 0;
 			for (i = 0; i < this.resolutions.length; i++) {
@@ -1414,18 +1414,18 @@ var Api = function () {
 			return i;
 		}
 	}, {
-		key: "makeTileUrl",
+		key: 'makeTileUrl',
 		value: function makeTileUrl(level, dims) {
-			return this.service + "?" + _qs2.default.stringify(_extends({}, this.params, {
-				"svc.region": dims.join(","),
-				"svc.level": level,
-				"svc_id": "info:lanl-repo/svc/getRegion"
+			return this.service + '?' + _qs2.default.stringify(_extends({}, this.params, {
+				'svc.region': dims.join(','),
+				'svc.level': level,
+				svc_id: 'info:lanl-repo/svc/getRegion'
 			}));
 		}
 	}, {
-		key: "fetchTile",
+		key: 'fetchTile',
 		value: function fetchTile(tile) {
-			var key = tile.realX + "-" + tile.realY + "-" + tile.level + "-" + tile.url;
+			var key = tile.realX + '-' + tile.realY + '-' + tile.level + '-' + tile.url;
 			if (!this.tileMap[key]) {
 				this.tileMap[key] = new Image();
 				this.tileMap[key].src = tile.url;
@@ -1433,7 +1433,7 @@ var Api = function () {
 			return [this.tileMap[key], tile];
 		}
 	}, {
-		key: "getStart",
+		key: 'getStart',
 		value: function getStart(dim) {
 			var n = 0;
 			while (dim + n < -TILE_SIZE) {
@@ -1442,66 +1442,77 @@ var Api = function () {
 			return n;
 		}
 	}, {
-		key: "makeTiles",
+		key: 'makeTiles',
 		value: function makeTiles(opts, level, scale) {
 			var upscaleFactor = this.resolutions.length - level;
 			var yStart = this.getStart(opts.position.y);
 			var xStart = this.getStart(opts.position.x);
 			var tiles = [];
+
 			for (var y = yStart; (y - yStart) * scale - TILE_SIZE * 2 + opts.position.y < opts.viewport.h && upScale(y, upscaleFactor) < this.fullHeight; y += TILE_SIZE) {
-
 				for (var x = xStart; (x - xStart) * scale - TILE_SIZE * 2 + opts.position.x < opts.viewport.w && upScale(x, upscaleFactor) < this.fullWidth; x += TILE_SIZE) {
-
 					tiles.push(this.fetchTile({
 						realX: x,
 						realY: y,
-						pos: {
-							x: x,
-							y: y
-						},
+						pos: { x: x, y: y },
 						level: level,
 						url: this.makeTileUrl(level, [upScale(y, upscaleFactor), upScale(x, upscaleFactor), TILE_SIZE, TILE_SIZE])
 					}));
 				}
 			}
+
 			return tiles;
 		}
 	}, {
-		key: "findLevelForScale",
+		key: 'findLevelForScale',
 		value: function findLevelForScale(s) {
 			var level = arguments.length <= 1 || arguments[1] === undefined ? this.levels : arguments[1];
 			var current = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
 
-			if (s > current / 2 || level === 1) {
-				return level;
-			}
+			if (s > current / 2 || level === 1) return level;
 			return this.findLevelForScale(s, --level, current / 2);
 		}
 	}, {
-		key: "zoomTo",
-		value: function zoomTo(zoom, onScale) {
-			var newLevel = this.findLevelForScale(zoom);
-			var newScale = upScale(zoom, this.resolutions.length - newLevel);
-			onScale(newScale, newLevel, Math.ceil(this.fullWidth * zoom), Math.ceil(this.fullHeight * zoom));
+		key: 'determineZoomFactor',
+		value: function determineZoomFactor(delta, scale, level) {
+			var rev = delta > 0 ? -1 : 1;
+			var rs = this.getRealScale(scale, level);
+			var factor = void 0;
+
+			if (rs >= 0.6) {
+				factor = 0.04 * rev;
+			} else if (rs >= 0.3) {
+				factor = 0.02 * rev;
+			} else if (rs >= 0.1) {
+				factor = 0.01 * rev;
+			} else if (rs >= 0.05) {
+				factor = 0.005 * rev;
+			} else {
+				factor = 0.0025 * rev;
+			}
+
+			return factor;
 		}
 	}, {
-		key: "zoomBy",
-		value: function zoomBy(factor, scale, level, onScale) {
+		key: 'getZoomData',
+		value: function getZoomData(delta, scale, level) {
+			var factor = this.determineZoomFactor(delta, scale, level);
 			var viewportScale = this.getRealScale(scale, level) + factor;
 			if (viewportScale < 0.01) {
 				viewportScale = 0.01;
 			}
 			var newLevel = this.findLevelForScale(viewportScale);
 			var newScale = upScale(viewportScale, this.resolutions.length - newLevel);
-			onScale(newScale, newLevel, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
+
+			return [newScale, newLevel, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale)];
 		}
 	}, {
-		key: "getRealScale",
+		key: 'getRealScale',
 		value: function getRealScale(scale, level) {
 			return downScale(scale, this.resolutions.length - level);
 		}
 	}, {
-		key: "getRealImagePos",
+		key: 'getRealImagePos',
 		value: function getRealImagePos(position, scale, level) {
 			return {
 				x: Math.floor(position.x * scale),
@@ -1511,48 +1522,40 @@ var Api = function () {
 			};
 		}
 	}, {
-		key: "widthFill",
+		key: 'prepareMakeTiles',
+		value: function prepareMakeTiles(opts, scale, level) {
+			var upscaleFactor = this.resolutions.length - level;
+			var viewportScale = downScale(scale, upscaleFactor);
+
+			if (opts.onScale) {
+				opts.onScale(scale, level, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
+			}
+
+			return this.makeTiles(opts, level, scale);
+		}
+	}, {
+		key: 'widthFill',
 		value: function widthFill(opts) {
 			var level = this.findLevel(opts.viewport.w, IDX_WIDTH);
 			var scale = opts.viewport.w / this.resolutions[level - 1][IDX_WIDTH];
-			var upscaleFactor = this.resolutions.length - level;
-			var viewportScale = downScale(scale, upscaleFactor);
-
-			if (opts.onScale) {
-				opts.onScale(scale, level, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
-			}
-			return this.makeTiles(opts, level, scale);
+			return this.prepareMakeTiles(opts, scale, level);
 		}
 	}, {
-		key: "widthFillTop",
+		key: 'widthFillTop',
 		value: function widthFillTop(opts) {
 			var level = this.findLevel(opts.viewport.w, IDX_WIDTH);
 			var scale = opts.viewport.w / this.resolutions[level - 1][IDX_WIDTH];
-			var upscaleFactor = this.resolutions.length - level;
-			var viewportScale = downScale(scale, upscaleFactor);
-
-			if (opts.onScale) {
-				opts.onScale(scale, level, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
-			}
-			console.log(opts, level, scale);
-			return this.makeTiles(opts, level, scale);
+			return this.prepareMakeTiles(opts, scale, level);
 		}
 	}, {
-		key: "heightFill",
+		key: 'heightFill',
 		value: function heightFill(opts) {
 			var level = this.findLevel(opts.viewport.h, IDX_HEIGHT);
 			var scale = opts.viewport.h / this.resolutions[level - 1][IDX_HEIGHT];
-			var upscaleFactor = this.resolutions.length - level;
-			var viewportScale = downScale(scale, upscaleFactor);
-
-			if (opts.onScale) {
-				opts.onScale(scale, level, Math.ceil(this.fullWidth * viewportScale), Math.ceil(this.fullHeight * viewportScale));
-			}
-
-			return this.makeTiles(opts, level, scale);
+			return this.prepareMakeTiles(opts, scale, level);
 		}
 	}, {
-		key: "autoFill",
+		key: 'autoFill',
 		value: function autoFill(opts) {
 			if (this.fullHeight > this.fullWidth) {
 				return this.heightFill(opts);
@@ -1561,7 +1564,7 @@ var Api = function () {
 			}
 		}
 	}, {
-		key: "fullZoom",
+		key: 'fullZoom',
 		value: function fullZoom(opts) {
 			var level = this.levels;
 			var scale = 1;
@@ -1572,7 +1575,7 @@ var Api = function () {
 			return this.makeTiles(opts, level, scale);
 		}
 	}, {
-		key: "loadImage",
+		key: 'loadImage',
 		value: function loadImage(opts) {
 			if (opts.scaleMode) {
 				return this[opts.scaleMode](opts);
@@ -1685,28 +1688,338 @@ DjatokaClient.defaultProps = {};
 
 exports.default = DjatokaClient;
 
-},{"../actions":19,"../store":25,"react":"react"}],22:[function(_dereq_,module,exports){
-"use strict";
+},{"../actions":19,"../store":26,"react":"react"}],22:[function(_dereq_,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = _dereq_("react");
+var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _actions = _dereq_("../actions");
+var _interactionCanvas = _dereq_('./interaction-canvas');
 
-var _store = _dereq_("../store");
+var _interactionCanvas2 = _interopRequireDefault(_interactionCanvas);
+
+var _actions = _dereq_('../../actions');
+
+var _store = _dereq_('../../store');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _requestAnimationFrame = _dereq_("../util/request-animation-frame");
+var _requestAnimationFrame = _dereq_('../../util/request-animation-frame');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SUPPORTED_SCALE_MODES = ['heightFill', 'widthFill', 'widthFillTop', 'autoFill', 'fullZoom'];
+
+var Viewer = function (_React$Component) {
+	_inherits(Viewer, _React$Component);
+
+	function Viewer(props) {
+		_classCallCheck(this, Viewer);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).call(this, props));
+
+		_this.loadImage = function () {
+			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: _this.props.scaleMode } : arguments[0];
+
+			_this.notifyRealImagePos();
+			_this.frameBuffer = _this.props.api.loadImage(_extends({
+				viewport: {
+					w: _this.state.viewportWidth,
+					h: _this.state.viewportHeight
+				},
+				position: _this.imagePos,
+				onScale: function onScale(scale, level, width, height) {
+					_this.setDimensions(width, height);
+					_this.setScale(scale, level);
+					_this.centerImage(width, height);
+					_this.notifyRealImagePos();
+				}
+			}, opts));
+		};
+
+		_this.setScale = function (scale, level) {
+			_this.scale = scale;
+			_this.level = level;
+		};
+
+		_this.setDimensions = function (width, height) {
+			_this.width = width;
+			_this.height = height;
+		};
+
+		_this.centerImage = function (w, h) {
+			var x = w > _this.state.viewportWidth ? -((w - _this.state.viewportWidth) / 2) / _this.scale : (_this.state.viewportWidth - w) / 2 / _this.scale;
+
+			var y = h > _this.state.viewportHeight ? -((h - _this.state.viewportHeight) / 2) / _this.scale : (_this.state.viewportHeight - h) / 2 / _this.scale;
+
+			if (_this.props.scaleMode === 'widthFillTop') y = 0;
+
+			_this.setImagePosition(x, y);
+		};
+
+		_this.setImagePosition = function (x, y) {
+			_this.imagePos = _this.correctBounds(x, y);
+		};
+
+		_this.zoom = function (scale, level, width, height, focalPoint) {
+			if (_this.width == null || _this.height == null) {
+				_this.centerImage(width, height);
+			} else {
+				focalPoint = focalPoint || {
+					x: _this.state.viewportWidth / 2,
+					y: _this.state.viewportHeight / 2
+				};
+
+				// Calc Δx and Δy with previous scale, width and height
+				var dX = (focalPoint.x - _this.imagePos.x * _this.scale) / _this.width;
+				var dY = (focalPoint.y - _this.imagePos.y * _this.scale) / _this.height;
+
+				var x = (focalPoint.x - dX * width) / scale;
+				var y = (focalPoint.y - dY * height) / scale;
+
+				_this.setImagePosition(x, y);
+			}
+
+			_this.loadImage({ scale: scale, level: level });
+
+			// Set the next scale, level, width and height
+			_this.setScale(scale, level);
+			_this.setDimensions(width, height);
+		};
+
+		_this.handleZoom = function (delta, focalPoint) {
+			var _this$props$api$getZo = _this.props.api.getZoomData(delta, _this.scale, _this.level);
+
+			var _this$props$api$getZo2 = _slicedToArray(_this$props$api$getZo, 4);
+
+			var scale = _this$props$api$getZo2[0];
+			var level = _this$props$api$getZo2[1];
+			var width = _this$props$api$getZo2[2];
+			var height = _this$props$api$getZo2[3];
+
+
+			_this.zoom(scale, level, width, height, focalPoint);
+		};
+
+		_this.state = {
+			viewportWidth: null,
+			vierwPortHeight: null
+		};
+
+		_this.imagePos = { x: 0, y: 0 };
+		_this.imageCtx = null;
+		_this.scale = 1.0;
+		_this.level = null;
+		_this.width = null;
+		_this.height = null;
+		_this.abortAnimationFrame = false;
+		_this.animationFrameListener = _this.onAnimationFrame.bind(_this);
+		_this.frameBuffer = [];
+		_this.touchmap = {
+			startPos: false,
+			positions: [],
+			tapStart: 0,
+			lastTap: 0,
+			pinchDelta: 0,
+			pinchDistance: 0
+		};
+		_this.requestAnimationFrame = _requestAnimationFrame.requestAnimationFrame;
+		_this.cancelAnimationFrame = _requestAnimationFrame.cancelAnimationFrame;
+		return _this;
+	}
+
+	_createClass(Viewer, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.abortAnimationFrame = false;
+			this.reset();
+			this.imageCtx = this.refs.viewer.children[0].getContext('2d');
+			this.requestAnimationFrame(this.animationFrameListener);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			if (nextProps.api.config.identifier !== this.props.api.config.identifier) {
+				this.reset();
+			}
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this.abortAnimationFrame = true;
+			this.cancelAnimationFrame(this.animationFrameListener);
+		}
+	}, {
+		key: 'onAnimationFrame',
+		value: function onAnimationFrame() {
+			if (this.frameBuffer.length) {
+				this.imageCtx.clearRect(0, 0, this.state.viewportWidth, this.state.viewportHeight);
+				for (var i = 0; i < this.frameBuffer.length; i++) {
+					var tileIm = this.frameBuffer[i][0];
+					var tile = this.frameBuffer[i][1];
+
+					this.imageCtx.drawImage(tileIm, parseInt(Math.floor((tile.pos.x + this.imagePos.x) * this.scale), 10), parseInt(Math.floor((tile.pos.y + this.imagePos.y) * this.scale), 10), parseInt(Math.ceil(tileIm.width * this.scale), 10), parseInt(Math.ceil(tileIm.height * this.scale), 10));
+				}
+				if (this.frameBuffer.filter(function (x) {
+					return x[0].complete && x[0].height > 0 && x[0].width > 0;
+				}).length === this.frameBuffer.length) {
+					this.frameBuffer = [];
+				}
+			}
+
+			if (!this.abortAnimationFrame) {
+				this.requestAnimationFrame(this.animationFrameListener);
+			}
+		}
+	}, {
+		key: 'reset',
+		value: function reset() {
+			this.imagePos.x = 0;
+			this.imagePos.y = 0;
+			this.width = null;
+			this.height = null;
+			var node = this.refs.viewer;
+			this.setState({
+				viewportWidth: node.clientWidth,
+				viewportHeight: node.clientHeight
+			}, this.loadImage.bind(this));
+		}
+	}, {
+		key: 'notifyRealImagePos',
+		value: function notifyRealImagePos() {
+			var zoom = this.props.api.getRealScale(this.scale, this.level);
+			var dims = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
+
+			_store2.default.dispatch((0, _actions.setRealViewPort)({
+				x: -dims.x / dims.w,
+				y: -dims.y / dims.h,
+				w: this.state.viewportWidth / dims.w,
+				h: this.state.viewportHeight / dims.h,
+				zoom: zoom,
+				reposition: false,
+				applyZoom: false
+			}));
+		}
+	}, {
+		key: 'correctBounds',
+		value: function correctBounds(x, y) {
+			if (this.props.freeMovement) return { x: x, y: y };
+
+			var correctedX = x;
+			var correctedY = y;
+
+			if (this.width <= this.state.viewportWidth) {
+				if (x < 0) {
+					correctedX = 0;
+				}
+				if (x * this.scale + this.width > this.state.viewportWidth) {
+					correctedX = (this.state.viewportWidth - this.width) / this.scale;
+				}
+			} else if (this.width > this.state.viewportWidth) {
+				if (x > 0) {
+					correctedX = 0;
+				}
+				if (x * this.scale + this.width < this.state.viewportWidth) {
+					correctedX = (this.state.viewportWidth - this.width) / this.scale;
+				}
+			}
+
+			if (this.height <= this.state.viewportHeight) {
+				if (y < 0) {
+					correctedY = 0;
+				}
+				if (y * this.scale + this.height > this.state.viewportHeight) {
+					correctedY = (this.state.viewportHeight - this.height) / this.scale;
+				}
+			} else if (this.height > this.state.viewportHeight) {
+				if (y > 0) {
+					correctedY = 0;
+				}
+				if (y * this.scale + this.height < this.state.viewportHeight) {
+					correctedY = (this.state.viewportHeight - this.height) / this.scale;
+				}
+			}
+
+			return { x: correctedX, y: correctedY };
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'hire-djatoka-client',
+					ref: 'viewer'
+				},
+				_react2.default.createElement('canvas', {
+					className: 'image',
+					height: this.state.viewportHeight,
+					width: this.state.viewportWidth
+				}),
+				_react2.default.createElement(_interactionCanvas2.default, _extends({}, this.props, this.state, {
+					height: this.height,
+					imagePos: this.imagePos,
+					level: this.level,
+					onLoadImage: this.loadImage,
+					onSetImagePosition: this.setImagePosition,
+					onZoom: this.handleZoom,
+					scale: this.scale
+				}))
+			);
+		}
+	}]);
+
+	return Viewer;
+}(_react2.default.Component);
+
+Viewer.propTypes = {
+	api: _react2.default.PropTypes.object,
+	config: _react2.default.PropTypes.object,
+	scaleMode: function scaleMode(props, propName) {
+		if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
+			var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
+			props[propName] = 'heightFill';
+			return new Error(msg);
+		}
+	},
+	service: _react2.default.PropTypes.string
+};
+
+Viewer.defaultProps = {
+	scaleMode: 'autoFill'
+};
+
+exports.default = Viewer;
+
+},{"../../actions":19,"../../store":26,"../../util/request-animation-frame":27,"./interaction-canvas":23,"react":"react"}],23:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1718,455 +2031,183 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var MOUSE_UP = 0;
 var MOUSE_DOWN = 1;
-
 var TOUCH_END = 0;
 var TOUCH_START = 1;
 var TOUCH_PINCH = 2;
 
-var RESIZE_DELAY = 5;
+var InteractionCanvas = function (_Component) {
+	_inherits(InteractionCanvas, _Component);
 
-var SUPPORTED_SCALE_MODES = ["heightFill", "widthFill", "autoFill", "fullZoom"];
+	function InteractionCanvas(props) {
+		_classCallCheck(this, InteractionCanvas);
 
-var Viewer = function (_React$Component) {
-	_inherits(Viewer, _React$Component);
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InteractionCanvas).call(this, props));
 
-	function Viewer(props) {
-		_classCallCheck(this, Viewer);
+		_this.onMouseDown = function (ev) {
+			_this.mousePos.x = ev.clientX;
+			_this.mousePos.y = ev.clientY;
+			_this.movement = { x: 0, y: 0 };
+			_this.mouseState = MOUSE_DOWN;
+		};
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).call(this, props));
+		_this.onMouseMove = function (ev) {
+			switch (_this.mouseState) {
+				case MOUSE_DOWN:
+					_this.movement.x = _this.mousePos.x - ev.clientX;
+					_this.movement.y = _this.mousePos.y - ev.clientY;
 
-		_this.state = {
-			width: null,
-			height: null
+					var imgPosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
+					var imgPosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
+					_this.props.onSetImagePosition(imgPosX, imgPosY);
+
+					_this.mousePos.x = ev.clientX;
+					_this.mousePos.y = ev.clientY;
+					_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+					ev.preventDefault();
+					break;
+				case MOUSE_UP:
+					{
+						var rect = _this.refs.interactionCanvas.getBoundingClientRect();
+						_this.focalPoint = {
+							x: ev.clientX - rect.left,
+							y: ev.clientY - rect.top
+						};
+						break;
+					}
+				default:
+			}
+		};
+
+		_this.onMouseUp = function () {
+			if (_this.mouseState === MOUSE_DOWN) {
+				_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+			}
+			_this.mouseState = MOUSE_UP;
+		};
+
+		_this.onTouchStart = function (ev) {
+			if (ev.touches.length > 1) {
+				_this.touchState = TOUCH_PINCH;
+			} else {
+				_this.touchPos.x = ev.touches[0].pageX;
+				_this.touchPos.y = ev.touches[0].pageY;
+				_this.movement = { x: 0, y: 0 };
+				_this.touchState = TOUCH_START;
+			}
+		};
+
+		_this.onTouchMove = function (ev) {
+			for (var i = 0; i < ev.touches.length; i++) {
+				var cur = {
+					x: ev.touches[i].pageX,
+					y: ev.touches[i].pageY
+				};
+				_this.touchmap.positions[i] = cur;
+			}
+			if (ev.touches.length === 2 && _this.touchState === TOUCH_PINCH) {
+				var oldD = _this.touchmap.pinchDistance;
+				_this.touchmap.pinchDistance = parseInt(Math.sqrt((_this.touchmap.positions[0].x - _this.touchmap.positions[1].x) * (_this.touchmap.positions[0].x - _this.touchmap.positions[1].x) + (_this.touchmap.positions[0].y - _this.touchmap.positions[1].y) * (_this.touchmap.positions[0].y - _this.touchmap.positions[1].y)), 10);
+				_this.touchmap.pinchDelta = oldD - _this.touchmap.pinchDistance;
+				if (_this.touchmap.pinchDelta < 60 && _this.touchmap.pinchDelta > -60) {
+					var delta = _this.touchmap.pinchDelta;
+					_this.props.onZoom(delta, _this.focalPoint);
+					// this.props.api.zoomBy(delta, this.props.scale, this.props.level, this.zoom.bind(this));
+				}
+			} else if (_this.touchState === TOUCH_START) {
+					_this.movement.x = _this.touchPos.x - ev.touches[0].pageX;
+					_this.movement.y = _this.touchPos.y - ev.touches[0].pageY;
+
+					var imagePosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
+					var imagePosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
+					_this.props.onSetImagePosition(imagePosX, imagePosY);
+
+					_this.touchPos.x = ev.touches[0].pageX;
+					_this.touchPos.y = ev.touches[0].pageY;
+
+					_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+				}
+			ev.preventDefault();
+			ev.stopPropagation();
+		};
+
+		_this.onTouchEnd = function () {
+			_this.touchState = TOUCH_END;
+		};
+
+		_this.onWheel = function (ev) {
+			var delta = ev.nativeEvent.deltaY;
+			_this.props.onZoom(delta, _this.focalPoint);
+
+			return ev.preventDefault();
 		};
 
 		_this.movement = { x: 0, y: 0 };
 		_this.touchPos = { x: 0, y: 0 };
 		_this.mousePos = { x: 0, y: 0 };
-		_this.imagePos = { x: 0, y: 0 };
 		_this.mouseState = MOUSE_UP;
-		_this.imageCtx = null;
-		_this.resizeDelay = 0;
-		_this.scale = 1.0;
-		_this.level = null;
-		_this.width = null;
-		_this.height = null;
 		_this.focalPoint = null;
-		_this.abortAnimationFrame = false;
-		_this.resizeListener = _this.onResize.bind(_this);
-		_this.animationFrameListener = _this.onAnimationFrame.bind(_this);
 		_this.mousemoveListener = _this.onMouseMove.bind(_this);
 		_this.mouseupListener = _this.onMouseUp.bind(_this);
-		_this.frameBuffer = [];
-		_this.touchmap = { startPos: false, positions: [], tapStart: 0, lastTap: 0, pinchDelta: 0, pinchDistance: 0 };
-		_this.requestAnimationFrame = _requestAnimationFrame.requestAnimationFrame;
-		_this.cancelAnimationFrame = _requestAnimationFrame.cancelAnimationFrame;
+		_this.touchmap = {
+			startPos: false,
+			positions: [],
+			tapStart: 0,
+			lastTap: 0,
+			pinchDelta: 0,
+			pinchDistance: 0
+		};
 		return _this;
 	}
 
-	_createClass(Viewer, [{
-		key: "componentDidMount",
+	_createClass(InteractionCanvas, [{
+		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.abortAnimationFrame = false;
-			this.commitResize();
-			this.imageCtx = this.refs.viewer.children[0].getContext("2d");
-			window.addEventListener("resize", this.resizeListener);
-			window.addEventListener("mousemove", this.mousemoveListener);
-			window.addEventListener("mouseup", this.mouseupListener);
-
-			// this.unsubscribe = store.subscribe(() =>
-			// 	this.setState(store.getState(), this.receiveNewState.bind(this))
-			// );
-			this.requestAnimationFrame(this.animationFrameListener);
-
-			// document.addEventListener("click", (ev) => {
-			// 	console.log(ev.target)
-			// })
+			window.addEventListener('mousemove', this.mousemoveListener);
+			window.addEventListener('mouseup', this.mouseupListener);
 		}
 	}, {
-		key: "componentWillReceiveProps",
-		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.api.config.identifier !== this.props.api.config.identifier) {
-				// this.props.api = new Api(this.props.service, nextProps.config);
-				this.commitResize();
-			}
-		}
-	}, {
-		key: "shouldComponentUpdate",
-		value: function shouldComponentUpdate(nextProps, nextState) {
-			return this.state.width !== nextState.width || this.state.height !== nextState.height || this.props.api.config.identifier !== nextProps.api.config.identifier;
-		}
-	}, {
-		key: "componentWillUnmount",
+		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
-			window.removeEventListener("resize", this.resizeListener);
-			window.removeEventListener("mousemove", this.mousemoveListener);
-			window.removeEventListener("mouseup", this.mouseupListener);
-			// this.unsubscribe();
-			this.abortAnimationFrame = true;
-			this.cancelAnimationFrame(this.animationFrameListener);
+			window.removeEventListener('mousemove', this.mousemoveListener);
+			window.removeEventListener('mouseup', this.mouseupListener);
 		}
 	}, {
-		key: "notifyRealImagePos",
-		value: function notifyRealImagePos() {
-			var zoom = this.props.api.getRealScale(this.scale, this.level);
-			var dims = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
-			_store2.default.dispatch((0, _actions.setRealViewPort)({
-				x: -dims.x / dims.w,
-				y: -dims.y / dims.h,
-				w: this.state.width / dims.w,
-				h: this.state.height / dims.h,
-				zoom: zoom,
-				reposition: false,
-				applyZoom: false
-			}));
-		}
-	}, {
-		key: "receiveNewState",
-		value: function receiveNewState() {
-			if (this.state.realViewPort.reposition) {
-				var _props$api$getRealIma = this.props.api.getRealImagePos(this.imagePos, this.scale, this.level);
-
-				var w = _props$api$getRealIma.w;
-				var h = _props$api$getRealIma.h;
-
-				this.imagePos.x = -(w * this.state.realViewPort.x / this.scale);
-				this.imagePos.y = -(h * this.state.realViewPort.y / this.scale);
-				this.correctBounds();
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-
-			if (this.state.realViewPort.applyZoom) {
-				this.focalPoint = null;
-				this.props.api.zoomTo(this.state.realViewPort.zoom, this.zoom.bind(this));
-			}
-
-			if (this.state.mousewheel) {
-				this.focalPoint = null;
-				_store2.default.dispatch((0, _actions.sendMouseWheel)(false));
-				this.props.api.zoomBy(this.determineZoomFactor(this.state.mousewheel.deltaY), this.scale, this.level, this.zoom.bind(this));
-			}
-
-			if (this.state.fillMode) {
-				_store2.default.dispatch((0, _actions.setFill)(false));
-				this.imagePos.x = 0;
-				this.imagePos.y = 0;
-				this.loadImage({ scaleMode: this.state.fillMode });
-			}
-		}
-	}, {
-		key: "onAnimationFrame",
-		value: function onAnimationFrame() {
-			if (this.frameBuffer.length) {
-				this.imageCtx.clearRect(0, 0, this.state.width, this.state.height);
-				for (var i = 0; i < this.frameBuffer.length; i++) {
-					var tileIm = this.frameBuffer[i][0];
-					var tile = this.frameBuffer[i][1];
-					this.imageCtx.drawImage(tileIm, parseInt(Math.floor((tile.pos.x + this.imagePos.x) * this.scale)), parseInt(Math.floor((tile.pos.y + this.imagePos.y) * this.scale)), parseInt(Math.ceil(tileIm.width * this.scale)), parseInt(Math.ceil(tileIm.height * this.scale)));
-				}
-				if (this.frameBuffer.filter(function (x) {
-					return x[0].complete && x[0].height > 0 && x[0].width > 0;
-				}).length === this.frameBuffer.length) {
-					this.frameBuffer = [];
-				}
-			}
-
-			if (this.resizeDelay === 0) {
-				this.commitResize();
-				this.resizeDelay = -1;
-			} else if (this.resizeDelay > 0) {
-				this.resizeDelay -= 1;
-			}
-			if (!this.abortAnimationFrame) {
-				this.requestAnimationFrame(this.animationFrameListener);
-			}
-		}
-	}, {
-		key: "onResize",
-		value: function onResize() {
-			this.resizeDelay = RESIZE_DELAY;
-		}
-	}, {
-		key: "commitResize",
-		value: function commitResize() {
-			this.resizeDelay = RESIZE_DELAY;
-			this.imagePos.x = 0;
-			this.imagePos.y = 0;
-			this.width = null;
-			this.height = null;
-			var node = this.refs.viewer;
-			this.setState({
-				width: node.clientWidth,
-				height: node.clientHeight
-			}, this.loadImage.bind(this));
-		}
-	}, {
-		key: "loadImage",
-		value: function loadImage() {
-			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: this.props.scaleMode } : arguments[0];
-
-			this.notifyRealImagePos();
-			this.frameBuffer = this.props.api.loadImage(_extends({
-				viewport: { w: this.state.width, h: this.state.height },
-				position: this.imagePos,
-				onScale: this.onDimensions.bind(this)
-			}, opts));
-		}
-	}, {
-		key: "setScale",
-		value: function setScale(s, l) {
-			this.scale = s;
-			this.level = l;
-		}
-	}, {
-		key: "setDimensions",
-		value: function setDimensions(w, h) {
-			this.width = w;
-			this.height = h;
-		}
-	}, {
-		key: "onMouseDown",
-		value: function onMouseDown(ev) {
-			this.mousePos.x = ev.clientX;
-			this.mousePos.y = ev.clientY;
-			this.movement = { x: 0, y: 0 };
-			this.mouseState = MOUSE_DOWN;
-		}
-	}, {
-		key: "onTouchStart",
-		value: function onTouchStart(ev) {
-			if (ev.touches.length > 1) {
-				this.touchState = TOUCH_PINCH;
-			} else {
-				this.touchPos.x = ev.touches[0].pageX;
-				this.touchPos.y = ev.touches[0].pageY;
-				this.movement = { x: 0, y: 0 };
-				this.touchState = TOUCH_START;
-			}
-		}
-	}, {
-		key: "onMouseMove",
-		value: function onMouseMove(ev) {
-			switch (this.mouseState) {
-				case MOUSE_DOWN:
-					this.movement.x = this.mousePos.x - ev.clientX;
-					this.movement.y = this.mousePos.y - ev.clientY;
-					this.imagePos.x -= this.movement.x / this.scale;
-					this.imagePos.y -= this.movement.y / this.scale;
-					this.mousePos.x = ev.clientX;
-					this.mousePos.y = ev.clientY;
-					this.correctBounds();
-					this.loadImage({ scale: this.scale, level: this.level });
-					return ev.preventDefault();
-				case MOUSE_UP:
-					var rect = this.refs.viewer.getBoundingClientRect();
-					this.focalPoint = {
-						x: ev.clientX - rect.left,
-						y: ev.clientY - rect.top
-					};
-					break;
-				default:
-			}
-		}
-	}, {
-		key: "onTouchMove",
-		value: function onTouchMove(ev) {
-			for (var i = 0; i < ev.touches.length; i++) {
-				var cur = { x: ev.touches[i].pageX, y: ev.touches[i].pageY };
-				this.touchmap.positions[i] = cur;
-			}
-			if (ev.touches.length === 2 && this.touchState === TOUCH_PINCH) {
-				var oldD = this.touchmap.pinchDistance;
-				this.touchmap.pinchDistance = parseInt(Math.sqrt((this.touchmap.positions[0].x - this.touchmap.positions[1].x) * (this.touchmap.positions[0].x - this.touchmap.positions[1].x) + (this.touchmap.positions[0].y - this.touchmap.positions[1].y) * (this.touchmap.positions[0].y - this.touchmap.positions[1].y)), 10);
-				this.touchmap.pinchDelta = oldD - this.touchmap.pinchDistance;
-				if (this.touchmap.pinchDelta < 60 && this.touchmap.pinchDelta > -60) {
-					this.props.api.zoomBy(this.determineZoomFactor(this.touchmap.pinchDelta), this.scale, this.level, this.zoom.bind(this));
-				}
-			} else if (this.touchState === TOUCH_START) {
-				this.movement.x = this.touchPos.x - ev.touches[0].pageX;
-				this.movement.y = this.touchPos.y - ev.touches[0].pageY;
-				this.imagePos.x -= this.movement.x / this.scale;
-				this.imagePos.y -= this.movement.y / this.scale;
-				this.touchPos.x = ev.touches[0].pageX;
-				this.touchPos.y = ev.touches[0].pageY;
-				this.correctBounds();
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-			ev.preventDefault();
-			ev.stopPropagation();
-		}
-	}, {
-		key: "onTouchEnd",
-		value: function onTouchEnd() {
-			this.touchState = TOUCH_END;
-		}
-	}, {
-		key: "onMouseUp",
-		value: function onMouseUp() {
-			if (this.mouseState === MOUSE_DOWN) {
-				this.loadImage({ scale: this.scale, level: this.level });
-			}
-			this.mouseState = MOUSE_UP;
-		}
-	}, {
-		key: "center",
-		value: function center(w, h) {
-			if (w > this.state.width) {
-				this.imagePos.x = -parseInt((w - this.state.width) / 2) / this.scale;
-			} else if (w < this.state.width) {
-				this.imagePos.x = parseInt((this.state.width - w) / 2) / this.scale;
-			}
-
-			if (h > this.state.height) {
-				this.imagePos.y = -parseInt((h - this.state.height) / 2) / this.scale;
-			} else if (h < this.state.width) {
-				this.imagePos.y = parseInt((this.state.height - h) / 2) / this.scale;
-			}
-		}
-	}, {
-		key: "correctBounds",
-		value: function correctBounds() {
-			if (this.state.freeMovement) {
-				return;
-			}
-			if (this.width <= this.state.width) {
-				if (this.imagePos.x < 0) {
-					this.imagePos.x = 0;
-				}
-				if (this.imagePos.x * this.scale + this.width > this.state.width) {
-					this.imagePos.x = (this.state.width - this.width) / this.scale;
-				}
-			} else if (this.width > this.state.width) {
-				if (this.imagePos.x > 0) {
-					this.imagePos.x = 0;
-				}
-				if (this.imagePos.x * this.scale + this.width < this.state.width) {
-					this.imagePos.x = (this.state.width - this.width) / this.scale;
-				}
-			}
-
-			if (this.height <= this.state.height) {
-				if (this.imagePos.y < 0) {
-					this.imagePos.y = 0;
-				}
-				if (this.imagePos.y * this.scale + this.height > this.state.height) {
-					this.imagePos.y = (this.state.height - this.height) / this.scale;
-				}
-			} else if (this.height > this.state.height) {
-				if (this.imagePos.y > 0) {
-					this.imagePos.y = 0;
-				}
-				if (this.imagePos.y * this.scale + this.height < this.state.height) {
-					this.imagePos.y = (this.state.height - this.height) / this.scale;
-				}
-			}
-		}
-	}, {
-		key: "onDimensions",
-		value: function onDimensions(s, l, w, h) {
-			this.setDimensions(w, h);
-			this.setScale(s, l);
-			console.log(w, h);
-			this.center(w, h);
-			this.notifyRealImagePos();
-		}
-	}, {
-		key: "zoom",
-		value: function zoom(s, l, w, h) {
-			var focalPoint = this.focalPoint || {
-				x: this.state.width / 2,
-				y: this.state.height / 2
-			};
-
-			var dX = (focalPoint.x - this.imagePos.x * this.scale) / this.width;
-			var dY = (focalPoint.y - this.imagePos.y * this.scale) / this.height;
-
-			this.setDimensions(w, h);
-			this.setScale(s, l);
-
-			if (this.width === null || this.height === null) {
-				this.center(w, h);
-			} else {
-				this.imagePos.x = (focalPoint.x - dX * this.width) / this.scale;
-				this.imagePos.y = (focalPoint.y - dY * this.height) / this.scale;
-				this.correctBounds();
-			}
-			this.loadImage({ scale: this.scale, level: this.level });
-		}
-	}, {
-		key: "determineZoomFactor",
-		value: function determineZoomFactor(delta) {
-			var rev = delta > 0 ? -1 : 1;
-			var rs = this.props.api.getRealScale(this.scale, this.level);
-			if (rs >= 0.6) {
-				return 0.04 * rev;
-			} else if (rs >= 0.3) {
-				return 0.02 * rev;
-			} else if (rs >= 0.1) {
-				return 0.01 * rev;
-			} else if (rs >= 0.05) {
-				return 0.005 * rev;
-			} else {
-				return 0.0025 * rev;
-			}
-		}
-	}, {
-		key: "onWheel",
-		value: function onWheel(ev) {
-			this.props.api.zoomBy(this.determineZoomFactor(ev.nativeEvent.deltaY), this.scale, this.level, this.zoom.bind(this));
-
-			return ev.preventDefault();
-		}
-	}, {
-		key: "render",
+		key: 'render',
 		value: function render() {
-			return _react2.default.createElement(
-				"div",
-				{
-					className: "hire-djatoka-client",
-					ref: "viewer"
-				},
-				_react2.default.createElement("canvas", {
-					className: "image",
-					height: this.state.height,
-					width: this.state.width
-				}),
-				_react2.default.createElement("canvas", {
-					className: "interaction",
-					height: this.state.height,
-					onMouseDown: this.onMouseDown.bind(this),
-					onTouchEnd: this.onTouchEnd.bind(this),
-					onTouchMove: this.onTouchMove.bind(this),
-					onTouchStart: this.onTouchStart.bind(this),
-					onWheel: this.onWheel.bind(this),
-					width: this.state.width
-				})
-			);
+			return _react2.default.createElement('canvas', {
+				className: 'interaction',
+				height: this.props.viewportHeight,
+				onMouseDown: this.onMouseDown,
+				onTouchEnd: this.onTouchEnd,
+				onTouchMove: this.onTouchMove,
+				onTouchStart: this.onTouchStart,
+				onWheel: this.onWheel,
+				ref: 'interactionCanvas',
+				width: this.props.viewportWidth
+			});
 		}
 	}]);
 
-	return Viewer;
-}(_react2.default.Component);
+	return InteractionCanvas;
+}(_react.Component);
 
-Viewer.propTypes = {
-	config: _react2.default.PropTypes.object,
-	scaleMode: function scaleMode(props, propName) {
-		if (SUPPORTED_SCALE_MODES.indexOf(props[propName]) < 0) {
-			var msg = "Scale mode '" + props[propName] + "' not supported. Modes: " + SUPPORTED_SCALE_MODES.join(", ");
-			props[propName] = "heightFill";
-			return new Error(msg);
-		}
-	},
-	service: _react2.default.PropTypes.string
+InteractionCanvas.propTypes = {
+	api: _react.PropTypes.object,
+	imagePos: _react.PropTypes.object,
+	onLoadImage: _react.PropTypes.func,
+	onSetImagePosition: _react.PropTypes.func,
+	onZoom: _react.PropTypes.func,
+	level: _react.PropTypes.number,
+	scale: _react.PropTypes.number,
+	viewportHeight: _react.PropTypes.number,
+	viewportWidth: _react.PropTypes.number
 };
 
-Viewer.defaultProps = {
-	scaleMode: "autoFill"
-};
+InteractionCanvas.defaultProps = {};
 
-exports.default = Viewer;
+exports.default = InteractionCanvas;
 
-},{"../actions":19,"../store":25,"../util/request-animation-frame":26,"react":"react"}],23:[function(_dereq_,module,exports){
+},{"react":"react"}],24:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2201,7 +2242,7 @@ exports.Viewer = _viewer2.default;
 // export FillButton from './components/fill-button';
 // export FreeMovementButton from './components/free-movement-button';
 
-},{"./components/djatoka-client":21,"./components/viewer":22,"insert-css":1}],24:[function(_dereq_,module,exports){
+},{"./components/djatoka-client":21,"./components/viewer":22,"insert-css":1}],25:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2283,7 +2324,7 @@ var initialState = {
 	}
 };
 
-},{"../api":20}],25:[function(_dereq_,module,exports){
+},{"../api":20}],26:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2302,7 +2343,7 @@ var store = (0, _redux.createStore)(_reducers2.default);
 
 exports.default = store;
 
-},{"../reducers":24,"redux":15}],26:[function(_dereq_,module,exports){
+},{"../reducers":25,"redux":15}],27:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2355,5 +2396,5 @@ var cancelAnimationFrame = exports.cancelAnimationFrame = 'function' === typeof 
     return;
 };
 
-},{}]},{},[23])(23)
+},{}]},{},[24])(24)
 });
