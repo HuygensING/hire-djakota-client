@@ -1,3 +1,6 @@
+### v2.2.0	(2016/11/21 11:14)
+* Add close button
+
 ### v2.1.2	(2016/11/21 11:1)
 * New build, ignore .idea
 

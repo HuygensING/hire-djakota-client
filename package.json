@@ -1,6 +1,6 @@
 {
   "name": "hire-djatoka-client",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Hire djatoka client",
   "main": "build/index.js",
   "scripts": {
