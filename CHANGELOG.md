@@ -1,3 +1,6 @@
+### v2.1.2	(2016/11/21 11:1)
+* New build, ignore .idea
+
 ### v2.1.1	(2016/8/1 7:40)
 * New build
 * New build
