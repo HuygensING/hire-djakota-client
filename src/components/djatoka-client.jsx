@@ -39,13 +39,25 @@ class DjatokaClient extends React.Component {
 		return (
 			<div	className="facsimile">
 				{children}
+				{
+					this.props.closeButton &&
+					<div
+						className="close"
+						onClick={this.props.onClose}
+					>
+						x
+					</div>
+				}
 			</div>
 		);
 	}
 }
 
 DjatokaClient.propTypes = {
-	children: React.PropTypes.array,
+	children: React.PropTypes.oneOfType([
+		React.PropTypes.arrayOf(React.PropTypes.node),
+		React.PropTypes.node
+	]),
 	config: React.PropTypes.object,
 	scaleMode: React.PropTypes.string,
 	service: React.PropTypes.string

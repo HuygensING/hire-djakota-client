@@ -1816,7 +1816,15 @@ var DjatokaClient = function (_React$Component) {
 			return _react2.default.createElement(
 				"div",
 				{ className: "facsimile" },
-				children
+				children,
+				this.props.closeButton && _react2.default.createElement(
+					"div",
+					{
+						className: "close",
+						onClick: this.props.onClose
+					},
+					"x"
+				)
 			);
 		}
 	}]);
@@ -1825,7 +1833,7 @@ var DjatokaClient = function (_React$Component) {
 }(_react2.default.Component);
 
 DjatokaClient.propTypes = {
-	children: _react2.default.PropTypes.array,
+	children: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.arrayOf(_react2.default.PropTypes.node), _react2.default.PropTypes.node]),
 	config: _react2.default.PropTypes.object,
 	scaleMode: _react2.default.PropTypes.string,
 	service: _react2.default.PropTypes.string
