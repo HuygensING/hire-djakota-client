@@ -23,45 +23,159 @@ module.exports = function (css, options) {
 };
 
 },{}],2:[function(_dereq_,module,exports){
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeGetPrototype = Object.getPrototypeOf;
+var root = _dereq_('./_root');
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+module.exports = Symbol;
+
+},{"./_root":9}],3:[function(_dereq_,module,exports){
+var Symbol = _dereq_('./_Symbol'),
+    getRawTag = _dereq_('./_getRawTag'),
+    objectToString = _dereq_('./_objectToString');
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
 
 /**
- * Gets the `[[Prototype]]` of `value`.
+ * The base implementation of `getTag` without fallbacks for buggy environments.
  *
  * @private
  * @param {*} value The value to query.
- * @returns {null|Object} Returns the `[[Prototype]]`.
+ * @returns {string} Returns the `toStringTag`.
  */
-function getPrototype(value) {
-  return nativeGetPrototype(Object(value));
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  value = Object(value);
+  return (symToStringTag && symToStringTag in value)
+    ? getRawTag(value)
+    : objectToString(value);
 }
+
+module.exports = baseGetTag;
+
+},{"./_Symbol":2,"./_getRawTag":6,"./_objectToString":7}],4:[function(_dereq_,module,exports){
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+module.exports = freeGlobal;
+
+},{}],5:[function(_dereq_,module,exports){
+var overArg = _dereq_('./_overArg');
+
+/** Built-in value references. */
+var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 module.exports = getPrototype;
 
-},{}],3:[function(_dereq_,module,exports){
+},{"./_overArg":8}],6:[function(_dereq_,module,exports){
+var Symbol = _dereq_('./_Symbol');
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
 /**
- * Checks if `value` is a host object in IE < 9.
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
  *
  * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
  */
-function isHostObject(value) {
-  // Many host objects are `Object` objects that can coerce to strings
-  // despite having improperly defined `toString` methods.
-  var result = false;
-  if (value != null && typeof value.toString != 'function') {
-    try {
-      result = !!(value + '');
-    } catch (e) {}
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag),
+      tag = value[symToStringTag];
+
+  try {
+    value[symToStringTag] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag] = tag;
+    } else {
+      delete value[symToStringTag];
+    }
   }
   return result;
 }
 
-module.exports = isHostObject;
+module.exports = getRawTag;
 
-},{}],4:[function(_dereq_,module,exports){
+},{"./_Symbol":2}],7:[function(_dereq_,module,exports){
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString.call(value);
+}
+
+module.exports = objectToString;
+
+},{}],8:[function(_dereq_,module,exports){
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+module.exports = overArg;
+
+},{}],9:[function(_dereq_,module,exports){
+var freeGlobal = _dereq_('./_freeGlobal');
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+module.exports = root;
+
+},{"./_freeGlobal":4}],10:[function(_dereq_,module,exports){
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
  * and has a `typeof` result of "object".
@@ -87,37 +201,31 @@ module.exports = isHostObject;
  * // => false
  */
 function isObjectLike(value) {
-  return !!value && typeof value == 'object';
+  return value != null && typeof value == 'object';
 }
 
 module.exports = isObjectLike;
 
-},{}],5:[function(_dereq_,module,exports){
-var getPrototype = _dereq_('./_getPrototype'),
-    isHostObject = _dereq_('./_isHostObject'),
+},{}],11:[function(_dereq_,module,exports){
+var baseGetTag = _dereq_('./_baseGetTag'),
+    getPrototype = _dereq_('./_getPrototype'),
     isObjectLike = _dereq_('./isObjectLike');
 
 /** `Object#toString` result references. */
 var objectTag = '[object Object]';
 
 /** Used for built-in method references. */
-var objectProto = Object.prototype;
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString = Function.prototype.toString;
+var funcToString = funcProto.toString;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /** Used to infer the `Object` constructor. */
 var objectCtorString = funcToString.call(Object);
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
 
 /**
  * Checks if `value` is a plain object, that is, an object created by the
@@ -128,8 +236,7 @@ var objectToString = objectProto.toString;
  * @since 0.8.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a plain object,
- *  else `false`.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
  * @example
  *
  * function Foo() {
@@ -149,8 +256,7 @@ var objectToString = objectProto.toString;
  * // => true
  */
 function isPlainObject(value) {
-  if (!isObjectLike(value) ||
-      objectToString.call(value) != objectTag || isHostObject(value)) {
+  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
     return false;
   }
   var proto = getPrototype(value);
@@ -158,13 +264,13 @@ function isPlainObject(value) {
     return true;
   }
   var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-  return (typeof Ctor == 'function' &&
-    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString.call(Ctor) == objectCtorString;
 }
 
 module.exports = isPlainObject;
 
-},{"./_getPrototype":2,"./_isHostObject":3,"./isObjectLike":4}],6:[function(_dereq_,module,exports){
+},{"./_baseGetTag":3,"./_getPrototype":5,"./isObjectLike":10}],12:[function(_dereq_,module,exports){
 'use strict';
 
 var Stringify = _dereq_('./stringify');
@@ -175,10 +281,12 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":7,"./stringify":8}],7:[function(_dereq_,module,exports){
+},{"./parse":13,"./stringify":14}],13:[function(_dereq_,module,exports){
 'use strict';
 
 var Utils = _dereq_('./utils');
+
+var has = Object.prototype.hasOwnProperty;
 
 var defaults = {
     delimiter: '&',
@@ -200,21 +308,18 @@ var parseValues = function parseValues(str, options) {
         var part = parts[i];
         var pos = part.indexOf(']=') === -1 ? part.indexOf('=') : part.indexOf(']=') + 1;
 
+        var key, val;
         if (pos === -1) {
-            obj[options.decoder(part)] = '';
-
-            if (options.strictNullHandling) {
-                obj[options.decoder(part)] = null;
-            }
+            key = options.decoder(part);
+            val = options.strictNullHandling ? null : '';
         } else {
-            var key = options.decoder(part.slice(0, pos));
-            var val = options.decoder(part.slice(pos + 1));
-
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                obj[key] = [].concat(obj[key]).concat(val);
-            } else {
-                obj[key] = val;
-            }
+            key = options.decoder(part.slice(0, pos));
+            val = options.decoder(part.slice(pos + 1));
+        }
+        if (has.call(obj, key)) {
+            obj[key] = [].concat(obj[key]).concat(val);
+        } else {
+            obj[key] = val;
         }
     }
 
@@ -276,7 +381,7 @@ var parseKeys = function parseKeys(givenKey, val, options) {
     if (segment[1]) {
         // If we aren't using plain objects, optionally prefix keys
         // that would overwrite object prototype properties
-        if (!options.plainObjects && Object.prototype.hasOwnProperty(segment[1])) {
+        if (!options.plainObjects && has.call(Object.prototype, segment[1])) {
             if (!options.allowPrototypes) {
                 return;
             }
@@ -290,7 +395,7 @@ var parseKeys = function parseKeys(givenKey, val, options) {
     var i = 0;
     while ((segment = child.exec(key)) !== null && i < options.depth) {
         i += 1;
-        if (!options.plainObjects && Object.prototype.hasOwnProperty(segment[1].replace(/\[|\]/g, ''))) {
+        if (!options.plainObjects && has.call(Object.prototype, segment[1].replace(/\[|\]/g, ''))) {
             if (!options.allowPrototypes) {
                 continue;
             }
@@ -344,7 +449,7 @@ module.exports = function (str, opts) {
     return Utils.compact(obj);
 };
 
-},{"./utils":9}],8:[function(_dereq_,module,exports){
+},{"./utils":15}],14:[function(_dereq_,module,exports){
 'use strict';
 
 var Utils = _dereq_('./utils');
@@ -483,7 +588,7 @@ module.exports = function (object, opts) {
     return keys.join(delimiter);
 };
 
-},{"./utils":9}],9:[function(_dereq_,module,exports){
+},{"./utils":15}],15:[function(_dereq_,module,exports){
 'use strict';
 
 var hexTable = (function () {
@@ -649,20 +754,20 @@ exports.isBuffer = function (obj) {
     return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
 };
 
-},{}],10:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports["default"] = applyMiddleware;
+exports['default'] = applyMiddleware;
 
 var _compose = _dereq_('./compose');
 
 var _compose2 = _interopRequireDefault(_compose);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
  * Creates a store enhancer that applies middleware to the dispatch method
@@ -686,8 +791,8 @@ function applyMiddleware() {
   }
 
   return function (createStore) {
-    return function (reducer, initialState, enhancer) {
-      var store = createStore(reducer, initialState, enhancer);
+    return function (reducer, preloadedState, enhancer) {
+      var store = createStore(reducer, preloadedState, enhancer);
       var _dispatch = store.dispatch;
       var chain = [];
 
@@ -700,7 +805,7 @@ function applyMiddleware() {
       chain = middlewares.map(function (middleware) {
         return middleware(middlewareAPI);
       });
-      _dispatch = _compose2["default"].apply(undefined, chain)(store.dispatch);
+      _dispatch = _compose2['default'].apply(undefined, chain)(store.dispatch);
 
       return _extends({}, store, {
         dispatch: _dispatch
@@ -708,11 +813,11 @@ function applyMiddleware() {
     };
   };
 }
-},{"./compose":13}],11:[function(_dereq_,module,exports){
+},{"./compose":19}],17:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
-exports["default"] = bindActionCreators;
+exports['default'] = bindActionCreators;
 function bindActionCreator(actionCreator, dispatch) {
   return function () {
     return dispatch(actionCreator.apply(undefined, arguments));
@@ -760,11 +865,11 @@ function bindActionCreators(actionCreators, dispatch) {
   }
   return boundActionCreators;
 }
-},{}],12:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
-exports["default"] = combineReducers;
+exports['default'] = combineReducers;
 
 var _createStore = _dereq_('./createStore');
 
@@ -776,7 +881,7 @@ var _warning = _dereq_('./utils/warning');
 
 var _warning2 = _interopRequireDefault(_warning);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function getUndefinedStateErrorMessage(key, action) {
   var actionType = action && action.type;
@@ -785,20 +890,24 @@ function getUndefinedStateErrorMessage(key, action) {
   return 'Given action ' + actionName + ', reducer "' + key + '" returned undefined. ' + 'To ignore an action, you must explicitly return the previous state.';
 }
 
-function getUnexpectedStateShapeWarningMessage(inputState, reducers, action) {
+function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
   var reducerKeys = Object.keys(reducers);
-  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
+  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
 
   if (reducerKeys.length === 0) {
     return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
   }
 
-  if (!(0, _isPlainObject2["default"])(inputState)) {
+  if (!(0, _isPlainObject2['default'])(inputState)) {
     return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
   }
 
   var unexpectedKeys = Object.keys(inputState).filter(function (key) {
-    return !reducers.hasOwnProperty(key);
+    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
+  });
+
+  unexpectedKeys.forEach(function (key) {
+    unexpectedKeyCache[key] = true;
   });
 
   if (unexpectedKeys.length > 0) {
@@ -843,11 +952,22 @@ function combineReducers(reducers) {
   var finalReducers = {};
   for (var i = 0; i < reducerKeys.length; i++) {
     var key = reducerKeys[i];
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof reducers[key] === 'undefined') {
+        (0, _warning2['default'])('No reducer provided for key "' + key + '"');
+      }
+    }
+
     if (typeof reducers[key] === 'function') {
       finalReducers[key] = reducers[key];
     }
   }
   var finalReducerKeys = Object.keys(finalReducers);
+
+  if (process.env.NODE_ENV !== 'production') {
+    var unexpectedKeyCache = {};
+  }
 
   var sanityError;
   try {
@@ -865,9 +985,9 @@ function combineReducers(reducers) {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
+      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
       if (warningMessage) {
-        (0, _warning2["default"])(warningMessage);
+        (0, _warning2['default'])(warningMessage);
       }
     }
 
@@ -888,7 +1008,7 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
-},{"./createStore":14,"./utils/warning":16,"lodash/isPlainObject":5}],13:[function(_dereq_,module,exports){
+},{"./createStore":20,"./utils/warning":22,"lodash/isPlainObject":11}],19:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -913,28 +1033,26 @@ function compose() {
     return function (arg) {
       return arg;
     };
-  } else {
-    var _ret = function () {
-      var last = funcs[funcs.length - 1];
-      var rest = funcs.slice(0, -1);
-      return {
-        v: function v() {
-          return rest.reduceRight(function (composed, f) {
-            return f(composed);
-          }, last.apply(undefined, arguments));
-        }
-      };
-    }();
-
-    if (typeof _ret === "object") return _ret.v;
   }
+
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  var last = funcs[funcs.length - 1];
+  var rest = funcs.slice(0, -1);
+  return function () {
+    return rest.reduceRight(function (composed, f) {
+      return f(composed);
+    }, last.apply(undefined, arguments));
+  };
 }
-},{}],14:[function(_dereq_,module,exports){
+},{}],20:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
 exports.ActionTypes = undefined;
-exports["default"] = createStore;
+exports['default'] = createStore;
 
 var _isPlainObject = _dereq_('lodash/isPlainObject');
 
@@ -944,7 +1062,7 @@ var _symbolObservable = _dereq_('symbol-observable');
 
 var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /**
  * These are private action types reserved by Redux.
@@ -967,7 +1085,7 @@ var ActionTypes = exports.ActionTypes = {
  * @param {Function} reducer A function that returns the next state tree, given
  * the current state tree and the action to handle.
  *
- * @param {any} [initialState] The initial state. You may optionally specify it
+ * @param {any} [preloadedState] The initial state. You may optionally specify it
  * to hydrate the state from the server in universal apps, or to restore a
  * previously serialized user session.
  * If you use `combineReducers` to produce the root reducer function, this must be
@@ -981,12 +1099,12 @@ var ActionTypes = exports.ActionTypes = {
  * @returns {Store} A Redux store that lets you read the state, dispatch actions
  * and subscribe to changes.
  */
-function createStore(reducer, initialState, enhancer) {
+function createStore(reducer, preloadedState, enhancer) {
   var _ref2;
 
-  if (typeof initialState === 'function' && typeof enhancer === 'undefined') {
-    enhancer = initialState;
-    initialState = undefined;
+  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+    enhancer = preloadedState;
+    preloadedState = undefined;
   }
 
   if (typeof enhancer !== 'undefined') {
@@ -994,7 +1112,7 @@ function createStore(reducer, initialState, enhancer) {
       throw new Error('Expected the enhancer to be a function.');
     }
 
-    return enhancer(createStore)(reducer, initialState);
+    return enhancer(createStore)(reducer, preloadedState);
   }
 
   if (typeof reducer !== 'function') {
@@ -1002,7 +1120,7 @@ function createStore(reducer, initialState, enhancer) {
   }
 
   var currentReducer = reducer;
-  var currentState = initialState;
+  var currentState = preloadedState;
   var currentListeners = [];
   var nextListeners = currentListeners;
   var isDispatching = false;
@@ -1094,7 +1212,7 @@ function createStore(reducer, initialState, enhancer) {
    * return something else (for example, a Promise you can await).
    */
   function dispatch(action) {
-    if (!(0, _isPlainObject2["default"])(action)) {
+    if (!(0, _isPlainObject2['default'])(action)) {
       throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
     }
 
@@ -1159,7 +1277,6 @@ function createStore(reducer, initialState, enhancer) {
        * be used to unsubscribe the observable from the store, and prevent further
        * emission of values from the observable.
        */
-
       subscribe: function subscribe(observer) {
         if (typeof observer !== 'object') {
           throw new TypeError('Expected the observer to be an object.');
@@ -1175,7 +1292,7 @@ function createStore(reducer, initialState, enhancer) {
         var unsubscribe = outerSubscribe(observeState);
         return { unsubscribe: unsubscribe };
       }
-    }, _ref[_symbolObservable2["default"]] = function () {
+    }, _ref[_symbolObservable2['default']] = function () {
       return this;
     }, _ref;
   }
@@ -1190,9 +1307,9 @@ function createStore(reducer, initialState, enhancer) {
     subscribe: subscribe,
     getState: getState,
     replaceReducer: replaceReducer
-  }, _ref2[_symbolObservable2["default"]] = observable, _ref2;
+  }, _ref2[_symbolObservable2['default']] = observable, _ref2;
 }
-},{"lodash/isPlainObject":5,"symbol-observable":17}],15:[function(_dereq_,module,exports){
+},{"lodash/isPlainObject":11,"symbol-observable":23}],21:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1222,7 +1339,7 @@ var _warning = _dereq_('./utils/warning');
 
 var _warning2 = _interopRequireDefault(_warning);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /*
 * This is a dummy function to check if the function name has been altered by minification.
@@ -1231,19 +1348,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function isCrushed() {}
 
 if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-  (0, _warning2["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+  (0, _warning2['default'])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 }
 
-exports.createStore = _createStore2["default"];
-exports.combineReducers = _combineReducers2["default"];
-exports.bindActionCreators = _bindActionCreators2["default"];
-exports.applyMiddleware = _applyMiddleware2["default"];
-exports.compose = _compose2["default"];
-},{"./applyMiddleware":10,"./bindActionCreators":11,"./combineReducers":12,"./compose":13,"./createStore":14,"./utils/warning":16}],16:[function(_dereq_,module,exports){
+exports.createStore = _createStore2['default'];
+exports.combineReducers = _combineReducers2['default'];
+exports.bindActionCreators = _bindActionCreators2['default'];
+exports.applyMiddleware = _applyMiddleware2['default'];
+exports.compose = _compose2['default'];
+},{"./applyMiddleware":16,"./bindActionCreators":17,"./combineReducers":18,"./compose":19,"./createStore":20,"./utils/warning":22}],22:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
-exports["default"] = warning;
+exports['default'] = warning;
 /**
  * Prints a warning in the console if it exists.
  *
@@ -1265,25 +1382,56 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
-},{}],17:[function(_dereq_,module,exports){
-/* global window */
+},{}],23:[function(_dereq_,module,exports){
+module.exports = _dereq_('./lib/index');
+
+},{"./lib/index":24}],24:[function(_dereq_,module,exports){
 'use strict';
 
-module.exports = _dereq_('./ponyfill')(global || window || this);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-},{"./ponyfill":18}],18:[function(_dereq_,module,exports){
+var _ponyfill = _dereq_('./ponyfill');
+
+var _ponyfill2 = _interopRequireDefault(_ponyfill);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var root; /* global window */
+
+
+if (typeof self !== 'undefined') {
+  root = self;
+} else if (typeof window !== 'undefined') {
+  root = window;
+} else if (typeof global !== 'undefined') {
+  root = global;
+} else if (typeof module !== 'undefined') {
+  root = module;
+} else {
+  root = Function('return this')();
+}
+
+var result = (0, _ponyfill2['default'])(root);
+exports['default'] = result;
+},{"./ponyfill":25}],25:[function(_dereq_,module,exports){
 'use strict';
 
-module.exports = function symbolObservablePonyfill(root) {
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports['default'] = symbolObservablePonyfill;
+function symbolObservablePonyfill(root) {
 	var result;
-	var Symbol = root.Symbol;
+	var _Symbol = root.Symbol;
 
-	if (typeof Symbol === 'function') {
-		if (Symbol.observable) {
-			result = Symbol.observable;
+	if (typeof _Symbol === 'function') {
+		if (_Symbol.observable) {
+			result = _Symbol.observable;
 		} else {
-			result = Symbol('observable');
-			Symbol.observable = result;
+			result = _Symbol('observable');
+			_Symbol.observable = result;
 		}
 	} else {
 		result = '@@observable';
@@ -1291,8 +1439,7 @@ module.exports = function symbolObservablePonyfill(root) {
 
 	return result;
 };
-
-},{}],19:[function(_dereq_,module,exports){
+},{}],26:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1338,7 +1485,7 @@ function createNextApi(config) {
 	};
 }
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],27:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1393,9 +1540,9 @@ var Api = function () {
 	_createClass(Api, [{
 		key: 'initializeResolutions',
 		value: function initializeResolutions() {
-			var level = arguments.length <= 0 || arguments[0] === undefined ? this.levels - 1 : arguments[0];
-			var w = arguments.length <= 1 || arguments[1] === undefined ? this.fullWidth : arguments[1];
-			var h = arguments.length <= 2 || arguments[2] === undefined ? this.fullHeight : arguments[2];
+			var level = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.levels - 1;
+			var w = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.fullWidth;
+			var h = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fullHeight;
 
 			this.resolutions.unshift([h, w]);
 			if (level > 0) {
@@ -1466,8 +1613,8 @@ var Api = function () {
 	}, {
 		key: 'findLevelForScale',
 		value: function findLevelForScale(s) {
-			var level = arguments.length <= 1 || arguments[1] === undefined ? this.levels : arguments[1];
-			var current = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+			var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.levels;
+			var current = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
 			if (s > current / 2 || level === 1) return level;
 			return this.findLevelForScale(s, --level, current / 2);
@@ -1590,7 +1737,7 @@ var Api = function () {
 
 exports.default = Api;
 
-},{"qs":6}],21:[function(_dereq_,module,exports){
+},{"qs":12}],28:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1623,7 +1770,7 @@ var DjatokaClient = function (_React$Component) {
 	function DjatokaClient(props) {
 		_classCallCheck(this, DjatokaClient);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DjatokaClient).call(this, props));
+		var _this = _possibleConstructorReturn(this, (DjatokaClient.__proto__ || Object.getPrototypeOf(DjatokaClient)).call(this, props));
 
 		_this.state = _store2.default.getState();
 		return _this;
@@ -1688,7 +1835,7 @@ DjatokaClient.defaultProps = {};
 
 exports.default = DjatokaClient;
 
-},{"../actions":19,"../store":26,"react":"react"}],22:[function(_dereq_,module,exports){
+},{"../actions":26,"../store":33,"react":"react"}],29:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1733,10 +1880,10 @@ var Viewer = function (_React$Component) {
 	function Viewer(props) {
 		_classCallCheck(this, Viewer);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Viewer.__proto__ || Object.getPrototypeOf(Viewer)).call(this, props));
 
 		_this.loadImage = function () {
-			var opts = arguments.length <= 0 || arguments[0] === undefined ? { scaleMode: _this.props.scaleMode } : arguments[0];
+			var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { scaleMode: _this.props.scaleMode };
 
 			_this.notifyRealImagePos();
 			_this.frameBuffer = _this.props.api.loadImage(_extends({
@@ -1805,15 +1952,12 @@ var Viewer = function (_React$Component) {
 		};
 
 		_this.handleZoom = function (delta, focalPoint) {
-			var _this$props$api$getZo = _this.props.api.getZoomData(delta, _this.scale, _this.level);
-
-			var _this$props$api$getZo2 = _slicedToArray(_this$props$api$getZo, 4);
-
-			var scale = _this$props$api$getZo2[0];
-			var level = _this$props$api$getZo2[1];
-			var width = _this$props$api$getZo2[2];
-			var height = _this$props$api$getZo2[3];
-
+			var _this$props$api$getZo = _this.props.api.getZoomData(delta, _this.scale, _this.level),
+			    _this$props$api$getZo2 = _slicedToArray(_this$props$api$getZo, 4),
+			    scale = _this$props$api$getZo2[0],
+			    level = _this$props$api$getZo2[1],
+			    width = _this$props$api$getZo2[2],
+			    height = _this$props$api$getZo2[3];
 
 			_this.zoom(scale, level, width, height, focalPoint);
 		};
@@ -2008,7 +2152,7 @@ Viewer.defaultProps = {
 
 exports.default = Viewer;
 
-},{"../../actions":19,"../../store":26,"../../util/request-animation-frame":27,"./interaction-canvas":23,"react":"react"}],23:[function(_dereq_,module,exports){
+},{"../../actions":26,"../../store":33,"../../util/request-animation-frame":34,"./interaction-canvas":30,"react":"react"}],30:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2041,7 +2185,7 @@ var InteractionCanvas = function (_Component) {
 	function InteractionCanvas(props) {
 		_classCallCheck(this, InteractionCanvas);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InteractionCanvas).call(this, props));
+		var _this = _possibleConstructorReturn(this, (InteractionCanvas.__proto__ || Object.getPrototypeOf(InteractionCanvas)).call(this, props));
 
 		_this.onMouseDown = function (ev) {
 			_this.mousePos.x = ev.clientX;
@@ -2114,18 +2258,18 @@ var InteractionCanvas = function (_Component) {
 					// this.props.api.zoomBy(delta, this.props.scale, this.props.level, this.zoom.bind(this));
 				}
 			} else if (_this.touchState === TOUCH_START) {
-					_this.movement.x = _this.touchPos.x - ev.touches[0].pageX;
-					_this.movement.y = _this.touchPos.y - ev.touches[0].pageY;
+				_this.movement.x = _this.touchPos.x - ev.touches[0].pageX;
+				_this.movement.y = _this.touchPos.y - ev.touches[0].pageY;
 
-					var imagePosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
-					var imagePosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
-					_this.props.onSetImagePosition(imagePosX, imagePosY);
+				var imagePosX = _this.props.imagePos.x - _this.movement.x / _this.props.scale;
+				var imagePosY = _this.props.imagePos.y - _this.movement.y / _this.props.scale;
+				_this.props.onSetImagePosition(imagePosX, imagePosY);
 
-					_this.touchPos.x = ev.touches[0].pageX;
-					_this.touchPos.y = ev.touches[0].pageY;
+				_this.touchPos.x = ev.touches[0].pageX;
+				_this.touchPos.y = ev.touches[0].pageY;
 
-					_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
-				}
+				_this.props.onLoadImage({ scale: _this.props.scale, level: _this.props.level });
+			}
 			ev.preventDefault();
 			ev.stopPropagation();
 		};
@@ -2207,7 +2351,7 @@ InteractionCanvas.defaultProps = {};
 
 exports.default = InteractionCanvas;
 
-},{"react":"react"}],24:[function(_dereq_,module,exports){
+},{"react":"react"}],31:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2242,7 +2386,7 @@ exports.Viewer = _viewer2.default;
 // export FillButton from './components/fill-button';
 // export FreeMovementButton from './components/free-movement-button';
 
-},{"./components/djatoka-client":21,"./components/viewer":22,"insert-css":1}],25:[function(_dereq_,module,exports){
+},{"./components/djatoka-client":28,"./components/viewer":29,"insert-css":1}],32:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2252,7 +2396,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = function () {
-	var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	var action = arguments[1];
 
 	var nextState = state;
@@ -2324,7 +2468,7 @@ var initialState = {
 	}
 };
 
-},{"../api":20}],26:[function(_dereq_,module,exports){
+},{"../api":27}],33:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2343,7 +2487,7 @@ var store = (0, _redux.createStore)(_reducers2.default);
 
 exports.default = store;
 
-},{"../reducers":25,"redux":15}],27:[function(_dereq_,module,exports){
+},{"../reducers":32,"redux":21}],34:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2396,5 +2540,5 @@ var cancelAnimationFrame = exports.cancelAnimationFrame = 'function' === typeof 
     return;
 };
 
-},{}]},{},[24])(24)
+},{}]},{},[31])(31)
 });
