@@ -1,8 +1,8 @@
 // Use require() because brfs cannot handle import
-const fs = require('fs');
-import insertCss from 'insert-css';
-let css = fs.readFileSync(__dirname + '/index.css');
-insertCss(css, { prepend: true });
+// const fs = require('fs');
+// import insertCss from 'insert-css';
+// let css = fs.readFileSync(__dirname + '/index.css');
+// insertCss(css, { prepend: true });
 
 export DjatokaClient from './components/djatoka-client';
 export Viewer from './components/viewer';
